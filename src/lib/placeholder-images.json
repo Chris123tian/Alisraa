@@ -1,3 +1,40 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "Background image for hero section",
+      "imageUrl": "https://images.unsplash.com/photo-1704826704101-5d79bcacf76a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwb3J0JTIwY3JhbmVzfGVufDB8fHx8MTc2OTg0OTYyOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "port cranes"
+    },
+    {
+      "id": "about-image",
+      "description": "Image for about us section",
+      "imageUrl": "https://images.unsplash.com/photo-1658801619539-da9d23c14355?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx3YXJlaG91c2UlMjB0ZWFtfGVufDB8fHx8MTc2OTg0OTYyOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "warehouse team"
+    },
+    {
+      "id": "1",
+      "description": "Blog post thumbnail for The Future of Logistics",
+      "imageUrl": "https://images.unsplash.com/photo-1759909632121-17c0f7aea633?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxmdXR1cmlzdGljJTIwbG9naXN0aWNzfGVufDB8fHx8MTc2OTg0OTYyOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "futuristic logistics"
+    },
+    {
+      "id": "2",
+      "description": "Blog post thumbnail for Choosing the Right Freight Forwarder",
+      "imageUrl": "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxidXNpbmVzcyUyMG1lZXRpbmd8ZW58MHx8fHwxNzY5NzQ4MTUyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "business meeting"
+    },
+    {
+      "id": "3",
+      "description": "Blog post thumbnail for Understanding Incoterms",
+      "imageUrl": "https://images.unsplash.com/photo-1605732562742-3023a888e56e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzaGlwcGluZyUyMGNvbnRhaW5lcnN8ZW58MHx8fHwxNzY5ODQ5NjI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "shipping containers"
+    },
+    {
+      "id": "contact-image",
+      "description": "Image for contact page",
+      "imageUrl": "https://images.unsplash.com/photo-1556745753-b2904692b3cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjdXN0b21lciUyMHNlcnZpY2V8ZW58MHx8fHwxNzY5NzQ5NjA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "customer service"
+    }
+  ]
 }
