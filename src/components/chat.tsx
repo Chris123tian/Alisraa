@@ -19,15 +19,25 @@ export function Chat() {
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
+  // When the component loads, if the auth state is resolved and there's no user,
+  // sign them in as an anonymous guest.
+  useEffect(() => {
+    if (!isUserLoading && !user) {
+      initiateAnonymousSignIn(auth);
+    }
+  }, [isUserLoading, user, auth]);
+
+
   const messagesRef = useMemoFirebase(() => {
     if (!firestore) return null;
     return collection(firestore, 'chat_messages');
   }, [firestore]);
 
+  // The query should only be created when we have a user, to avoid permission errors.
   const messagesQuery = useMemoFirebase(() => {
-    if (!messagesRef) return null;
+    if (!messagesRef || !user) return null;
     return query(messagesRef, orderBy('timestamp', 'asc'));
-  }, [messagesRef]);
+  }, [messagesRef, user]);
 
   const { data: messages, isLoading: isMessagesLoading } = useCollection(messagesQuery);
 
@@ -43,36 +53,16 @@ export function Chat() {
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!message.trim()) return;
-
-    let currentUser = user;
-    if (!currentUser) {
-      try {
-        // Non-blocking call
-        initiateAnonymousSignIn(auth);
-        toast({ title: 'You are now chatting as a guest.' });
-        // We can't get the user immediately, so we'll let the next message send handle it,
-        // or rely on the onAuthStateChanged listener to update the UI.
-        // For now, we'll just prevent sending until user object is available.
-        if (!auth.currentUser) {
-             toast({ variant: 'destructive', title: 'Please wait a moment and try sending again.' });
-             return;
+    if (!message.trim() || !user) {
+        if (!user) {
+            toast({ variant: 'destructive', title: 'Not authenticated. Please wait and try again.' });
         }
-        currentUser = auth.currentUser;
-      } catch (error) {
-        toast({ variant: 'destructive', title: 'Could not sign in as guest.' });
-        return;
-      }
-    }
-    
-    if (!currentUser) {
-        toast({ variant: 'destructive', title: 'Not authenticated. Cannot send message.' });
         return;
     }
 
     const messageData = {
-      senderId: currentUser.uid,
-      displayName: currentUser.isAnonymous ? 'Guest' : (currentUser.displayName || 'User'),
+      senderId: user.uid,
+      displayName: user.isAnonymous ? 'Guest' : (user.displayName || 'User'),
       message: message,
       timestamp: serverTimestamp(),
     };
@@ -82,12 +72,15 @@ export function Chat() {
       setMessage('');
     }
   };
+  
+  const isLoading = isUserLoading || (user && isMessagesLoading);
 
   return (
     <div className="flex flex-col h-[500px]">
       <ScrollArea className="flex-grow p-4 border rounded-t-lg" ref={scrollAreaRef}>
         <div className="space-y-4">
-          {isMessagesLoading && <p>Loading messages...</p>}
+          {isLoading && <p className="text-center text-muted-foreground">Loading chat...</p>}
+          {!isLoading && messages?.length === 0 && <p className="text-center text-muted-foreground">Be the first to send a message.</p>}
           {messages?.map((msg) => (
             <div
               key={msg.id}
@@ -109,6 +102,7 @@ export function Chat() {
                     : 'bg-muted'
                 )}
               >
+                <p className="text-sm font-medium">{msg.displayName}</p>
                 <p className="text-sm">{msg.message}</p>
                  <p className="text-xs text-right opacity-70 mt-1">
                   {msg.timestamp?.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
@@ -120,13 +114,13 @@ export function Chat() {
       </ScrollArea>
       <form onSubmit={handleSendMessage} className="flex gap-2 p-4 border-t border-x border-b rounded-b-lg">
         <Input
-          placeholder="Type your message..."
+          placeholder={user ? "Type your message..." : "Authenticating..."}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          disabled={isUserLoading}
+          disabled={!user}
           className="flex-grow"
         />
-        <Button type="submit" size="icon" disabled={isUserLoading || !message.trim()}>
+        <Button type="submit" size="icon" disabled={!user || !message.trim()}>
           <Send className="h-4 w-4" />
         </Button>
       </form>
