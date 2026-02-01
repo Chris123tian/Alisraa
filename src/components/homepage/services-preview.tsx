@@ -9,13 +9,13 @@ export function ServicesPreview() {
     <section className="py-20 bg-card">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary">Our Services</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary">Comprehensive Logistics Solutions</h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            We offer a comprehensive range of logistics services to meet your business needs, ensuring efficiency and reliability.
+            We offer a full spectrum of logistics services designed to meet the unique needs of your business. From global freight to local distribution, we've got you covered.
           </p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {services.slice(0, 4).map((service) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {services.slice(0, 3).map((service) => (
             <Card key={service.title} className="text-center group hover:shadow-xl transition-shadow duration-300">
               <CardHeader>
                 <div className="mx-auto bg-primary/10 text-primary rounded-full p-4 w-fit mb-4 group-hover:bg-primary group-hover:text-primary-foreground transition-colors duration-300">

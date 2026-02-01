@@ -13,9 +13,9 @@ export default function ContactPage() {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
-              <h2 className="text-3xl font-bold text-primary mb-4">Get in Touch</h2>
+              <h2 className="text-3xl font-bold text-primary mb-4">Contact Our Team</h2>
               <p className="text-muted-foreground mb-8">
-                We're here to help. Whether you have a question about our services, need a quote, or want to discuss a project, feel free to reach out.
+                We're here to help with all your logistics needs. Fill out the form below, and one of our experts will get back to you shortly.
               </p>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -24,7 +24,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Our Office</h3>
-                    <p className="text-muted-foreground">123 Logistics Lane, Freight City, 90210, World</p>
+                    <p className="text-muted-foreground">717 K Street, Sacramento, CA 95814, USA</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -33,7 +33,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Email Us</h3>
-                    <p className="text-muted-foreground">info@alisraa.com</p>
+                    <p className="text-muted-foreground">contact@alisraainternational.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -42,7 +42,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Call Us</h3>
-                    <p className="text-muted-foreground">+123 456 7890</p>
+                    <p className="text-muted-foreground">(555) 123-4567</p>
                   </div>
                 </div>
               </div>

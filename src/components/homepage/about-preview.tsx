@@ -24,22 +24,22 @@ export function AboutPreview() {
             )}
           </div>
           <div>
-            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">About Alisraa International</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mb-4">Your Trusted Partner in Global Logistics</h2>
             <p className="text-lg text-muted-foreground mb-6">
-              We are a team of dedicated professionals committed to providing top-tier logistics and supply chain solutions. Our mission is to facilitate global trade through innovative and reliable services.
+              Alisraa International ER combines deep industry expertise with a commitment to customer satisfaction. We build lasting partnerships by providing reliable, efficient, and transparent logistics solutions.
             </p>
             <ul className="space-y-4 mb-8">
               <li className="flex items-center gap-3">
                 <CheckCircle className="text-primary w-6 h-6" />
-                <span className="font-medium">Our Mission: To deliver excellence in logistics.</span>
+                <span className="font-medium">Dedicated to client success</span>
               </li>
               <li className="flex items-center gap-3">
                 <CheckCircle className="text-primary w-6 h-6" />
-                <span className="font-medium">Our Vision: To be the world's most trusted logistics partner.</span>
+                <span className="font-medium">Driven by innovation and integrity</span>
               </li>
             </ul>
             <Button size="lg" asChild>
-              <Link href="/about">Learn More</Link>
+              <Link href="/about">More About Us</Link>
             </Button>
           </div>
         </div>

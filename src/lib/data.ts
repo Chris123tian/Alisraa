@@ -12,37 +12,37 @@ export const services = [
   {
     icon: Ship,
     title: 'Ocean Freight',
-    description: 'Reliable and cost-effective sea shipping solutions for your global trade needs.',
+    description: 'Comprehensive ocean freight services for full container loads (FCL) and less-than-container loads (LCL).',
     imageHint: 'cargo ship',
   },
   {
     icon: Plane,
     title: 'Air Freight',
-    description: 'Fast and secure air cargo services to deliver your goods anywhere in the world.',
+    description: 'Expedited air freight for time-sensitive shipments, ensuring your cargo reaches its destination quickly and safely.',
     imageHint: 'cargo plane',
   },
   {
     icon: Briefcase,
     title: 'Customs Brokerage',
-    description: 'Hassle-free customs clearance with our expert brokerage services.',
+    description: 'Navigate the complexities of customs with our expert brokerage services, ensuring compliance and timely clearance.',
     imageHint: 'customs office',
   },
   {
     icon: Building2,
     title: 'Warehousing',
-    description: 'Secure and flexible warehousing options to manage your inventory.',
+    description: 'Secure, flexible warehousing and distribution services to manage your inventory and streamline your supply chain.',
     imageHint: 'warehouse interior',
   },
   {
     icon: Truck,
     title: 'Land Transport',
-    description: 'Comprehensive road and rail transport solutions for domestic and cross-border delivery.',
+    description: 'Reliable domestic and cross-border trucking and rail services for seamless point-to-point delivery.',
     imageHint: 'trucks highway',
   },
   {
     icon: Package,
     title: 'Supply Chain',
-    description: 'End-to-end supply chain management to optimize your logistics operations.',
+    description: 'End-to-end supply chain solutions, from planning and procurement to logistics and delivery.',
     imageHint: 'logistics chart',
   },
 ];
@@ -51,17 +51,17 @@ export const whyChooseUs = [
   {
     icon: ThumbsUp,
     title: 'Expert Team',
-    description: 'Our team of professionals has years of experience in the logistics industry.',
+    description: 'Our seasoned professionals bring extensive industry knowledge to handle your most complex logistics challenges.',
   },
   {
     icon: CheckCircle,
     title: 'Quality Services',
-    description: 'We are committed to providing high-quality services that meet your needs.',
+    description: 'We are committed to operational excellence, delivering reliable, efficient, and high-quality logistics services.',
   },
   {
     icon: Briefcase,
     title: 'Global Network',
-    description: 'With a vast network of partners, we offer logistics solutions worldwide.',
+    description: 'Leverage our extensive network of global partners to ensure seamless shipping and logistics coverage worldwide.',
   },
 ];
 

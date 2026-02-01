@@ -5,9 +5,9 @@ export function WhyChooseUs() {
     <section className="py-20 bg-card">
       <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-primary">Why Choose Us?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-primary">Why Partner with Alisraa International?</h2>
           <p className="mt-4 text-lg text-muted-foreground">
-            Experience the Alisraa difference. We provide more than just logistics; we provide peace of mind.
+            Discover the advantages of working with a logistics provider that prioritizes your success.
           </p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

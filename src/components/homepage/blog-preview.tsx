@@ -13,9 +13,9 @@ export function BlogPreview() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center mb-12">
           <div className="max-w-3xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-primary">From Our Blog</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary">Insights & News</h2>
             <p className="mt-4 text-lg text-muted-foreground">
-              Stay updated with the latest news and insights from the world of logistics.
+              Explore the latest trends, expert opinions, and company news from the world of logistics and supply chain management.
             </p>
           </div>
           <Button variant="outline" asChild className="hidden md:flex">

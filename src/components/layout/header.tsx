@@ -22,16 +22,16 @@ export function Header() {
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
               <Phone size={14} />
-              <span>+123 456 7890</span>
+              <span>(555) 123-4567</span>
             </div>
             <div className="hidden sm:flex items-center gap-2">
               <Mail size={14} />
-              <span>info@alisraa.com</span>
+              <span>contact@alisraainternational.com</span>
             </div>
           </div>
           <div className="hidden md:flex items-center gap-2">
             <Clock size={14} />
-            <span>Mon - Sat: 8:00 - 17:00</span>
+            <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
           </div>
         </div>
       </div>
@@ -65,11 +65,12 @@ export function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right">
-                <SheetHeader className="text-left">
-                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                  <Logo />
+                <SheetHeader className="p-4 border-b">
+                  <SheetTitle>
+                    <Logo />
+                  </SheetTitle>
                 </SheetHeader>
-                <div className="flex flex-col gap-6 mt-6">
+                <div className="flex flex-col gap-6 mt-6 px-4">
                   {navigationLinks.map((link) => (
                     <Link
                       key={link.href}

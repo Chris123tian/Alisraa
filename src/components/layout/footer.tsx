@@ -11,7 +11,7 @@ export function Footer() {
           <div className="space-y-4">
             <Logo />
             <p className="text-sm text-muted-foreground">
-              Alisraa International is a leading provider of logistics and freight forwarding services, dedicated to delivering excellence and reliability.
+              Alisraa International ER is your trusted partner for comprehensive logistics and supply chain solutions.
             </p>
             <div className="flex space-x-4">
               <Link href="#" className="text-muted-foreground hover:text-primary"><Facebook size={20} /></Link>
@@ -48,15 +48,15 @@ export function Footer() {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={20} className="text-primary mt-1 shrink-0" />
-                <span className="text-muted-foreground">123 Logistics Lane, Freight City, 90210, World</span>
+                <span className="text-muted-foreground">717 K Street, Sacramento, CA 95814, USA</span>
               </li>
               <li className="flex items-start gap-3">
                 <Phone size={20} className="text-primary mt-1 shrink-0" />
-                <span className="text-muted-foreground">+123 456 7890</span>
+                <span className="text-muted-foreground">(555) 123-4567</span>
               </li>
               <li className="flex items-start gap-3">
                 <Mail size={20} className="text-primary mt-1 shrink-0" />
-                <span className="text-muted-foreground">info@alisraa.com</span>
+                <span className="text-muted-foreground">contact@alisraainternational.com</span>
               </li>
             </ul>
           </div>
@@ -64,7 +64,7 @@ export function Footer() {
       </div>
       <div className="border-t">
         <div className="container mx-auto px-4 py-6 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Alisraa International. All Rights Reserved.
+          © {new Date().getFullYear()} Alisraa International ER. All Rights Reserved.
         </div>
       </div>
     </footer>
