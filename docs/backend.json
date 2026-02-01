@@ -1,0 +1,247 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the Alisraa International website, primarily for authentication and authorization within the admin dashboard and chat feature.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user."
+        },
+        "username": {
+          "type": "string",
+          "description": "The user's username for login purposes."
+        },
+        "email": {
+          "type": "string",
+          "description": "The user's email address.",
+          "format": "email"
+        },
+        "isAdmin": {
+          "type": "boolean",
+          "description": "Indicates whether the user has administrative privileges."
+        }
+      },
+      "required": [
+        "id",
+        "username",
+        "email"
+      ]
+    },
+    "ChatMessage": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ChatMessage",
+      "type": "object",
+      "description": "Represents a single message within the real-time chat feature.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the chat message."
+        },
+        "senderId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N ChatMessage).  The ID of the user who sent the message."
+        },
+        "message": {
+          "type": "string",
+          "description": "The content of the chat message."
+        },
+        "timestamp": {
+          "type": "string",
+          "description": "The timestamp indicating when the message was sent.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "senderId",
+        "message",
+        "timestamp"
+      ]
+    },
+    "BlogEntry": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "BlogEntry",
+      "type": "object",
+      "description": "Represents a single blog post entry for the Alisraa International website.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the blog entry."
+        },
+        "authorId": {
+          "type": "string",
+          "description": "Reference to User. (Relationship: User 1:N BlogEntry). The ID of the user who authored the blog entry."
+        },
+        "title": {
+          "type": "string",
+          "description": "The title of the blog entry."
+        },
+        "content": {
+          "type": "string",
+          "description": "The main content of the blog entry (e.g., HTML or Markdown)."
+        },
+        "publicationDate": {
+          "type": "string",
+          "description": "The date and time when the blog entry was published.",
+          "format": "date-time"
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of the image associated with the blog entry.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "authorId",
+        "title",
+        "content",
+        "publicationDate"
+      ]
+    },
+    "ContactFormSubmission": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "ContactFormSubmission",
+      "type": "object",
+      "description": "Represents a submission received through the contact form on the Alisraa International website.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the contact form submission."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the person submitting the form."
+        },
+        "email": {
+          "type": "string",
+          "description": "The email address of the person submitting the form.",
+          "format": "email"
+        },
+        "subject": {
+          "type": "string",
+          "description": "The subject of the contact form submission."
+        },
+        "message": {
+          "type": "string",
+          "description": "The message content of the contact form submission."
+        },
+        "submissionDate": {
+          "type": "string",
+          "description": "The date and time when the contact form was submitted.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "email",
+        "subject",
+        "message",
+        "submissionDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "User",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "Stores user data. Used for authentication and authorization. The `isAdmin` field determines admin privileges.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/chat_messages/{messageId}",
+        "definition": {
+          "entityName": "ChatMessage",
+          "schema": {
+            "$ref": "#/backend/entities/ChatMessage"
+          },
+          "description": "Stores chat messages. Uses path-based ownership: each user owns their messages. This supports QAPs because listing chat messages can be easily secured by the owning user.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user who sent the message."
+            },
+            {
+              "name": "messageId",
+              "description": "The unique identifier of the chat message."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/users/{userId}/blog_entries/{blogEntryId}",
+        "definition": {
+          "entityName": "BlogEntry",
+          "schema": {
+            "$ref": "#/backend/entities/BlogEntry"
+          },
+          "description": "Stores blog entries. Uses path-based ownership: each user owns their blog entries. This structure supports QAPs.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user who authored the blog entry."
+            },
+            {
+              "name": "blogEntryId",
+              "description": "The unique identifier of the blog entry."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/contact_form_submissions/{submissionId}",
+        "definition": {
+          "entityName": "ContactFormSubmission",
+          "schema": {
+            "$ref": "#/backend/entities/ContactFormSubmission"
+          },
+          "description": "Stores contact form submissions. No specific ownership. Accessible by administrators.",
+          "params": [
+            {
+              "name": "submissionId",
+              "description": "The unique identifier of the contact form submission."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/roles_admin/{userId}",
+        "definition": {
+          "entityName": "adminRole",
+          "schema": {
+            "$ref": "#/backend/entities/User"
+          },
+          "description": "A document existence indicates a user is an admin. Used to grant admin roles. This structure enables existence-based role assignment which is robust and very secure.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier of the user who is an admin."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "This Firestore data structure is designed to support the Alisraa International website's features, including the admin dashboard, real-time chat, blog, and contact form. It prioritizes Authorization Independence and QAPs. The structure is segregated into collections based on different security postures. Authentication is handled by Firebase Auth (password and anonymous). Authorization is handled via `isAdmin` flag in the user document and path-based ownership.\n\nAuthorization Independence:\n*   `users`: The `isAdmin` field is stored directly in the user document. Rules can directly check this field without needing to perform `get()` operations to other documents.\n*   `chat_messages`:  Messages are stored independently, authorization managed via path-based ownership `/users/{userId}/chat_messages/{messageId}`\n*   `blog_entries`:  Ownership is also handled via path-based ownership `/users/{userId}/blog_entries/{blogEntryId}`\n*   `contact_form_submissions`: This collection is secured for write access only from authenticated users. The contact form is available for all users, the data will be accessible to the admin only.\n\nQAPs Support:\n*   The segregation of `blog_entries` into a collection allows rules to be written to allow only admins to write to those entries. Using path based ownership we only allow the user with the corresponding `userId` to make edits or write to their own blog entries.\n*   Anonymous authentication enables the chat feature for all users.\n\nScalability:\n*   The structure is designed to scale horizontally. There are no reads required for authorization, which helps to avoid bottlenecks.\n\nDebuggability:\n*   The structure is easy to debug due to its simplicity. Rules are clearly defined and based on authorization patterns."
+  }
+}

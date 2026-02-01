@@ -1,0 +1,185 @@
+/**
+ * Core Philosophy: This ruleset enforces a hybrid security model. It combines a strict,
+ * path-based user-ownership model for user-generated content (like chat messages and blog
+ * entries) with a role-based access control (RBAC) model for administrative functions.
+ * The primary goal is to ensure users can only access their own data, while granting
+ * administrators the necessary oversight and management capabilities across the system.
+ *
+ * Data Structure: The data is organized hierarchically. Core user data resides in the
+ * `/users/{userId}` collection. All content created by a user is nested within their
+
+ * own document tree (e.g., `/users/{userId}/chat_messages/{messageId}`), enabling
+ * straightforward and performant ownership-based security rules. Global collections
+ * like `/contact_form_submissions` are used for system-wide data, and a dedicated
+ * `/roles_admin` collection manages administrative privileges.
+ *
+ * Key Security Decisions:
+ * - Admin Roles: Administrative status is determined by the existence of a document in
+ *   the `/roles_admin/{userId}` collection. This `exists()` check is highly performant
+ *   and secure, as it avoids reading other user documents and isolates role management
+ *   to a specific, admin-only collection.
+ * - User Data Privacy: Users are strictly confined to their own document tree under
+ *   `/users/{userId}`. They cannot read, write, or even list other users' documents,
+ *   preventing user enumeration and ensuring strong data isolation.
+ * - Contact Form: Submissions are publicly writable by any authenticated user (including
+ *   anonymous users) to allow for open access, but are readable only by administrators.
+ * - Default Posture: Unspecified paths or operations are implicitly denied.
+ *
+ * Denormalization for Authorization: This ruleset relies on two key denormalization
+ * and structural patterns to avoid slow and costly `get()` calls:
+ * - Path-Based Ownership: By nesting user-specific content like `chat_messages` under
+ *   `/users/{userId}`, we can use the `userId` from the path to authorize requests
+ *   without needing to inspect an `ownerId` field on every sub-document.
+ * - Role-Based Lookups: The `/roles_admin` collection acts as a denormalized index of
+ *   administrators. This allows a fast `exists()` check to determine a user's role
+ *   from any rule in the system, which is vastly superior to traversing other collections.
+ *
+ * Structural Segregation: The design separates private user data (nested under `/users`)
+ * from global, admin-managed data (`/contact_form_submissions`), leading to cleaner,
+ * more secure rules for each distinct type of data.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ------------------------------------------------------------------------
+    // Helper Functions
+    // ------------------------------------------------------------------------
+
+    /**
+     * Verifies that the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Verifies that the authenticated user's UID matches the provided userId.
+     * This is the foundation of the user-ownership model.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Checks if the document being operated on already exists.
+     * Crucial for protecting against writes on non-existent paths.
+     */
+    function isExistingDoc() {
+      return resource != null;
+    }
+
+    /**
+     * Combines ownership check with an existence check for secure updates/deletes.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && isExistingDoc();
+    }
+
+    /**
+     * Checks if the user has administrative privileges by verifying the existence
+     * of their UID in the dedicated admin roles collection.
+     */
+    function isAdmin() {
+      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+    }
+
+    // ------------------------------------------------------------------------
+    // User Profile Rules (/users)
+    // ------------------------------------------------------------------------
+
+    /**
+     * @description Manages user profile documents. Users can create, read, and
+     *   update their own profile. Listing users is forbidden to prevent enumeration.
+     * @path /users/{userId}
+     * @allow (create) An authenticated user with UID 'user123' creating their
+     *   own document at `/users/user123`.
+     * @deny (get) A user 'user456' trying to read the document at `/users/user123`.
+     * @principle Restricts access to a user's own data tree and prevents user enumeration.
+     */
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if false; // Disallow listing/querying users for security.
+      allow create: if isOwner(userId) && request.resource.data.id == userId;
+      allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(userId);
+
+      // ----------------------------------------------------------------------
+      // User Chat Messages Rules (/users/{userId}/chat_messages)
+      // ----------------------------------------------------------------------
+
+      /**
+       * @description Secures chat messages, which are owned by the user. Owners can manage
+       *   their own messages, and admins have read-only oversight for support.
+       * @path /users/{userId}/chat_messages/{messageId}
+       * @allow (create) User 'user123' creating a new message in their own subcollection.
+       * @deny (update) User 'user456' trying to edit a message owned by 'user123'.
+       * @principle Enforces document ownership within a user-specific subcollection.
+       */
+      match /chat_messages/{messageId} {
+        allow get, list: if isOwner(userId) || isAdmin();
+        allow create: if isOwner(userId) && request.resource.data.senderId == userId;
+        allow update: if isExistingOwner(userId);
+        allow delete: if isExistingOwner(userId);
+      }
+
+      // ----------------------------------------------------------------------
+      // User Blog Entries Rules (/users/{userId}/blog_entries)
+      // ----------------------------------------------------------------------
+
+      /**
+       * @description Secures blog entries. These are treated as user-owned drafts.
+       *   The author can fully manage them, and admins have oversight.
+       * @path /users/{userId}/blog_entries/{blogEntryId}
+       * @allow (create) User 'user123' creating a new blog entry in their subcollection.
+       * @deny (get) User 'user456' trying to read a blog entry owned by 'user123'.
+       * @principle Enforces document ownership for user-generated content.
+       */
+      match /blog_entries/{blogEntryId} {
+        allow get, list: if isOwner(userId) || isAdmin();
+        allow create: if isOwner(userId) && request.resource.data.authorId == userId;
+        allow update: if isExistingOwner(userId);
+        allow delete: if isExistingOwner(userId);
+      }
+    }
+
+    // ------------------------------------------------------------------------
+    // Contact Form Submission Rules (/contact_form_submissions)
+    // ------------------------------------------------------------------------
+
+    /**
+     * @description Manages contact form submissions. Allows any signed-in user
+     *   (including anonymous) to create a submission, but restricts all other
+     *   access to administrators only.
+     * @path /contact_form_submissions/{submissionId}
+     * @allow (create) An anonymous user submitting the contact form.
+     * @deny (list) A non-admin user trying to read all form submissions.
+     * @principle Separates public write access from private admin-only read access.
+     */
+    match /contact_form_submissions/{submissionId} {
+      allow get, list: if isAdmin();
+      allow create: if isSignedIn();
+      allow update, delete: if isAdmin() && isExistingDoc();
+    }
+
+    // ------------------------------------------------------------------------
+    // Admin Role Management Rules (/roles_admin)
+    // ------------------------------------------------------------------------
+
+    /**
+     * @description Manages the collection that grants administrative privileges.
+     *   Only existing admins can read or write to this collection, allowing them
+     *   to grant or revoke admin status for other users.
+     * @path /roles_admin/{userId}
+     * @allow (create) An admin creating a document at `/roles_admin/newUser123`
+     *   to grant them admin rights.
+     * @deny (delete) A non-admin user trying to delete a document to revoke
+     *   someone else's (or their own) admin rights.
+     * @principle Secures role management to prevent unauthorized privilege escalation.
+     */
+    match /roles_admin/{userId} {
+      allow get, list: if isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+  }
+}
