@@ -1,12 +1,6 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-background",
-      "description": "Container ship in a port",
-      "imageUrl": "https://images.unsplash.com/photo-1613521233983-3b2837f3a35f?ixlib=rb-4.0.3&q=80&w=1080&crop=entropy&cs=tinysrgb&fit=max&fm=jpg",
-      "imageHint": "container ship"
-    },
-    {
       "id": "about-image",
       "description": "Modern warehouse interior in Germany with blurred worker",
       "imageUrl": "https://images.unsplash.com/photo-1616401784845-18084246e355?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3YXJlaG91c2UlMjBnZXJtYW55fGVufDB8fHx8MTcxNjU4MTQyNnww&ixlib=rb-4.0.3&q=80&w=1080",
@@ -45,7 +39,7 @@
     {
       "id": "service-warehousing",
       "description": "The interior of a large, modern warehouse with a forklift",
-      "imageUrl": "https://images.unsplash.com/photo-1565610222536-a36511139a67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXJlaG91c2UlMjBpbnRlcmlvciUyMGZvcmtsaWZ0fGVufDB8fHx8MTc3MDExNTU0MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1565610222536-a36511139a67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXJlaG91c2UlMjBpbnRlcmlvciUyMGZvcmtsaWZ0fGVufDB8fHx8MTc3MDExNTU0MXww&ixlib-rb-4.1.0&q=80&w=1080",
       "imageHint": "warehouse forklift"
     },
     {
