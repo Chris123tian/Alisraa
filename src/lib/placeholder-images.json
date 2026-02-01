@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "Truck driving on a German highway at sunset",
-      "imageUrl": "https://images.unsplash.com/photo-1517060342903-1a7c36b4f738?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsb2dpc3RpY3MlMjBnZXJtYW55fGVufDB8fHx8MTcxNjU4MTM3Mnww&ixlib=rb-4.0.3&q=80&w=1080",
-      "imageHint": "logistics germany"
+      "description": "Logistics concept with cargo ship, truck and airplane",
+      "imageUrl": "https://images.unsplash.com/photo-1577562495098-60037a549d41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsb2dpc3RpY3N8ZW58MHx8fHwxNzE3MjI0OTU1fDA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "logistics transport"
     },
     {
       "id": "about-image",
