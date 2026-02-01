@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "Logistics concept with cargo ship, truck and airplane",
-      "imageUrl": "https://images.unsplash.com/photo-1577562495098-60037a549d41?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsb2dpc3RpY3N8ZW58MHx8fHwxNzE3MjI0OTU1fDA&ixlib=rb-4.0.3&q=80&w=1080",
-      "imageHint": "logistics transport"
+      "description": "Container ship in a port",
+      "imageUrl": "https://images.unsplash.com/photo-1613521233983-3b2837f3a35f?ixlib=rb-4.0.3&q=80&w=1080&crop=entropy&cs=tinysrgb&fit=max&fm=jpg",
+      "imageHint": "container ship"
     },
     {
       "id": "about-image",
