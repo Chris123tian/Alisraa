@@ -27,7 +27,8 @@ service cloud.firestore {
     }
 
     match /roles_admin/{userId} {
-      allow get, list, create, update, delete: if isAdmin();
+      allow get: if isOwner(userId) || isAdmin();
+      allow list, create, update, delete: if isAdmin();
     }
   }
 }
