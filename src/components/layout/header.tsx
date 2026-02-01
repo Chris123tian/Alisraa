@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Mail, Phone, LogOut } from 'lucide-react';
+import { Menu, Mail, Phone, LogOut, Lock } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -72,8 +72,10 @@ export function Header() {
                     <LogOut />
                 </Button>
               ) : (
-                <Button asChild>
-                  <Link href="/login">Login</Link>
+                <Button asChild variant="ghost" size="icon">
+                  <Link href="/login" aria-label="Login">
+                    <Lock />
+                  </Link>
                 </Button>
               )}
             </>
