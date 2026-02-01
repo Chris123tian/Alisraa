@@ -1,6 +1,12 @@
 {
   "placeholderImages": [
     {
+      "id": "hero-image",
+      "description": "A collage of logistics and transportation including a cargo plane, a truck, a cargo ship and a forklift.",
+      "imageUrl": "https://images.pexels.com/photos/4482900/pexels-photo-4482900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      "imageHint": "logistics transport"
+    },
+    {
       "id": "about-image",
       "description": "Modern warehouse interior in Germany with blurred worker",
       "imageUrl": "https://images.unsplash.com/photo-1616401784845-18084246e355?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3YXJlaG91c2UlMjBnZXJtYW55fGVufDB8fHx8MTcxNjU4MTQyNnww&ixlib=rb-4.0.3&q=80&w=1080",
@@ -39,7 +45,7 @@
     {
       "id": "service-warehousing",
       "description": "The interior of a large, modern warehouse with a forklift",
-      "imageUrl": "https://images.unsplash.com/photo-1565610222536-a36511139a67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXJlaG91c2UlMjBpbnRlcmlvciUyMGZvcmtsaWZ0fGVufDB8fHx8MTc3MDExNTU0MXww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://images.unsplash.com/photo-1565610222536-a36511139a67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXJlaG91c2UlMjBpbnRlcmlvciUyMGZvcmtsaWZ0fGVufDB8fHx8MTc3MDExNTU0MXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "warehouse forklift"
     },
     {

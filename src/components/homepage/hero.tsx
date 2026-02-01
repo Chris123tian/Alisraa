@@ -1,17 +1,23 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export function Hero() {
+  const heroImage = PlaceHolderImages.find(img => img.id === 'hero-image');
+
   return (
     <section className="relative h-[70vh] md:h-[80vh] w-full flex items-center justify-center text-white overflow-hidden">
-      <video
-        src="https://videos.pexels.com/video-files/4496259/4496259-hd_1920_1080_25fps.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        className="absolute top-1/2 left-1/2 w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 z-0"
-      />
+      {heroImage && (
+        <Image
+          src={heroImage.imageUrl}
+          alt={heroImage.description}
+          fill
+          className="object-cover"
+          priority
+          data-ai-hint={heroImage.imageHint}
+        />
+      )}
       <div className="absolute inset-0 bg-black/60" />
       <div className="relative z-10 text-center p-4 space-y-8">
         <h1 className="text-4xl md:text-6xl font-extrabold leading-tight drop-shadow-md">
