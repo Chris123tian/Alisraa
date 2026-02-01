@@ -1,4 +1,4 @@
-import { Ship, Plane, Briefcase, Building2, Truck, Package } from 'lucide-react';
+import { Ship, Plane, Briefcase, Building2, Truck, Package, LogIn, UserPlus, Shield } from 'lucide-react';
 
 export const navigationLinks = [
   { href: '/', label: 'Home' },
@@ -6,6 +6,8 @@ export const navigationLinks = [
   { href: '/tracking', label: 'Tracking' },
   { href: '/about', label: 'About Us' },
   { href: '/contact', label: 'Contact Us' },
+  { href: '/login', label: 'Login'},
+  { href: '/admin', label: 'Admin'},
 ];
 
 export const services = [

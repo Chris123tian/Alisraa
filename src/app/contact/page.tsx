@@ -1,13 +1,8 @@
 import { PageHeader } from '@/components/page-header';
-import { ContactForm } from '@/components/contact-form';
 import { Mail, Phone, MapPin } from 'lucide-react';
-import Image from 'next/image';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Terminal } from 'lucide-react';
+import { Chat } from '@/components/chat';
 
 export default function ContactPage() {
-  const contactImage = PlaceHolderImages.find(img => img.id === 'contact-image');
   return (
     <>
       <PageHeader title="Contact Us" breadcrumb={[{ href: '/contact', label: 'Contact' }]} />
@@ -18,7 +13,7 @@ export default function ContactPage() {
               <h2 className="text-sm font-bold uppercase text-primary mb-2 tracking-wider">Contact Us</h2>
               <h3 className="text-3xl font-bold mb-4">Get in Touch</h3>
               <p className="text-muted-foreground mb-8">
-                We are here to help you with all your logistics needs. Please feel free to contact us with any questions or to request a quote. For immediate assistance, use the contact form. A live chat feature will be available soon.
+                We are here to help you with all your logistics needs. Please feel free to contact us with any questions or to request a quote. For immediate assistance, use the chat feature.
               </p>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -52,16 +47,9 @@ export default function ContactPage() {
             </div>
             <div>
               <div className="bg-card p-8 rounded-lg shadow-lg border">
-                <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
-                <ContactForm />
+                <h3 className="text-2xl font-bold mb-6">Live Chat</h3>
+                <Chat />
               </div>
-              <Alert className="mt-8">
-                <Terminal className="h-4 w-4" />
-                <AlertTitle>Coming Soon!</AlertTitle>
-                <AlertDescription>
-                  A real-time chat feature is under development to provide you with instant support.
-                </AlertDescription>
-              </Alert>
             </div>
           </div>
         </div>

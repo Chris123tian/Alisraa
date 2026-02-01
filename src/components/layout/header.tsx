@@ -2,18 +2,28 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Mail, Phone } from 'lucide-react';
-
+import { Menu, Mail, Phone, LogOut } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { navigationLinks } from '@/lib/data';
 import React from 'react';
+import { useUser, useAuth } from '@/firebase';
+import { useAdmin } from '@/hooks/useAdmin';
 
 export function Header() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = React.useState(false);
+  const { user, isUserLoading } = useUser();
+  const { isAdmin } = useAdmin();
+  const auth = useAuth();
+
+  const handleLogout = () => {
+    auth.signOut();
+  };
+
+  const mainNavLinks = navigationLinks.filter(l => !['Admin', 'Login'].includes(l.label));
 
   return (
     <header className="sticky top-0 z-50 bg-background shadow-md">
@@ -38,7 +48,7 @@ export function Header() {
       <nav className="container mx-auto px-4 flex justify-between items-center h-20">
         <Logo />
         <div className="hidden lg:flex items-center gap-8">
-          {navigationLinks.map((link) => (
+          {mainNavLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -50,11 +60,25 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+           {isAdmin && (
+              <Link href="/admin" className={cn("font-semibold transition-colors hover:text-primary", pathname === '/admin' ? "text-primary" : "text-foreground/80")}>Admin</Link>
+           )}
         </div>
         <div className="flex items-center gap-2">
-          <Button asChild>
-            <Link href="/contact">Get a Quote</Link>
-          </Button>
+          {!isUserLoading && (
+            <>
+              {user && !user.isAnonymous ? (
+                 <Button variant="ghost" size="icon" onClick={handleLogout} aria-label="Log out">
+                    <LogOut />
+                </Button>
+              ) : (
+                <Button asChild>
+                  <Link href="/login">Login</Link>
+                </Button>
+              )}
+            </>
+          )}
+
           <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
@@ -66,10 +90,10 @@ export function Header() {
               <SheetContent side="right">
                 <SheetHeader>
                   <Logo />
-                  <SheetTitle className="sr-only">Menu</SheetTitle>
+                   <SheetTitle className="sr-only">Menu</SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-4 mt-6 p-4">
-                  {navigationLinks.map((link) => (
+                  {[...mainNavLinks, ...(isAdmin ? [{href: '/admin', label: 'Admin'}] : [])].map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
