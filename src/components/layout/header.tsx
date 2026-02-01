@@ -6,7 +6,7 @@ import { Menu, Mail, Phone, Clock } from 'lucide-react';
 
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { navigationLinks } from '@/lib/data';
 import React from 'react';
@@ -65,23 +65,24 @@ export function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right">
-                <div className="p-6">
+                <SheetHeader className="text-left">
+                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   <Logo />
-                  <div className="flex flex-col gap-6 mt-10">
-                    {navigationLinks.map((link) => (
-                      <Link
-                        key={link.href}
-                        href={link.href}
-                        onClick={() => setIsOpen(false)}
-                        className={cn(
-                          "text-lg font-medium transition-colors hover:text-primary",
-                          pathname === link.href ? "text-primary" : "text-foreground/80"
-                        )}
-                      >
-                        {link.label}
-                      </Link>
-                    ))}
-                  </div>
+                </SheetHeader>
+                <div className="flex flex-col gap-6 mt-6">
+                  {navigationLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "text-lg font-medium transition-colors hover:text-primary",
+                        pathname === link.href ? "text-primary" : "text-foreground/80"
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
                 </div>
               </SheetContent>
             </Sheet>
