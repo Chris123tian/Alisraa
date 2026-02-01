@@ -3,6 +3,8 @@ import { ContactForm } from '@/components/contact-form';
 import { Mail, Phone, MapPin } from 'lucide-react';
 import Image from 'next/image';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Terminal } from 'lucide-react';
 
 export default function ContactPage() {
   const contactImage = PlaceHolderImages.find(img => img.id === 'contact-image');
@@ -13,10 +15,10 @@ export default function ContactPage() {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
-              <h2 className="text-sm font-bold uppercase text-secondary mb-2 tracking-wider">Contact Us</h2>
-              <h3 className="text-3xl font-bold text-primary mb-4">Get in Touch</h3>
+              <h2 className="text-sm font-bold uppercase text-primary mb-2 tracking-wider">Contact Us</h2>
+              <h3 className="text-3xl font-bold mb-4">Get in Touch</h3>
               <p className="text-muted-foreground mb-8">
-                We are here to help you with all your logistics needs. Please feel free to contact us with any questions or to request a quote.
+                We are here to help you with all your logistics needs. Please feel free to contact us with any questions or to request a quote. For immediate assistance, use the contact form. A live chat feature will be available soon.
               </p>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -25,7 +27,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Our Office</h3>
-                    <p className="text-muted-foreground">717 K Street, Sacramento, CA 95814, USA</p>
+                    <p className="text-muted-foreground">Musterstraße 1, 10117 Berlin, Germany</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -34,7 +36,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Email Us</h3>
-                    <p className="text-muted-foreground">info@alisraainternationaler.com</p>
+                    <p className="text-muted-foreground">info@al-israa-frachtlogistik.de</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -43,25 +45,27 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Call Us</h3>
-                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
+                    <p className="text-muted-foreground">+49 (30) 12345678</p>
                   </div>
                 </div>
               </div>
             </div>
             <div>
-              <div className="bg-card p-8 rounded-lg shadow-lg">
-                <h3 className="text-2xl font-bold mb-6 text-primary">Send a Message</h3>
+              <div className="bg-card p-8 rounded-lg shadow-lg border">
+                <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
                 <ContactForm />
               </div>
+              <Alert className="mt-8">
+                <Terminal className="h-4 w-4" />
+                <AlertTitle>Coming Soon!</AlertTitle>
+                <AlertDescription>
+                  A real-time chat feature is under development to provide you with instant support.
+                </AlertDescription>
+              </Alert>
             </div>
           </div>
         </div>
       </section>
-      {contactImage && <div className="container mx-auto px-4 pb-20">
-          <div className="relative h-[400px] w-full rounded-lg overflow-hidden shadow-lg">
-            <Image src={contactImage.imageUrl} alt={contactImage.description} fill className="object-cover" data-ai-hint={contactImage.imageHint} />
-          </div>
-      </div>}
     </>
   );
 }

@@ -1,76 +1,138 @@
-import { Ship, Plane, Briefcase, Building2, Truck, Package, Globe, Clock, Headset } from 'lucide-react';
+import { Ship, Plane, Briefcase, Building2, Truck, Package } from 'lucide-react';
 
 export const navigationLinks = [
   { href: '/', label: 'Home' },
-  { href: '/about', label: 'About Us' },
   { href: '/services', label: 'Services' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/tracking', label: 'Tracking' },
+  { href: '/about', label: 'About Us' },
+  { href: '/contact', label: 'Contact Us' },
 ];
 
 export const services = [
   {
     icon: Ship,
-    title: 'Ocean Freight',
-    description: 'We offer a full array of ocean freight services including FCL, LCL, and customs clearance.',
-    image: 'service-ocean'
-  },
-  {
-    icon: Truck,
-    title: 'Land Transport',
-    description: 'Seamless and reliable land transport solutions to ensure your goods reach their destination on time.',
-    image: 'service-land'
+    title: 'Ocean Transportation',
+    description: 'Reliable and cost-effective ocean freight services for global shipping.',
   },
   {
     icon: Plane,
-    title: 'Air Freight',
-    description: 'Fast and efficient air freight services for your most time-sensitive and valuable shipments.',
-    image: 'service-air'
+    title: 'Air Transportation',
+    description: 'Fast and secure air freight for time-sensitive cargo deliveries worldwide.',
   },
   {
-    icon: Briefcase,
-    title: 'Customs Brokerage',
-    description: 'Our expert team handles all customs documentation and procedures to ensure smooth clearance.',
-    image: 'service-customs'
-  },
-  {
-    icon: Building2,
-    title: 'Warehousing',
-    description: 'Secure and flexible warehousing options to meet your storage and distribution needs.',
-    image: 'service-warehousing'
+    icon: Truck,
+    title: 'Side Truck Transportation',
+    description: 'Flexible road and rail transport for domestic and cross-border logistics.',
   },
   {
     icon: Package,
-    title: 'Supply Chain Solutions',
-    description: 'End-to-end supply chain management to optimize your logistics and improve efficiency.',
-    image: 'service-supply-chain'
+    title: 'Supply Chain Management',
+    description: 'Optimizing your logistics from end-to-end for maximum efficiency.',
+  },
+  {
+    icon: Briefcase,
+    title: 'Customs and Compliance',
+    description: 'Expert guidance through international customs and compliance procedures.',
+  },
+  {
+    icon: Building2,
+    title: 'Shipping Documentation',
+    description: 'Managing all necessary shipping documents for a smooth transit process.',
   },
 ];
 
-export const whyChooseUs = [
+
+export const shippingRates = [
   {
-    icon: Globe,
-    title: 'Global Service',
-    description: 'Our extensive network of partners ensures that we can provide logistics solutions worldwide.',
+    destination: 'United States',
+    ocean: [
+      { duration: '6-8 weeks', cost: '$3680' },
+      { duration: '3-6 weeks', cost: '$4700' },
+    ],
+    air: [
+      { duration: '2 weeks', cost: '$6400' },
+      { duration: '1 week', cost: '$6700' },
+      { duration: '2 days', cost: '$8150' },
+    ],
   },
   {
-    icon: Clock,
-    title: 'On-Time Delivery',
-    description: 'We are committed to delivering your shipments on schedule, every time.',
+    destination: 'United Kingdom',
+    ocean: [
+      { duration: '6-8 weeks', cost: '£3080' },
+      { duration: '3-6 weeks', cost: '£4980' },
+    ],
+    air: [
+      { duration: '2 weeks', cost: '£6073' },
+      { duration: '1 week', cost: '£6108' },
+      { duration: '2 days', cost: '£6650' },
+    ],
   },
   {
-    icon: Headset,
-    title: '24/7 Support',
-    description: 'Our dedicated support team is available around the clock to assist you with any inquiries.',
+    destination: 'Germany',
+    ocean: [
+      { duration: '6-8 weeks', cost: '€3480' },
+      { duration: '3-6 weeks', cost: '€4400' },
+    ],
+    air: [
+      { duration: '2 weeks', cost: '€6300' },
+      { duration: '1 week', cost: '€6600' },
+      { duration: '2 days', cost: '€7150' },
+    ],
+  },
+  {
+    destination: 'Africa',
+    ocean: [
+      { duration: '6-8 weeks', cost: '$2780' },
+      { duration: '3-6 weeks', cost: '$3500' },
+    ],
+    air: [
+      { duration: '2 weeks', cost: '$5400' },
+      { duration: '1 week', cost: '$5700' },
+      { duration: '2 days', cost: '$7150' },
+    ],
   },
 ];
 
-export const blogPosts = [];
+export const aboutContent = [
+    {
+        title: 'Side Truck transportation and freight',
+        description: 'Everything you need to know about transporting goods via ocean, road, rail, and air.',
+        learnMore: true,
+    },
+    {
+        title: 'Supply chain management',
+        description: 'Learn all about the supply chain journey and tips for optimising your logistics.',
+        learnMore: true,
+    },
+    {
+        title: 'Shipping documentation',
+        description: 'Get to know the important documents you’ll come across when shipping cargo internationally.',
+        learnMore: true,
+    },
+    {
+        title: 'Customs and compliance',
+        description: 'Discover the Incoterms®️ rules and learn all about navigating through customs clearance.',
+        learnMore: false,
+    }
+]
+
+export const vesselSchedule = ['One Month', 'Two Months', 'Three Months', 'Four Months'];
+
 
 export const footerLinks = {
   quickLinks: [
+    { href: '/', label: 'Home' },
+    { href: '/services', label: 'Services' },
+    { href: '/tracking', label: 'Tracking' },
     { href: '/about', label: 'About Us' },
     { href: '/contact', label: 'Contact' },
-    { href: '/services', label: 'Our Services' },
   ],
-  services: services.map(service => ({ href: '/services', label: service.title })),
 };
+
+export const policyLinks = [
+    { href: '/policy/terms-and-conditions', label: 'Terms & conditions'},
+    { href: '/policy/data-privacy-notification', label: 'Data Privacy Notification'},
+    { href: '/policy/brand-protection', label: 'Brand protection'},
+    { href: '/policy/cookie-policy', label: 'Cookie policy'},
+    { href: '/policy/unsolicited-submissions-policy', label: 'Unsolicited Submissions Policy'},
+]

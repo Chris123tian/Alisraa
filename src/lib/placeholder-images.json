@@ -2,21 +2,21 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "Aerial view of a large cargo ship with shipping containers",
-      "imageUrl": "https://images.unsplash.com/photo-1577974572333-64a2599a4e32?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYXJnbyUyMHNoaXAlMjBhZXJpYWwlMjB2aWV3fGVufDB8fHx8MTc3MDExNTAwNnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "cargo ship aerial"
+      "description": "Truck driving on a German highway at sunset",
+      "imageUrl": "https://images.unsplash.com/photo-1517060342903-1a7c36b4f738?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsb2dpc3RpY3MlMjBnZXJtYW55fGVufDB8fHx8MTcxNjU4MTM3Mnww&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "logistics germany"
     },
     {
       "id": "about-image",
-      "description": "Two warehouse workers in a discussion amidst shelves of boxes",
-      "imageUrl": "https://images.unsplash.com/photo-1579532582937-16c108930bf6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXJlaG91c2UlMjB3b3JrZXJzJTIwbG9naXN0aWNzfGVufDB8fHx8MTc3MDExNTE5Mnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "warehouse workers"
+      "description": "Modern warehouse interior in Germany with blurred worker",
+      "imageUrl": "https://images.unsplash.com/photo-1616401784845-18084246e355?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3YXJlaG91c2UlMjBnZXJtYW55fGVufDB8fHx8MTcxNjU4MTQyNnww&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "warehouse germany"
     },
     {
       "id": "contact-image",
-      "description": "Image for contact page showing a world map with logistics connections",
-      "imageUrl": "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3b3JsZCUyMG1hcCUyMGxvZ2lzdGljc3xlbnwwfHx8fDE3NzAwMzE0ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "logistics map"
+      "description": "Modern office interior with people working, suggesting a business in Germany",
+      "imageUrl": "https://images.unsplash.com/photo-1543269865-cbf427effbad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBvZmZpY2UlMjBnZXJtYW55fGVufDB8fHx8MTcxNjU4MTQ2OXww&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "office germany"
     },
     {
       "id": "service-ocean",

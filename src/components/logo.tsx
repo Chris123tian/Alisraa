@@ -4,8 +4,8 @@ import { Ship } from 'lucide-react';
 export function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2 text-xl md:text-2xl font-bold text-primary">
-      <Ship className="w-8 h-8 text-secondary" />
-      Alisraa Int'l ER
+      <Ship className="w-8 h-8 text-secondary-foreground" />
+      Al-Israa Frachtlogistik
     </Link>
   );
 }

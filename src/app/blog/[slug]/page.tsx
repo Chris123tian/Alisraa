@@ -1,4 +1,4 @@
 export default function BlogPostPage() {
-  // This page is intentionally left blank to match the reference site.
+  // This page is no longer used.
   return null;
 }

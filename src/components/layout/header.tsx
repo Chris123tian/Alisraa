@@ -17,20 +17,20 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background shadow-md">
-      <div className="bg-primary text-primary-foreground py-2">
-        <div className="container mx-auto px-4 flex justify-between items-center text-sm">
+      <div className="bg-primary text-primary-foreground py-2 text-sm">
+        <div className="container mx-auto px-4 flex justify-between items-center">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Mail size={16} />
-              <span>info@alisraainternationaler.com</span>
+              <span>info@al-israa-frachtlogistik.de</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone size={16} />
-              <span>+1 (555) 123-4567</span>
+              <span>+49 (30) 12345678</span>
             </div>
           </div>
           <div className="hidden md:flex items-center gap-4">
-             {/* Social links can go here */}
+             {/* Language switcher can go here */}
           </div>
         </div>
       </div>
@@ -43,7 +43,7 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                "font-semibold transition-colors hover:text-secondary",
+                "font-semibold transition-colors hover:text-primary",
                 pathname === link.href ? "text-primary" : "text-foreground/80"
               )}
             >
@@ -52,7 +52,7 @@ export function Header() {
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <Button asChild variant="secondary">
+          <Button asChild>
             <Link href="/contact">Get a Quote</Link>
           </Button>
           <div className="lg:hidden">
@@ -64,11 +64,11 @@ export function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right">
-                <SheetHeader className="p-4 border-b text-left">
+                <SheetHeader>
                   <Logo />
                   <SheetTitle className="sr-only">Menu</SheetTitle>
                 </SheetHeader>
-                <div className="flex flex-col gap-4 mt-6 px-4">
+                <div className="flex flex-col gap-4 mt-6 p-4">
                   {navigationLinks.map((link) => (
                     <Link
                       key={link.href}

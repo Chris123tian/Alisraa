@@ -5,8 +5,8 @@ import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'Alisraa International ER - Global Logistics',
-  description: 'Your trusted partner for comprehensive logistics and supply chain solutions.',
+  title: 'AL-ISRAA Internationaler Spediteur Frachtlogistik Trans',
+  description: 'Your trusted partner for international freight logistics and transport. Based in Germany.',
 };
 
 export default function RootLayout({
