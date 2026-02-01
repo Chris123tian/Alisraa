@@ -9,8 +9,9 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useToast } from '@/hooks/use-toast';
 import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { useAuth } from '@/firebase';
+import { useAuth, useFirestore } from '@/firebase';
 import { signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, getDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
@@ -22,6 +23,7 @@ const formSchema = z.object({
 export default function LoginPage() {
   const { toast } = useToast();
   const auth = useAuth();
+  const firestore = useFirestore();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -33,12 +35,23 @@ export default function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await signInWithEmailAndPassword(auth, values.email, values.password);
+      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+      const user = userCredential.user;
+
+      const adminDocRef = doc(firestore, 'roles_admin', user.uid);
+      const adminDoc = await getDoc(adminDocRef);
+
       toast({
         title: 'Login Successful',
         description: 'Welcome back!',
       });
-      router.push('/admin');
+      
+      if (adminDoc.exists()) {
+        router.push('/admin');
+      } else {
+        router.push('/');
+      }
+
     } catch (error: any) {
       toast({
         variant: 'destructive',
