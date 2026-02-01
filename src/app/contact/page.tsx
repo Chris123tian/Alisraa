@@ -13,9 +13,10 @@ export default function ContactPage() {
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12">
             <div>
-              <h2 className="text-3xl font-bold text-primary mb-4">Contact Our Team</h2>
+              <h2 className="text-sm font-bold uppercase text-secondary mb-2 tracking-wider">Contact Us</h2>
+              <h3 className="text-3xl font-bold text-primary mb-4">Get in Touch</h3>
               <p className="text-muted-foreground mb-8">
-                We're here to help with all your logistics needs. Fill out the form below, and one of our experts will get back to you shortly.
+                We are here to help you with all your logistics needs. Please feel free to contact us with any questions or to request a quote.
               </p>
               <div className="space-y-6">
                 <div className="flex items-start gap-4">
@@ -33,7 +34,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Email Us</h3>
-                    <p className="text-muted-foreground">contact@alisraainternational.com</p>
+                    <p className="text-muted-foreground">info@alisraainternationaler.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">
@@ -42,14 +43,14 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">Call Us</h3>
-                    <p className="text-muted-foreground">(555) 123-4567</p>
+                    <p className="text-muted-foreground">+1 (555) 123-4567</p>
                   </div>
                 </div>
               </div>
             </div>
             <div>
               <div className="bg-card p-8 rounded-lg shadow-lg">
-                <h3 className="text-2xl font-bold mb-6">Send a Message</h3>
+                <h3 className="text-2xl font-bold mb-6 text-primary">Send a Message</h3>
                 <ContactForm />
               </div>
             </div>

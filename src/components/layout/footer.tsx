@@ -5,19 +5,19 @@ import { footerLinks } from '@/lib/data';
 
 export function Footer() {
   return (
-    <footer className="bg-card text-card-foreground border-t">
+    <footer className="bg-primary text-primary-foreground border-t">
       <div className="container mx-auto px-4 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           <div className="space-y-4">
             <Logo />
-            <p className="text-sm text-muted-foreground">
-              Alisraa International ER is your trusted partner for comprehensive logistics and supply chain solutions.
+            <p className="text-sm text-primary-foreground/80">
+              Your trusted partner for comprehensive logistics and supply chain solutions.
             </p>
             <div className="flex space-x-4">
-              <Link href="#" className="text-muted-foreground hover:text-primary"><Facebook size={20} /></Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary"><Twitter size={20} /></Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary"><Instagram size={20} /></Link>
-              <Link href="#" className="text-muted-foreground hover:text-primary"><Linkedin size={20} /></Link>
+              <Link href="#" className="text-primary-foreground/80 hover:text-white"><Facebook size={20} /></Link>
+              <Link href="#" className="text-primary-foreground/80 hover:text-white"><Twitter size={20} /></Link>
+              <Link href="#" className="text-primary-foreground/80 hover:text-white"><Instagram size={20} /></Link>
+              <Link href="#" className="text-primary-foreground/80 hover:text-white"><Linkedin size={20} /></Link>
             </div>
           </div>
           
@@ -26,7 +26,7 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.quickLinks.map(link => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-sm text-muted-foreground hover:text-primary">{link.label}</Link>
+                  <Link href={link.href} className="text-sm text-primary-foreground/80 hover:text-white">{link.label}</Link>
                 </li>
               ))}
             </ul>
@@ -37,7 +37,7 @@ export function Footer() {
             <ul className="space-y-3">
               {footerLinks.services.map(service => (
                 <li key={service.label}>
-                  <Link href={service.href} className="text-sm text-muted-foreground hover:text-primary">{service.label}</Link>
+                  <Link href='/services' className="text-sm text-primary-foreground/80 hover:text-white">{service.label}</Link>
                 </li>
               ))}
             </ul>
@@ -47,23 +47,23 @@ export function Footer() {
             <h3 className="font-bold text-lg mb-4">Contact Info</h3>
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
-                <MapPin size={20} className="text-primary mt-1 shrink-0" />
-                <span className="text-muted-foreground">717 K Street, Sacramento, CA 95814, USA</span>
+                <MapPin size={20} className="text-secondary mt-1 shrink-0" />
+                <span className="text-primary-foreground/80">717 K Street, Sacramento, CA 95814, USA</span>
               </li>
               <li className="flex items-start gap-3">
-                <Phone size={20} className="text-primary mt-1 shrink-0" />
-                <span className="text-muted-foreground">(555) 123-4567</span>
+                <Phone size={20} className="text-secondary mt-1 shrink-0" />
+                <span className="text-primary-foreground/80">+1 (555) 123-4567</span>
               </li>
               <li className="flex items-start gap-3">
-                <Mail size={20} className="text-primary mt-1 shrink-0" />
-                <span className="text-muted-foreground">contact@alisraainternational.com</span>
+                <Mail size={20} className="text-secondary mt-1 shrink-0" />
+                <span className="text-primary-foreground/80">info@alisraainternationaler.com</span>
               </li>
             </ul>
           </div>
         </div>
       </div>
-      <div className="border-t">
-        <div className="container mx-auto px-4 py-6 text-center text-sm text-muted-foreground">
+      <div className="bg-primary/90">
+        <div className="container mx-auto px-4 py-6 text-center text-sm text-primary-foreground/80">
           © {new Date().getFullYear()} Alisraa International ER. All Rights Reserved.
         </div>
       </div>

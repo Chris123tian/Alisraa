@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Mail, Phone, Clock } from 'lucide-react';
+import { Menu, Mail, Phone } from 'lucide-react';
 
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
@@ -16,22 +16,21 @@ export function Header() {
   const [isOpen, setIsOpen] = React.useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-card shadow-sm">
+    <header className="sticky top-0 z-50 bg-background shadow-md">
       <div className="bg-primary text-primary-foreground py-2">
-        <div className="container mx-auto px-4 flex justify-between items-center text-xs">
-          <div className="flex items-center gap-4">
+        <div className="container mx-auto px-4 flex justify-between items-center text-sm">
+          <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <Phone size={14} />
-              <span>(555) 123-4567</span>
+              <Mail size={16} />
+              <span>info@alisraainternationaler.com</span>
             </div>
-            <div className="hidden sm:flex items-center gap-2">
-              <Mail size={14} />
-              <span>contact@alisraainternational.com</span>
+            <div className="flex items-center gap-2">
+              <Phone size={16} />
+              <span>+1 (555) 123-4567</span>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-2">
-            <Clock size={14} />
-            <span>Mon - Fri: 9:00 AM - 6:00 PM</span>
+          <div className="hidden md:flex items-center gap-4">
+             {/* Social links can go here */}
           </div>
         </div>
       </div>
@@ -44,8 +43,8 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                "font-medium transition-colors hover:text-primary",
-                pathname === link.href ? "text-primary" : "text-foreground/60"
+                "font-semibold transition-colors hover:text-secondary",
+                pathname === link.href ? "text-primary" : "text-foreground/80"
               )}
             >
               {link.label}
@@ -53,7 +52,7 @@ export function Header() {
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <Button asChild>
+          <Button asChild variant="secondary">
             <Link href="/contact">Get a Quote</Link>
           </Button>
           <div className="lg:hidden">
@@ -65,12 +64,11 @@ export function Header() {
                 </Button>
               </SheetTrigger>
               <SheetContent side="right">
-                <SheetHeader className="p-4 border-b">
-                  <SheetTitle>
-                    <Logo />
-                  </SheetTitle>
+                <SheetHeader className="p-4 border-b text-left">
+                  <Logo />
+                  <SheetTitle className="sr-only">Menu</SheetTitle>
                 </SheetHeader>
-                <div className="flex flex-col gap-6 mt-6 px-4">
+                <div className="flex flex-col gap-4 mt-6 px-4">
                   {navigationLinks.map((link) => (
                     <Link
                       key={link.href}

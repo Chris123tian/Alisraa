@@ -2,39 +2,57 @@
   "placeholderImages": [
     {
       "id": "hero-background",
-      "description": "Background image for hero section showing a large cargo ship at a port",
-      "imageUrl": "https://images.unsplash.com/photo-1613523133615-a8775409d6f8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjYXJnbyUyMHNoaXAlMjBwb3J0fGVufDB8fHx8MTc3MDAzMDQwNnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "cargo ship"
+      "description": "Aerial view of a large cargo ship with shipping containers",
+      "imageUrl": "https://images.unsplash.com/photo-1577974572333-64a2599a4e32?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYXJnbyUyMHNoaXAlMjBhZXJpYWwlMjB2aWV3fGVufDB8fHx8MTc3MDExNTAwNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cargo ship aerial"
     },
     {
       "id": "about-image",
-      "description": "Image for about us section showing a logistics team in a meeting",
-      "imageUrl": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsb2dpc3RpY3MlMjB0ZWFtJTIwbWVldGluZ3xlbnwwfHx8fDE3NzAwMzExNDN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "team meeting"
-    },
-    {
-      "id": "1",
-      "description": "Blog post thumbnail for The Future of Logistics",
-      "imageUrl": "https://images.unsplash.com/photo-1576214552485-055c11516f4e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxmdXR1cmlzdGljJTIwbG9naXN0aWNzfGVufDB8fHx8MTc3MDAzMTI4Mnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "futuristic logistics"
-    },
-    {
-      "id": "2",
-      "description": "Blog post thumbnail for Choosing the Right Freight Forwarder showing a handshake",
-      "imageUrl": "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxidXNpbmVzcyUyMG1lZXRpbmclMjBoYW5kc2hha2V8ZW58MHx8fHwxNzcwMDMxMzI5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "business handshake"
-    },
-    {
-      "id": "3",
-      "description": "Blog post thumbnail for Understanding Incoterms showing shipping containers and documents",
-      "imageUrl": "https://images.unsplash.com/photo-1578575437130-527eed3abbec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzaGlwcGluZyUyMGNvbnRhaW5lcnMlMjBkb2N1bWVudGF0aW9ufGVufDB8fHx8MTc3MDAzMTM2Nnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "shipping documents"
+      "description": "Two warehouse workers in a discussion amidst shelves of boxes",
+      "imageUrl": "https://images.unsplash.com/photo-1579532582937-16c108930bf6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXJlaG91c2UlMjB3b3JrZXJzJTIwbG9naXN0aWNzfGVufDB8fHx8MTc3MDExNTE5Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "warehouse workers"
     },
     {
       "id": "contact-image",
       "description": "Image for contact page showing a world map with logistics connections",
       "imageUrl": "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3b3JsZCUyMG1hcCUyMGxvZ2lzdGljc3xlbnwwfHx8fDE3NzAwMzE0ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "logistics map"
+    },
+    {
+      "id": "service-ocean",
+      "description": "A large cargo ship sailing on the open sea",
+      "imageUrl": "https://images.unsplash.com/photo-1622393229802-260a92f059f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYXJnbyUyMHNoaXAlMjBzZWF8ZW58MHx8fHwxNzcwMTE1NDIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cargo ship"
+    },
+    {
+      "id": "service-air",
+      "description": "A cargo plane on the tarmac being loaded",
+      "imageUrl": "https://images.unsplash.com/photo-1530541930197-2ff50a0f52b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYXJnbyUyMHBsYW5lJTIwdGFybWFjfGVufDB8fHx8MTc3MDExNTQ1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cargo plane"
+    },
+    {
+      "id": "service-land",
+      "description": "A fleet of white trucks driving on a highway",
+      "imageUrl": "https://images.unsplash.com/photo-1587498993352-32408a287265?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0cnVja3MlMjBvbiUyMGhpZ2h3YXl8ZW58MHx8fHwxNzcwMTE1NDgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "highway trucks"
+    },
+    {
+      "id": "service-customs",
+      "description": "A person signing official-looking documents with a pen",
+      "imageUrl": "https://images.unsplash.com/photo-1556742044-53ed7d3e1258?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXJzb24lMjBzaWduaW5nJTIwZG9jdW1lbnR8ZW58MHx8fHwxNzcwMTE1NTExfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "signing documents"
+    },
+    {
+      "id": "service-warehousing",
+      "description": "The interior of a large, modern warehouse with a forklift",
+      "imageUrl": "https://images.unsplash.com/photo-1565610222536-a36511139a67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXJlaG91c2UlMjBpbnRlcmlvciUyMGZvcmtsaWZ0fGVufDB8fHx8MTc3MDExNTU0MXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "warehouse forklift"
+    },
+    {
+      "id": "service-supply-chain",
+      "description": "A conceptual image of a person drawing a supply chain flowchart",
+      "imageUrl": "https://images.unsplash.com/photo-1579621970795-87f943b7e7ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzdXBwbHklMjBjaGFpbiUyMGRpYWdyYW18ZW58MHx8fHwxNzcwMTE1NTY3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "supply chain diagram"
     }
   ]
 }
