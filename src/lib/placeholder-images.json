@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "A collage of logistics and transportation including a cargo plane, a truck, a cargo ship and a forklift.",
-      "imageUrl": "https://images.pexels.com/photos/4482900/pexels-photo-4482900.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
-      "imageHint": "logistics transport"
+      "description": "A bustling port with cargo containers and cranes at sunset, representing global logistics.",
+      "imageUrl": "https://images.unsplash.com/photo-1577564532832-61421b59a4fb?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "global logistics"
     },
     {
       "id": "about-image",
