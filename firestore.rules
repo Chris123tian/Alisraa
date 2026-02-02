@@ -23,7 +23,8 @@ service cloud.firestore {
     }
 
     match /shipments/{shipmentId} {
-      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      // Allow reading if the user is an admin OR if the shipment belongs to them
+      allow read: if isSignedIn() && (isAdmin() || (resource != null && resource.data.userId == request.auth.uid));
       allow write: if isAdmin();
     }
 
