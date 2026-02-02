@@ -25,10 +25,10 @@ service cloud.firestore {
     }
 
     match /shipments/{shipmentId} {
-      // Explicitly allow listing based on ownership or admin status
-      allow list: if isSignedIn() && (isAdmin() || (request.query.limit <= 500 && resource.data.userId == request.auth.uid));
-      // Explicitly allow getting a single document
-      allow get: if isSignedIn() && (isAdmin() || resource.data.userId == request.auth.uid);
+      // Allow admins to see everything
+      // Allow owners to see their own shipments (requires query filter)
+      allow read: if isSignedIn() && (isAdmin() || resource.data.userId == request.auth.uid);
+      
       // Admin only write access
       allow write: if isAdmin();
     }

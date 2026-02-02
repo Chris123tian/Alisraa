@@ -13,7 +13,7 @@ export function useAdmin() {
 
   const adminDocRef = useMemoFirebase(() => {
     if (!firestore || !user) return null;
-    return doc(firestore, `roles_admin/${user.uid}`);
+    return doc(firestore, 'roles_admin', user.uid);
   }, [firestore, user]);
 
   const { data: adminDoc, isLoading: isAdminDocLoading } = useDoc(adminDocRef);

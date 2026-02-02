@@ -3,7 +3,7 @@
 
 import { useState } from 'react';
 import { useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase';
-import { collection, query, orderBy, doc } from 'firebase/firestore';
+import { collection, query, orderBy, doc, limit } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -33,14 +33,18 @@ export function AdminShipmentManagement() {
   // Defensive queries: only run if we are SURE the user is fully verified as an admin
   const shipmentsQuery = useMemoFirebase(() => {
     if (!firestore || !isAdmin || isAdminCheckLoading) return null;
-    return query(collection(firestore, 'shipments'), orderBy('lastUpdate', 'desc'));
+    return query(
+      collection(firestore, 'shipments'), 
+      orderBy('lastUpdate', 'desc'),
+      limit(100)
+    );
   }, [firestore, isAdmin, isAdminCheckLoading]);
 
   const { data: shipments, isLoading: isShipmentsLoading } = useCollection(shipmentsQuery);
 
   const usersQuery = useMemoFirebase(() => {
     if (!firestore || !isAdmin || isAdminCheckLoading) return null;
-    return collection(firestore, 'users');
+    return query(collection(firestore, 'users'), limit(500));
   }, [firestore, isAdmin, isAdminCheckLoading]);
 
   const { data: users, isLoading: isUsersLoading } = useCollection(usersQuery);
@@ -86,7 +90,12 @@ export function AdminShipmentManagement() {
   };
 
   if (isAdminCheckLoading) {
-    return <div className="text-center py-12">Verifying administrative access...</div>;
+    return (
+      <div className="flex flex-col items-center justify-center py-20 gap-4">
+        <RefreshCw className="animate-spin text-primary h-8 w-8" />
+        <p className="text-muted-foreground">Verifying administrative access...</p>
+      </div>
+    );
   }
 
   if (!isAdmin) {
@@ -180,9 +189,9 @@ export function AdminShipmentManagement() {
             </TableHeader>
             <TableBody>
               {isShipmentsLoading ? (
-                <TableRow><TableCell colSpan={5} className="text-center">Loading shipments...</TableCell></TableRow>
+                <TableRow><TableCell colSpan={5} className="text-center py-8">Loading shipments...</TableCell></TableRow>
               ) : shipments?.length === 0 ? (
-                <TableRow><TableCell colSpan={5} className="text-center">No shipments found.</TableCell></TableRow>
+                <TableRow><TableCell colSpan={5} className="text-center py-8">No shipments found.</TableCell></TableRow>
               ) : shipments?.map(shipment => (
                 <TableRow key={shipment.id}>
                   <TableCell className="font-mono font-bold text-primary">{shipment.trackingNumber}</TableCell>
