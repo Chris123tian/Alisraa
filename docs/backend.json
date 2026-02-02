@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "User": {
@@ -21,7 +22,7 @@
         },
         "isAdmin": {
           "type": "boolean",
-          "description": "Indicates whether the user has administrative privileges. Note: Actual admin status is controlled by the `roles_admin` collection."
+          "description": "Indicates whether the user has administrative privileges."
         }
       },
       "required": [
@@ -30,6 +31,45 @@
         "email"
       ]
     },
+    "Shipment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Shipment",
+      "type": "object",
+      "description": "Represents a cargo shipment being tracked on the platform.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user this shipment belongs to."
+        },
+        "trackingNumber": {
+          "type": "string"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "destination": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Pending", "In Transit", "Customs Clearance", "Delivered", "Delayed"]
+        },
+        "description": {
+          "type": "string"
+        },
+        "vessel": {
+          "type": "string"
+        },
+        "lastUpdate": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": ["userId", "trackingNumber", "status", "origin", "destination"]
+    },
     "ChatMessage": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "ChatMessage",
@@ -37,24 +77,19 @@
       "description": "Represents a single message within the real-time chat feature.",
       "properties": {
         "id": {
-          "type": "string",
-          "description": "Unique identifier for the chat message."
+          "type": "string"
         },
         "senderId": {
-          "type": "string",
-          "description": "The UID of the user who sent the message."
+          "type": "string"
         },
         "displayName": {
-          "type": "string",
-          "description": "The display name of the sender (e.g., 'Guest' or username)."
+          "type": "string"
         },
         "message": {
-          "type": "string",
-          "description": "The content of the chat message."
+          "type": "string"
         },
         "timestamp": {
           "type": "string",
-          "description": "The server-side timestamp indicating when the message was sent.",
           "format": "date-time"
         }
       },
@@ -81,11 +116,27 @@
           "schema": {
             "$ref": "#/backend/entities/User"
           },
-          "description": "Stores public user profile data. Each user can manage their own profile.",
+          "description": "Stores public user profile data.",
           "params": [
             {
               "name": "userId",
-              "description": "The unique identifier of the user, matching their Firebase Auth UID."
+              "description": "The unique identifier of the user."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/shipments/{shipmentId}",
+        "definition": {
+          "entityName": "Shipment",
+          "schema": {
+            "$ref": "#/backend/entities/Shipment"
+          },
+          "description": "Stores shipment tracking data.",
+          "params": [
+            {
+              "name": "shipmentId",
+              "description": "Unique identifier for the shipment."
             }
           ]
         }
@@ -97,11 +148,11 @@
           "schema": {
             "$ref": "#/backend/entities/ChatMessage"
           },
-          "description": "A global collection storing all chat messages for the live chat feature. Authenticated users (including anonymous) can read and write.",
+          "description": "Stores chat messages.",
           "params": [
             {
               "name": "messageId",
-              "description": "The unique identifier of the chat message."
+              "description": "Unique identifier for the message."
             }
           ]
         }
@@ -116,16 +167,16 @@
                 "isAdmin": { "type": "boolean", "const": true }
              }
           },
-          "description": "A document's existence in this collection indicates that the user with the matching UID is an administrator. This enables fast, existence-based role checks in security rules.",
+          "description": "Indicates if a user is an admin.",
           "params": [
             {
               "name": "userId",
-              "description": "The unique identifier of the user who is an admin."
+              "description": "The UID of the user."
             }
           ]
         }
       }
     ],
-    "reasoning": "This simplified Firestore structure supports authentication, a global real-time chat, and role-based access for an admin dashboard. Path-based ownership is used for user profiles, while a global collection is used for chat to simplify implementation. Admin roles are managed by checking for the existence of a user's UID in the `roles_admin` collection, which is a performant and secure pattern for authorization."
+    "reasoning": "A central shipments collection allows admins to manage all cargo, while users can only see shipments assigned to their UID via security rules."
   }
 }

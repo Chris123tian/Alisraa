@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -49,7 +50,7 @@ export default function LoginPage() {
       if (adminDoc.exists()) {
         router.push('/admin');
       } else {
-        router.push('/');
+        router.push('/dashboard');
       }
 
     } catch (error: any) {
@@ -63,13 +64,13 @@ export default function LoginPage() {
 
   return (
     <>
-      <PageHeader title="Admin Login" breadcrumb={[{ href: '/login', label: 'Login' }]} />
+      <PageHeader title="Login" breadcrumb={[{ href: '/login', label: 'Login' }]} />
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-lg">
           <Card>
             <CardHeader>
-              <CardTitle>Login</CardTitle>
-              <CardDescription>Enter your credentials to access the admin dashboard.</CardDescription>
+              <CardTitle>Sign In</CardTitle>
+              <CardDescription>Enter your credentials to access your dashboard.</CardDescription>
             </CardHeader>
             <CardContent>
               <Form {...form}>
@@ -81,7 +82,7 @@ export default function LoginPage() {
                       <FormItem>
                         <FormLabel>Email Address</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="admin@example.com" {...field} />
+                          <Input type="email" placeholder="client@example.com" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

@@ -1,8 +1,9 @@
+
 "use client";
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Mail, Phone, LogOut, Lock } from 'lucide-react';
+import { Menu, Mail, Phone, LogOut, Lock, LayoutDashboard } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -32,15 +33,15 @@ export function Header() {
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
               <Mail size={16} />
-              <span>info@al-israa-frachtlogistik.de</span>
+              <span className="hidden sm:inline">info@al-israa-frachtlogistik.de</span>
             </div>
             <div className="flex items-center gap-2">
               <Phone size={16} />
-              <span>+49 (30) 12345678</span>
+              <span className="hidden sm:inline">+49 (30) 12345678</span>
             </div>
           </div>
-          <div className="hidden md:flex items-center gap-4">
-             {/* Language switcher can go here */}
+          <div className="flex items-center gap-4">
+             <span className="text-xs uppercase font-bold tracking-tighter">Germany HQ</span>
           </div>
         </div>
       </div>
@@ -60,9 +61,18 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-           {isAdmin && (
-              <Link href="/admin" className={cn("font-semibold transition-colors hover:text-primary", pathname === '/admin' ? "text-primary" : "text-foreground/80")}>Admin</Link>
-           )}
+          {user && !user.isAnonymous && (
+            <Link 
+              href={isAdmin ? "/admin" : "/dashboard"} 
+              className={cn(
+                "font-semibold transition-colors flex items-center gap-1 hover:text-primary",
+                pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-primary" : "text-foreground/80"
+              )}
+            >
+              <LayoutDashboard size={16} />
+              {isAdmin ? "Admin" : "Dashboard"}
+            </Link>
+          )}
         </div>
         <div className="flex items-center gap-2">
           {!isUserLoading && (
@@ -95,7 +105,7 @@ export function Header() {
                    <SheetTitle className="sr-only">Menu</SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-4 mt-6 p-4">
-                  {[...mainNavLinks, ...(isAdmin ? [{href: '/admin', label: 'Admin'}] : [])].map((link) => (
+                  {[...mainNavLinks, ...(user && !user.isAnonymous ? [{href: isAdmin ? '/admin' : '/dashboard', label: isAdmin ? 'Admin' : 'Dashboard'}] : [])].map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
