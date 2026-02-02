@@ -8,16 +8,21 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { navigationLinks } from '@/lib/data';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useUser, useAuth } from '@/firebase';
 import { useAdmin } from '@/hooks/useAdmin';
 
 export function Header() {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { user, isUserLoading } = useUser();
   const { isAdmin } = useAdmin();
   const auth = useAuth();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleLogout = () => {
     auth.signOut().then(() => {
@@ -26,6 +31,11 @@ export function Header() {
   };
 
   const mainNavLinks = navigationLinks.filter(l => !['Admin', 'Login'].includes(l.label));
+
+  // Dynamic navigation links based on auth state
+  const dynamicLinks = mounted && user && !user.isAnonymous 
+    ? [{ href: isAdmin ? "/admin" : "/dashboard", label: isAdmin ? "Admin" : "Dashboard" }]
+    : [];
 
   return (
     <header className="sticky top-0 z-50 bg-background shadow-md">
@@ -62,7 +72,7 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          {user && !user.isAnonymous && (
+          {mounted && user && !user.isAnonymous && (
             <Link 
               href={isAdmin ? "/admin" : "/dashboard"} 
               className={cn(
@@ -76,7 +86,7 @@ export function Header() {
           )}
         </div>
         <div className="flex items-center gap-4">
-          {!isUserLoading && (
+          {mounted && !isUserLoading && (
             <>
               {user && !user.isAnonymous ? (
                  <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
@@ -110,7 +120,7 @@ export function Header() {
                    <SheetTitle className="sr-only">Menu</SheetTitle>
                 </SheetHeader>
                 <div className="flex flex-col gap-4 mt-6 p-4">
-                  {[...mainNavLinks, ...(user && !user.isAnonymous ? [{href: isAdmin ? '/admin' : '/dashboard', label: isAdmin ? 'Admin' : 'Dashboard'}] : [])].map((link) => (
+                  {mainNavLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
@@ -123,7 +133,20 @@ export function Header() {
                       {link.label}
                     </Link>
                   ))}
-                  {(!user || user.isAnonymous) && (
+                  {mounted && dynamicLinks.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={cn(
+                        "text-lg font-medium transition-colors hover:text-primary",
+                        pathname === link.href ? "text-primary" : "text-foreground/80"
+                      )}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                  {mounted && (!user || user.isAnonymous) && (
                     <div className="flex flex-col gap-2 mt-4 pt-4 border-t">
                        <Button asChild variant="outline" className="w-full">
                         <Link href="/login" onClick={() => setIsOpen(false)}>Login</Link>
