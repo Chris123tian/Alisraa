@@ -32,10 +32,11 @@ export function Header() {
 
   const mainNavLinks = navigationLinks.filter(l => !['Admin', 'Login'].includes(l.label));
 
-  // Dynamic navigation links based on auth state
-  const dynamicLinks = mounted && user && !user.isAnonymous 
-    ? [{ href: isAdmin ? "/admin" : "/dashboard", label: isAdmin ? "Admin" : "Dashboard" }]
-    : [];
+  // Dynamic navigation links based on auth state - Defer to client only
+  const showDashboard = mounted && user && !user.isAnonymous;
+  const dashboardLink = showDashboard 
+    ? { href: isAdmin ? "/admin" : "/dashboard", label: isAdmin ? "Admin" : "Dashboard" }
+    : null;
 
   return (
     <header className="sticky top-0 z-50 bg-background shadow-md">
@@ -59,6 +60,8 @@ export function Header() {
 
       <nav className="container mx-auto px-4 flex justify-between items-center h-20">
         <Logo />
+        
+        {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-8">
           {mainNavLinks.map((link) => (
             <Link
@@ -72,40 +75,47 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          {mounted && user && !user.isAnonymous && (
+          {dashboardLink && (
             <Link 
-              href={isAdmin ? "/admin" : "/dashboard"} 
+              href={dashboardLink.href} 
               className={cn(
                 "font-semibold transition-colors flex items-center gap-1 hover:text-primary",
-                pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-primary" : "text-foreground/80"
+                pathname === dashboardLink.href ? "text-primary" : "text-foreground/80"
               )}
             >
               <LayoutDashboard size={16} />
-              {isAdmin ? "Admin" : "Dashboard"}
+              {dashboardLink.label}
             </Link>
           )}
         </div>
-        <div className="flex items-center gap-4">
-          {mounted && !isUserLoading && (
-            <>
-              {user && !user.isAnonymous ? (
-                 <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
-                    <LogOut className="h-4 w-4" />
-                    Logout
-                </Button>
-              ) : (
-                <div className="flex items-center gap-2">
-                  <Button asChild variant="ghost" size="sm">
-                    <Link href="/login">Login</Link>
-                  </Button>
-                  <Button asChild variant="default" size="sm">
-                    <Link href="/signup">Sign Up</Link>
-                  </Button>
-                </div>
-              )}
-            </>
-          )}
 
+        <div className="flex items-center gap-4">
+          {/* Auth section - Desktop & Tablet */}
+          <div className="hidden sm:flex items-center gap-2 min-w-[150px] justify-end">
+            {mounted && !isUserLoading ? (
+              <>
+                {user && !user.isAnonymous ? (
+                  <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
+                      <LogOut className="h-4 w-4" />
+                      Logout
+                  </Button>
+                ) : (
+                  <>
+                    <Button asChild variant="ghost" size="sm">
+                      <Link href="/login">Login</Link>
+                    </Button>
+                    <Button asChild variant="default" size="sm">
+                      <Link href="/signup">Sign Up</Link>
+                    </Button>
+                  </>
+                )}
+              </>
+            ) : (
+              <div className="h-9" /> // Placeholder to keep layout stable
+            )}
+          </div>
+
+          {/* Mobile Menu */}
           <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
@@ -133,27 +143,37 @@ export function Header() {
                       {link.label}
                     </Link>
                   ))}
-                  {mounted && dynamicLinks.map((link) => (
+                  
+                  {dashboardLink && (
                     <Link
-                      key={link.href}
-                      href={link.href}
+                      href={dashboardLink.href}
                       onClick={() => setIsOpen(false)}
                       className={cn(
                         "text-lg font-medium transition-colors hover:text-primary",
-                        pathname === link.href ? "text-primary" : "text-foreground/80"
+                        pathname === dashboardLink.href ? "text-primary" : "text-foreground/80"
                       )}
                     >
-                      {link.label}
+                      {dashboardLink.label}
                     </Link>
-                  ))}
-                  {mounted && (!user || user.isAnonymous) && (
+                  )}
+
+                  {mounted && !isUserLoading && (
                     <div className="flex flex-col gap-2 mt-4 pt-4 border-t">
-                       <Button asChild variant="outline" className="w-full">
-                        <Link href="/login" onClick={() => setIsOpen(false)}>Login</Link>
-                      </Button>
-                      <Button asChild variant="default" className="w-full">
-                        <Link href="/signup" onClick={() => setIsOpen(false)}>Sign Up</Link>
-                      </Button>
+                      {user && !user.isAnonymous ? (
+                        <Button variant="outline" className="w-full flex items-center gap-2" onClick={handleLogout}>
+                          <LogOut className="h-4 w-4" />
+                          Logout
+                        </Button>
+                      ) : (
+                        <>
+                          <Button asChild variant="outline" className="w-full">
+                            <Link href="/login" onClick={() => setIsOpen(false)}>Login</Link>
+                          </Button>
+                          <Button asChild variant="default" className="w-full">
+                            <Link href="/signup" onClick={() => setIsOpen(false)}>Sign Up</Link>
+                          </Button>
+                        </>
+                      )}
                     </div>
                   )}
                 </div>

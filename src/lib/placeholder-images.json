@@ -3,19 +3,19 @@
     {
       "id": "hero-image",
       "description": "Logistics hub collage showing container ship and cargo transport.",
-      "imageUrl": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop",
+      "imageUrl": "https://images.unsplash.com/photo-1493946740644-2d8a1f1a6aff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxsb2dpc3RpY3MlMjB0cmFuc3BvcnR8ZW58MHx8fHwxNzcwMDEzNDUwfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "logistics transport"
     },
     {
       "id": "about-image",
       "description": "Modern warehouse interior with organized cargo.",
-      "imageUrl": "https://images.unsplash.com/photo-1553413077-190dd305871c?q=80&w=2070&auto=format&fit=crop",
+      "imageUrl": "https://images.unsplash.com/photo-1685119166946-d4050647b0e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHx3YXJlaG91c2UlMjBsb2dpc3RpY3N8ZW58MHx8fHwxNzY5OTkzNDI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "warehouse logistics"
     },
     {
       "id": "contact-image",
       "description": "Logistics management team in a modern office environment.",
-      "imageUrl": "https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=2070&auto=format&fit=crop",
+      "imageUrl": "https://images.unsplash.com/photo-1568992687947-868a62a9f521?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxvZmZpY2UlMjB0ZWFtfGVufDB8fHx8MTc3MDAwMDgyNnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "office team"
     }
   ]
