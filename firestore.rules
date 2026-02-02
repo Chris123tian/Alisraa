@@ -25,9 +25,11 @@ service cloud.firestore {
     }
 
     match /shipments/{shipmentId} {
-      // Allow admins to see everything
-      // Allow owners to see their own shipments (requires query filter)
-      allow read: if isSignedIn() && (isAdmin() || resource.data.userId == request.auth.uid);
+      // Separate get and list for better rule optimization
+      allow get: if isSignedIn() && (isAdmin() || resource.data.userId == request.auth.uid);
+      
+      // For listing, the query must be filtered by userId unless the user is an admin
+      allow list: if isSignedIn() && (isAdmin() || (request.query.limit <= 100 && resource.data.userId == request.auth.uid));
       
       // Admin only write access
       allow write: if isAdmin();
@@ -40,8 +42,8 @@ service cloud.firestore {
     }
 
     match /roles_admin/{userId} {
-      // Allow any signed in user to see if they are an admin
-      allow get: if isSignedIn();
+      // Allow any signed in user to see their own admin status
+      allow get: if isSignedIn() && request.auth.uid == userId;
       // Only admins can manage the admin roles themselves
       allow list, create, update, delete: if isAdmin();
     }

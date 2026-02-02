@@ -2,57 +2,21 @@
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "Modern logistics warehouse with shipping containers ready for dispatch.",
-      "imageUrl": "https://images.unsplash.com/photo-1616401784845-18084246e355?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "logistics warehouse"
+      "description": "Professional logistics operation showing a cargo ship and containers in a major port.",
+      "imageUrl": "https://images.unsplash.com/photo-1494412519320-aa613dfb7738?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "logistics port"
     },
     {
       "id": "about-image",
       "description": "Modern warehouse interior in Germany with blurred worker",
-      "imageUrl": "https://images.unsplash.com/photo-1616401784845-18084246e355?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHx3YXJlaG91c2UlMjBnZXJtYW55fGVufDB8fHx8MTcxNjU4MTQyNnww&ixlib=rb-4.0.3&q=80&w=1080",
-      "imageHint": "warehouse germany"
+      "imageUrl": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "warehouse logistics"
     },
     {
       "id": "contact-image",
-      "description": "Modern office interior with people working, suggesting a business in Germany",
-      "imageUrl": "https://images.unsplash.com/photo-1543269865-cbf427effbad?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjBvZmZpY2UlMjBnZXJtYW55fGVufDB8fHx8MTcxNjU4MTQ2OXww&ixlib=rb-4.0.3&q=80&w=1080",
-      "imageHint": "office germany"
-    },
-    {
-      "id": "service-ocean",
-      "description": "A large cargo ship sailing on the open sea",
-      "imageUrl": "https://images.unsplash.com/photo-1622393229802-260a92f059f1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYXJnbyUyMHNoaXAlMjBzZWF8ZW58MHx8fHwxNzcwMTE1NDIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "cargo ship"
-    },
-    {
-      "id": "service-air",
-      "description": "A cargo plane on the tarmac being loaded",
-      "imageUrl": "https://images.unsplash.com/photo-1530541930197-2ff50a0f52b7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjYXJnbyUyMHBsYW5lJTIwdGFybWFjfGVufDB8fHx8MTc3MDExNTQ1Mnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "cargo plane"
-    },
-    {
-      "id": "service-land",
-      "description": "A fleet of white trucks driving on a highway",
-      "imageUrl": "https://images.unsplash.com/photo-1587498993352-32408a287265?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx0cnVja3MlMjBvbiUyMGhpZ2h3YXl8ZW58MHx8fHwxNzcwMTE1NDgyfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "highway trucks"
-    },
-    {
-      "id": "service-customs",
-      "description": "A person signing official-looking documents with a pen",
-      "imageUrl": "https://images.unsplash.com/photo-1556742044-53ed7d3e1258?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxwZXJzb24lMjBzaWduaW5nJTIwZG9jdW1lbnR8ZW58MHx8fHwxNzcwMTE1NTExfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "signing documents"
-    },
-    {
-      "id": "service-warehousing",
-      "description": "The interior of a large, modern warehouse with a forklift",
-      "imageUrl": "https://images.unsplash.com/photo-1565610222536-a36511139a67?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx3YXJlaG91c2UlMjBpbnRlcmlvciUyMGZvcmtsaWZ0fGVufDB8fHx8MTc3MDExNTU0MXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "warehouse forklift"
-    },
-    {
-      "id": "service-supply-chain",
-      "description": "A conceptual image of a person drawing a supply chain flowchart",
-      "imageUrl": "https://images.unsplash.com/photo-1579621970795-87f943b7e7ab?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzdXBwbHklMjBjaGFpbiUyMGRpYWdyYW18ZW58MHx8fHwxNzcwMTE1NTY3fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "supply chain diagram"
+      "description": "Modern office interior with logistics planning team.",
+      "imageUrl": "https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "office team"
     }
   ]
 }

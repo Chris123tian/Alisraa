@@ -3,7 +3,7 @@
 
 import { PageHeader } from '@/components/page-header';
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
-import { collection, query, where, orderBy } from 'firebase/firestore';
+import { collection, query, where } from 'firebase/firestore';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -32,10 +32,10 @@ export default function UserDashboard() {
 
   const shipmentsQuery = useMemoFirebase(() => {
     if (!firestore || !user) return null;
+    // Simple query to avoid index requirements during initial setup
     return query(
       collection(firestore, 'shipments'),
-      where('userId', '==', user.uid),
-      orderBy('lastUpdate', 'desc')
+      where('userId', '==', user.uid)
     );
   }, [firestore, user]);
 
