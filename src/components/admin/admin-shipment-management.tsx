@@ -30,18 +30,18 @@ export function AdminShipmentManagement() {
     vessel: '',
   });
 
-  // Defensive queries: only run if we are SURE the user is an admin
+  // Defensive queries: only run if we are SURE the user is fully verified as an admin
   const shipmentsQuery = useMemoFirebase(() => {
-    if (!firestore || !isAdmin) return null;
+    if (!firestore || !isAdmin || isAdminCheckLoading) return null;
     return query(collection(firestore, 'shipments'), orderBy('lastUpdate', 'desc'));
-  }, [firestore, isAdmin]);
+  }, [firestore, isAdmin, isAdminCheckLoading]);
 
   const { data: shipments, isLoading: isShipmentsLoading } = useCollection(shipmentsQuery);
 
   const usersQuery = useMemoFirebase(() => {
-    if (!firestore || !isAdmin) return null;
+    if (!firestore || !isAdmin || isAdminCheckLoading) return null;
     return collection(firestore, 'users');
-  }, [firestore, isAdmin]);
+  }, [firestore, isAdmin, isAdminCheckLoading]);
 
   const { data: users, isLoading: isUsersLoading } = useCollection(usersQuery);
 

@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -18,18 +19,22 @@ export function useAdmin() {
   const { data: adminDoc, isLoading: isAdminDocLoading } = useDoc(adminDocRef);
 
   useEffect(() => {
+    // Wait for all auth and document loading to complete
     if (isUserLoading || isAdminDocLoading) {
       setIsLoading(true);
       return;
     }
 
+    // No user means not an admin
     if (!user) {
       setIsAdmin(false);
       setIsLoading(false);
       return;
     }
 
-    setIsAdmin(!!adminDoc);
+    // Check for the explicit isAdmin field in the document data
+    const hasAdminRole = adminDoc && adminDoc.isAdmin === true;
+    setIsAdmin(!!hasAdminRole);
     setIsLoading(false);
 
   }, [user, isUserLoading, adminDoc, isAdminDocLoading]);

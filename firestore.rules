@@ -12,7 +12,9 @@ service cloud.firestore {
     }
 
     function isAdmin() {
-      return isSignedIn() && exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid));
+      return isSignedIn() && 
+        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/roles_admin/$(request.auth.uid)).data.isAdmin == true;
     }
 
     match /users/{userId} {
@@ -23,8 +25,11 @@ service cloud.firestore {
     }
 
     match /shipments/{shipmentId} {
-      // Allow reading if the user is an admin OR if the shipment belongs to them
-      allow read: if isSignedIn() && (isAdmin() || (resource != null && resource.data.userId == request.auth.uid));
+      // Explicitly allow listing based on ownership or admin status
+      allow list: if isSignedIn() && (isAdmin() || (request.query.limit <= 500 && resource.data.userId == request.auth.uid));
+      // Explicitly allow getting a single document
+      allow get: if isSignedIn() && (isAdmin() || resource.data.userId == request.auth.uid);
+      // Admin only write access
       allow write: if isAdmin();
     }
 
@@ -35,7 +40,9 @@ service cloud.firestore {
     }
 
     match /roles_admin/{userId} {
+      // Allow any signed in user to see if they are an admin
       allow get: if isSignedIn();
+      // Only admins can manage the admin roles themselves
       allow list, create, update, delete: if isAdmin();
     }
   }
