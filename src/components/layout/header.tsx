@@ -1,4 +1,3 @@
-
 "use client";
 
 import Link from 'next/link';
@@ -21,7 +20,9 @@ export function Header() {
   const auth = useAuth();
 
   const handleLogout = () => {
-    auth.signOut();
+    auth.signOut().then(() => {
+        window.location.href = '/';
+    });
   };
 
   const mainNavLinks = navigationLinks.filter(l => !['Admin', 'Login'].includes(l.label));

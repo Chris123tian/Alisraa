@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -56,11 +55,11 @@ export default function LoginPage() {
         description: 'Welcome back!',
       });
       
-      // Explicitly redirect to admin if they are the primary admin or have the role
+      // Force direct routing based on role
       if (isPrimaryAdmin || hasAdminRole) {
-        router.push('/admin');
+        window.location.href = '/admin'; // Using window.location to ensure full state reset
       } else {
-        router.push('/dashboard');
+        window.location.href = '/dashboard';
       }
 
     } catch (error: any) {
