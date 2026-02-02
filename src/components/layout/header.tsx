@@ -3,7 +3,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Mail, Phone, LogOut, Lock, LayoutDashboard } from 'lucide-react';
+import { Menu, Mail, Phone, LogOut, LayoutDashboard } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -74,19 +74,23 @@ export function Header() {
             </Link>
           )}
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-4">
           {!isUserLoading && (
             <>
               {user && !user.isAnonymous ? (
-                 <Button variant="ghost" size="icon" onClick={handleLogout} aria-label="Log out">
-                    <LogOut className="h-5 w-5" />
+                 <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
+                    <LogOut className="h-4 w-4" />
+                    Logout
                 </Button>
               ) : (
-                <Button asChild variant="ghost" size="icon">
-                  <Link href="/login" aria-label="Login">
-                    <Lock className="h-5 w-5" />
-                  </Link>
-                </Button>
+                <div className="flex items-center gap-2">
+                  <Button asChild variant="ghost" size="sm">
+                    <Link href="/login">Login</Link>
+                  </Button>
+                  <Button asChild variant="default" size="sm">
+                    <Link href="/signup">Sign Up</Link>
+                  </Button>
+                </div>
               )}
             </>
           )}
@@ -118,6 +122,16 @@ export function Header() {
                       {link.label}
                     </Link>
                   ))}
+                  {(!user || user.isAnonymous) && (
+                    <div className="flex flex-col gap-2 mt-4 pt-4 border-t">
+                       <Button asChild variant="outline" className="w-full">
+                        <Link href="/login" onClick={() => setIsOpen(false)}>Login</Link>
+                      </Button>
+                      <Button asChild variant="default" className="w-full">
+                        <Link href="/signup" onClick={() => setIsOpen(false)}>Sign Up</Link>
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </SheetContent>
             </Sheet>

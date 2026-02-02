@@ -11,6 +11,9 @@ export function useAdmin() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  // Check for hardcoded primary admin email
+  const PRIMARY_ADMIN_EMAIL = 'alisraainternationaler@gmail.com';
+
   const adminDocRef = useMemoFirebase(() => {
     if (!firestore || !user) return null;
     return doc(firestore, 'roles_admin', user.uid);
@@ -19,8 +22,8 @@ export function useAdmin() {
   const { data: adminDoc, isLoading: isAdminDocLoading } = useDoc(adminDocRef);
 
   useEffect(() => {
-    // Wait for all auth and document loading to complete
-    if (isUserLoading || isAdminDocLoading) {
+    // Wait for auth to resolve
+    if (isUserLoading) {
       setIsLoading(true);
       return;
     }
@@ -29,6 +32,19 @@ export function useAdmin() {
     if (!user) {
       setIsAdmin(false);
       setIsLoading(false);
+      return;
+    }
+
+    // If it's the primary admin email, it's an admin regardless of firestore doc
+    if (user.email?.toLowerCase() === PRIMARY_ADMIN_EMAIL) {
+      setIsAdmin(true);
+      setIsLoading(false);
+      return;
+    }
+
+    // Wait for firestore document if it's not the primary admin
+    if (isAdminDocLoading) {
+      setIsLoading(true);
       return;
     }
 

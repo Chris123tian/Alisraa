@@ -40,18 +40,23 @@ export default function LoginPage() {
       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
       const user = userCredential.user;
 
-      // Primary Admin Hard-coded bypass for initial setup
+      // Primary Admin Check
       const isPrimaryAdmin = values.email.toLowerCase() === 'alisraainternationaler@gmail.com';
 
-      const adminDocRef = doc(firestore, 'roles_admin', user.uid);
-      const adminDoc = await getDoc(adminDocRef);
-      const hasAdminRole = adminDoc.exists() && adminDoc.data()?.isAdmin === true;
+      // Check Firestore roles if not primary admin
+      let hasAdminRole = false;
+      if (!isPrimaryAdmin) {
+        const adminDocRef = doc(firestore, 'roles_admin', user.uid);
+        const adminDoc = await getDoc(adminDocRef);
+        hasAdminRole = adminDoc.exists() && adminDoc.data()?.isAdmin === true;
+      }
 
       toast({
         title: 'Login Successful',
         description: 'Welcome back!',
       });
       
+      // Explicitly redirect to admin if they are the primary admin or have the role
       if (isPrimaryAdmin || hasAdminRole) {
         router.push('/admin');
       } else {
