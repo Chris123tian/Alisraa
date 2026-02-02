@@ -2,9 +2,9 @@
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "Professional logistics operation showing a cargo ship and containers in a major port.",
-      "imageUrl": "https://images.unsplash.com/photo-1494412519320-aa613dfb7738?q=80&w=2070&auto=format&fit=crop",
-      "imageHint": "logistics port"
+      "description": "Global logistics collage showing container ship, cargo plane, and semi-truck.",
+      "imageUrl": "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop",
+      "imageHint": "global logistics"
     },
     {
       "id": "about-image",

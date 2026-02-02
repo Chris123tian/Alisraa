@@ -26,6 +26,7 @@ export default function LoginPage() {
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
+  
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,15 +40,19 @@ export default function LoginPage() {
       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
       const user = userCredential.user;
 
+      // Primary Admin Hard-coded bypass for initial setup
+      const isPrimaryAdmin = values.email.toLowerCase() === 'alisraainternationaler@gmail.com';
+
       const adminDocRef = doc(firestore, 'roles_admin', user.uid);
       const adminDoc = await getDoc(adminDocRef);
+      const hasAdminRole = adminDoc.exists() && adminDoc.data()?.isAdmin === true;
 
       toast({
         title: 'Login Successful',
         description: 'Welcome back!',
       });
       
-      if (adminDoc.exists()) {
+      if (isPrimaryAdmin || hasAdminRole) {
         router.push('/admin');
       } else {
         router.push('/dashboard');

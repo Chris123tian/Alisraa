@@ -79,12 +79,12 @@ export function Header() {
             <>
               {user && !user.isAnonymous ? (
                  <Button variant="ghost" size="icon" onClick={handleLogout} aria-label="Log out">
-                    <LogOut />
+                    <LogOut className="h-5 w-5" />
                 </Button>
               ) : (
                 <Button asChild variant="ghost" size="icon">
                   <Link href="/login" aria-label="Login">
-                    <Lock />
+                    <Lock className="h-5 w-5" />
                   </Link>
                 </Button>
               )}
