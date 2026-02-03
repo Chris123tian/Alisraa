@@ -36,11 +36,13 @@ export default function LoginPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+      const email = values.email.trim().toLowerCase();
+      const userCredential = await signInWithEmailAndPassword(auth, email, values.password);
       const user = userCredential.user;
 
       // Primary Admin Check
-      const isPrimaryAdmin = values.email.toLowerCase() === 'alisraainternationaler@gmail.com';
+      const PRIMARY_ADMIN_EMAIL = 'alisraainternationaler@gmail.com';
+      const isPrimaryAdmin = email === PRIMARY_ADMIN_EMAIL;
 
       // Check Firestore roles if not primary admin
       let hasAdminRole = false;
@@ -57,7 +59,7 @@ export default function LoginPage() {
       
       // Force direct routing based on role
       if (isPrimaryAdmin || hasAdminRole) {
-        window.location.href = '/admin'; // Using window.location to ensure full state reset
+        window.location.href = '/admin'; // Force full state reset and direct route
       } else {
         window.location.href = '/dashboard';
       }

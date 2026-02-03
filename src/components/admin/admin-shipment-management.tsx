@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState } from 'react';
@@ -30,7 +29,7 @@ export function AdminShipmentManagement() {
     vessel: '',
   });
 
-  // Defensive queries: only run if we are SURE the user is fully verified as an admin
+  // Defensive queries
   const shipmentsQuery = useMemoFirebase(() => {
     if (!firestore || !isAdmin || isAdminCheckLoading) return null;
     return query(
@@ -56,7 +55,11 @@ export function AdminShipmentManagement() {
   const handleCreateShipment = (e: React.FormEvent) => {
     e.preventDefault();
     if (!firestore || !formData.userId || !formData.origin || !formData.destination) {
-      toast({ variant: 'destructive', title: 'Please fill in all required fields.' });
+      toast({ 
+        variant: 'destructive', 
+        title: 'Missing Information', 
+        description: 'Please select a client and provide both origin and destination.' 
+      });
       return;
     }
 
@@ -99,7 +102,7 @@ export function AdminShipmentManagement() {
   }
 
   if (!isAdmin) {
-    return null; // AdminGuard handles the unauthorized UI
+    return null;
   }
 
   return (
@@ -113,21 +116,35 @@ export function AdminShipmentManagement() {
           <form onSubmit={handleCreateShipment} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label htmlFor="userId">Client</Label>
-              <Select onValueChange={(v) => setFormData({ ...formData, userId: v })} value={formData.userId}>
-                <SelectTrigger>
-                  <SelectValue placeholder={isUsersLoading ? "Loading users..." : "Select a client"} />
+              <Select 
+                onValueChange={(v) => setFormData({ ...formData, userId: v })} 
+                value={formData.userId}
+              >
+                <SelectTrigger id="userId">
+                  <SelectValue placeholder={isUsersLoading ? "Loading clients..." : "Select a client"} />
                 </SelectTrigger>
                 <SelectContent>
-                  {users?.map(user => (
-                    <SelectItem key={user.id} value={user.id}>{user.username} ({user.email})</SelectItem>
-                  ))}
+                  {isUsersLoading ? (
+                    <SelectItem value="loading" disabled>Fetching users...</SelectItem>
+                  ) : users && users.length > 0 ? (
+                    users.map(user => (
+                      <SelectItem key={user.id} value={user.id}>
+                        {user.username} ({user.email})
+                      </SelectItem>
+                    ))
+                  ) : (
+                    <SelectItem value="none" disabled>No clients registered yet</SelectItem>
+                  )}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
-              <Select onValueChange={(v) => setFormData({ ...formData, status: v })} value={formData.status}>
-                <SelectTrigger>
+              <Select 
+                onValueChange={(v) => setFormData({ ...formData, status: v })} 
+                value={formData.status}
+              >
+                <SelectTrigger id="status">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -142,6 +159,7 @@ export function AdminShipmentManagement() {
             <div className="space-y-2">
               <Label htmlFor="origin">Origin</Label>
               <Input 
+                id="origin"
                 placeholder="e.g. Syria" 
                 value={formData.origin}
                 onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
@@ -150,6 +168,7 @@ export function AdminShipmentManagement() {
             <div className="space-y-2">
               <Label htmlFor="destination">Destination</Label>
               <Input 
+                id="destination"
                 placeholder="e.g. Germany" 
                 value={formData.destination}
                 onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
@@ -158,6 +177,7 @@ export function AdminShipmentManagement() {
             <div className="md:col-span-2 space-y-2">
               <Label htmlFor="vessel">Vessel / Flight Info</Label>
               <Input 
+                id="vessel"
                 placeholder="e.g. Maersk Hamburg" 
                 value={formData.vessel}
                 onChange={(e) => setFormData({ ...formData, vessel: e.target.value })}
@@ -195,7 +215,9 @@ export function AdminShipmentManagement() {
               ) : shipments?.map(shipment => (
                 <TableRow key={shipment.id}>
                   <TableCell className="font-mono font-bold text-primary">{shipment.trackingNumber}</TableCell>
-                  <TableCell>{users?.find(u => u.id === shipment.userId)?.username || 'Loading...'}</TableCell>
+                  <TableCell>
+                    {users?.find(u => u.id === shipment.userId)?.username || 'Unknown Client'}
+                  </TableCell>
                   <TableCell>{shipment.origin} → {shipment.destination}</TableCell>
                   <TableCell>{shipment.status}</TableCell>
                   <TableCell className="text-right space-x-2">
