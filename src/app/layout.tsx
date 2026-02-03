@@ -6,8 +6,8 @@ import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase';
 
 export const metadata: Metadata = {
-  title: 'AL-ISRAA Internationaler Spediteur Frachtlogistik Trans',
-  description: 'Your trusted partner for international freight logistics and transport. Based in Germany.',
+  title: 'Al-Israa | International Freight & Logistics',
+  description: 'Your trusted partner for international cargo, freight logistics, and global transport solutions. Based in Germany with global reach.',
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
+    <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
@@ -25,10 +25,10 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body className="font-body antialiased bg-background">
+      <body className="font-body antialiased bg-background text-foreground selection:bg-accent/30">
         <FirebaseClientProvider>
           <Header />
-          <main>{children}</main>
+          <main className="min-h-[calc(100vh-80px-40px)]">{children}</main>
           <Footer />
           <Toaster />
         </FirebaseClientProvider>

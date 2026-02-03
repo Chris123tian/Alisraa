@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Mail, Phone, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, Mail, Phone, LogOut, LayoutDashboard, User } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -29,21 +29,21 @@ export function Header() {
   const mainNavLinks = navigationLinks.filter(l => !['Admin', 'Login'].includes(l.label));
 
   return (
-    <header className="sticky top-0 z-50 bg-background shadow-md">
-      <div className="bg-primary text-primary-foreground py-2 text-sm">
+    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm border-b">
+      <div className="bg-primary text-primary-foreground py-2 text-xs font-medium">
         <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <Mail size={16} />
+          <div className="flex items-center gap-4 md:gap-8">
+            <div className="flex items-center gap-2 hover:text-accent transition-colors">
+              <Mail size={14} />
               <span className="hidden sm:inline">info@al-israa-frachtlogistik.de</span>
             </div>
-            <div className="flex items-center gap-2">
-              <Phone size={16} />
+            <div className="flex items-center gap-2 hover:text-accent transition-colors">
+              <Phone size={14} />
               <span className="hidden sm:inline">+49 (30) 12345678</span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
-             <span className="text-xs uppercase font-bold tracking-tighter">Germany HQ</span>
+          <div className="flex items-center gap-2">
+             <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white">Europe HQ</span>
           </div>
         </div>
       </div>
@@ -58,8 +58,8 @@ export function Header() {
               key={link.href}
               href={link.href}
               className={cn(
-                "font-semibold transition-colors hover:text-primary",
-                pathname === link.href ? "text-primary" : "text-foreground/80"
+                "font-semibold transition-colors hover:text-accent relative py-1",
+                pathname === link.href ? "text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-accent" : "text-foreground/80"
               )}
             >
               {link.label}
@@ -70,12 +70,12 @@ export function Header() {
               <Link 
                 href={isAdmin ? "/admin" : "/dashboard"} 
                 className={cn(
-                  "font-semibold transition-colors flex items-center gap-1 hover:text-primary",
+                  "font-semibold transition-colors flex items-center gap-1.5 hover:text-accent",
                   pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-primary" : "text-foreground/80"
                 )}
               >
                 <LayoutDashboard size={16} />
-                {isAdmin ? "Admin" : "Dashboard"}
+                {isAdmin ? "Admin Console" : "My Dashboard"}
               </Link>
             )}
           </ClientOnly>
@@ -83,24 +83,24 @@ export function Header() {
 
         <div className="flex items-center gap-4">
           {/* Auth section - Desktop & Tablet */}
-          <div className="hidden sm:flex items-center gap-2 min-w-[150px] justify-end">
-            <ClientOnly fallback={<div className="h-9 w-24 bg-muted animate-pulse rounded-md" />}>
+          <div className="hidden sm:flex items-center gap-2 min-w-[180px] justify-end">
+            <ClientOnly fallback={<div className="h-10 w-32 bg-muted/20 animate-pulse rounded-md" />}>
               {isUserLoading ? (
-                <div className="h-9 w-24 bg-muted animate-pulse rounded-md" />
+                <div className="h-10 w-32 bg-muted/20 animate-pulse rounded-md" />
               ) : user && !user.isAnonymous ? (
-                <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
+                <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2 border-primary/20 hover:bg-primary/5">
                     <LogOut className="h-4 w-4" />
-                    Logout
+                    Sign Out
                 </Button>
               ) : (
-                <>
-                  <Button asChild variant="ghost" size="sm">
+                <div className="flex items-center gap-2">
+                  <Button asChild variant="ghost" size="sm" className="font-semibold">
                     <Link href="/login">Login</Link>
                   </Button>
-                  <Button asChild variant="default" size="sm">
-                    <Link href="/signup">Sign Up</Link>
+                  <Button asChild variant="default" size="sm" className="bg-accent hover:bg-accent/90 text-white shadow-md">
+                    <Link href="/signup">Join Al-Israa</Link>
                   </Button>
-                </>
+                </div>
               )}
             </ClientOnly>
           </div>
@@ -109,25 +109,25 @@ export function Header() {
           <div className="lg:hidden">
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
+                <Button variant="outline" size="icon" className="border-primary/20">
                   <Menu className="h-5 w-5" />
-                  <span className="sr-only">Open navigation menu</span>
+                  <span className="sr-only">Open Menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right">
-                <SheetHeader>
+              <SheetContent side="right" className="w-[300px]">
+                <SheetHeader className="mb-8 border-b pb-4">
                   <Logo />
-                   <SheetTitle className="sr-only">Menu</SheetTitle>
+                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                 </SheetHeader>
-                <div className="flex flex-col gap-4 mt-6 p-4">
+                <div className="flex flex-col gap-5">
                   {mainNavLinks.map((link) => (
                     <Link
                       key={link.href}
                       href={link.href}
                       onClick={() => setIsOpen(false)}
                       className={cn(
-                        "text-lg font-medium transition-colors hover:text-primary",
-                        pathname === link.href ? "text-primary" : "text-foreground/80"
+                        "text-lg font-semibold transition-colors flex items-center justify-between",
+                        pathname === link.href ? "text-accent" : "text-foreground/80 hover:text-primary"
                       )}
                     >
                       {link.label}
@@ -140,33 +140,34 @@ export function Header() {
                         href={isAdmin ? "/admin" : "/dashboard"}
                         onClick={() => setIsOpen(false)}
                         className={cn(
-                          "text-lg font-medium transition-colors hover:text-primary",
-                          pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-primary" : "text-foreground/80"
+                          "text-lg font-semibold transition-colors flex items-center gap-2 border-t pt-4",
+                          pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-accent" : "text-foreground/80 hover:text-primary"
                         )}
                       >
-                        {isAdmin ? "Admin" : "Dashboard"}
+                        <LayoutDashboard size={18} />
+                        {isAdmin ? "Admin Console" : "My Dashboard"}
                       </Link>
                     )}
 
-                    {!isUserLoading && (
-                      <div className="flex flex-col gap-2 mt-4 pt-4 border-t">
-                        {user && !user.isAnonymous ? (
-                          <Button variant="outline" className="w-full flex items-center gap-2" onClick={handleLogout}>
-                            <LogOut className="h-4 w-4" />
-                            Logout
+                    <div className="flex flex-col gap-3 mt-6 pt-6 border-t">
+                      {isUserLoading ? (
+                        <div className="h-10 w-full bg-muted animate-pulse rounded-md" />
+                      ) : user && !user.isAnonymous ? (
+                        <Button variant="outline" className="w-full flex items-center gap-2" onClick={handleLogout}>
+                          <LogOut className="h-4 w-4" />
+                          Log Out
+                        </Button>
+                      ) : (
+                        <>
+                          <Button asChild variant="outline" className="w-full">
+                            <Link href="/login" onClick={() => setIsOpen(false)}>Login</Link>
                           </Button>
-                        ) : (
-                          <>
-                            <Button asChild variant="outline" className="w-full">
-                              <Link href="/login" onClick={() => setIsOpen(false)}>Login</Link>
-                            </Button>
-                            <Button asChild variant="default" className="w-full">
-                              <Link href="/signup" onClick={() => setIsOpen(false)}>Sign Up</Link>
-                            </Button>
-                          </>
-                        )}
-                      </div>
-                    )}
+                          <Button asChild variant="default" className="w-full bg-accent hover:bg-accent/90">
+                            <Link href="/signup" onClick={() => setIsOpen(false)}>Create Account</Link>
+                          </Button>
+                        </>
+                      )}
+                    </div>
                   </ClientOnly>
                 </div>
               </SheetContent>

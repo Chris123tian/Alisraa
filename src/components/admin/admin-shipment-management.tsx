@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Trash2, Plus, RefreshCw, UserCheck } from 'lucide-react';
+import { Trash2, Plus, RefreshCw, UserCheck, Package, MapPin, Truck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAdmin } from '@/hooks/useAdmin';
 
@@ -57,8 +57,8 @@ export function AdminShipmentManagement() {
     if (!firestore || !formData.userId || !formData.origin || !formData.destination) {
       toast({ 
         variant: 'destructive', 
-        title: 'Missing Information', 
-        description: 'Please select a client and provide both origin and destination.' 
+        title: 'Form Incomplete', 
+        description: 'Please select a client and specify both origin and destination.' 
       });
       return;
     }
@@ -74,7 +74,7 @@ export function AdminShipmentManagement() {
 
     addDocumentNonBlocking(collection(firestore, 'shipments'), shipmentData)
       .then(() => {
-        toast({ title: 'Shipment Created', description: `Tracking Code: ${trackingNumber}` });
+        toast({ title: 'Success!', description: `Shipment ${trackingNumber} has been registered.` });
         setFormData({
           userId: '',
           origin: '',
@@ -93,13 +93,14 @@ export function AdminShipmentManagement() {
   const handleDelete = (id: string) => {
     if (!firestore) return;
     deleteDocumentNonBlocking(doc(firestore, 'shipments', id));
+    toast({ title: 'Removed', description: 'Shipment record deleted.' });
   };
 
   if (isAdminCheckLoading) {
     return (
       <div className="flex flex-col items-center justify-center py-20 gap-4">
-        <RefreshCw className="animate-spin text-primary h-8 w-8" />
-        <p className="text-muted-foreground">Verifying administrative access...</p>
+        <RefreshCw className="animate-spin text-accent h-8 w-8" />
+        <p className="text-muted-foreground font-medium">Authenticating Admin Session...</p>
       </div>
     );
   }
@@ -109,142 +110,173 @@ export function AdminShipmentManagement() {
   }
 
   return (
-    <div className="space-y-8">
-      <Card className="border-t-4 border-t-accent">
+    <div className="space-y-8 animate-in fade-in duration-500">
+      <Card className="border-t-4 border-t-accent shadow-md">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <CardTitle className="flex items-center gap-2 text-primary">
             <Plus className="w-5 h-5 text-accent" />
-            Create New Shipment
+            Register New Cargo
           </CardTitle>
-          <CardDescription>Assign a new shipment to a client and generate a tracking code.</CardDescription>
+          <CardDescription>Generate a tracking ID and assign cargo to a registered client.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleCreateShipment} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="userId" className="text-primary font-semibold">Select Client</Label>
+              <Label htmlFor="userId" className="font-semibold text-primary/80">Select Client</Label>
               <Select 
                 onValueChange={(v) => setFormData({ ...formData, userId: v })} 
                 value={formData.userId}
               >
-                <SelectTrigger id="userId" className="bg-background">
-                  <SelectValue placeholder={isUsersLoading ? "Loading clients..." : "Choose a client"} />
+                <SelectTrigger id="userId" className="bg-background border-primary/20">
+                  <SelectValue placeholder={isUsersLoading ? "Syncing clients..." : "Search registered clients"} />
                 </SelectTrigger>
                 <SelectContent>
                   {isUsersLoading ? (
-                    <SelectItem value="loading" disabled>Fetching users...</SelectItem>
+                    <SelectItem value="loading" disabled>Fetching directory...</SelectItem>
                   ) : users && users.length > 0 ? (
                     users.map(user => (
                       <SelectItem key={user.id} value={user.id}>
-                        <div className="flex flex-col">
-                           <span className="font-medium">{user.username}</span>
-                           <span className="text-xs text-muted-foreground">{user.email}</span>
+                        <div className="flex flex-col text-left">
+                           <span className="font-bold">{user.username}</span>
+                           <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{user.email}</span>
                         </div>
                       </SelectItem>
                     ))
                   ) : (
-                    <SelectItem value="none" disabled>No clients found in system</SelectItem>
+                    <SelectItem value="none" disabled>No clients found in directory</SelectItem>
                   )}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="status" className="text-primary font-semibold">Current Status</Label>
+              <Label htmlFor="status" className="font-semibold text-primary/80">Logistics Status</Label>
               <Select 
                 onValueChange={(v) => setFormData({ ...formData, status: v })} 
                 value={formData.status}
               >
-                <SelectTrigger id="status" className="bg-background">
+                <SelectTrigger id="status" className="bg-background border-primary/20">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Pending">Pending</SelectItem>
+                  <SelectItem value="Pending">Pending Assignment</SelectItem>
                   <SelectItem value="In Transit">In Transit</SelectItem>
                   <SelectItem value="Customs Clearance">Customs Clearance</SelectItem>
-                  <SelectItem value="Delivered">Delivered</SelectItem>
-                  <SelectItem value="Delayed">Delayed</SelectItem>
+                  <SelectItem value="Delivered">Final Delivery</SelectItem>
+                  <SelectItem value="Delayed">Logistics Delay</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="origin" className="text-primary font-semibold">Shipment Origin</Label>
-              <Input 
-                id="origin"
-                placeholder="e.g. Syria" 
-                value={formData.origin}
-                onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
-                className="bg-background"
-              />
+              <Label htmlFor="origin" className="font-semibold text-primary/80">Port of Origin</Label>
+              <div className="relative">
+                <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  id="origin"
+                  placeholder="e.g. Damascus, Syria" 
+                  value={formData.origin}
+                  onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
+                  className="pl-10 bg-background border-primary/20"
+                />
+              </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="destination" className="text-primary font-semibold">Shipment Destination</Label>
-              <Input 
-                id="destination"
-                placeholder="e.g. Germany" 
-                value={formData.destination}
-                onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
-                className="bg-background"
-              />
+              <Label htmlFor="destination" className="font-semibold text-primary/80">Port of Destination</Label>
+              <div className="relative">
+                <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  id="destination"
+                  placeholder="e.g. Berlin, Germany" 
+                  value={formData.destination}
+                  onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                  className="pl-10 bg-background border-primary/20"
+                />
+              </div>
             </div>
             <div className="md:col-span-2 space-y-2">
-              <Label htmlFor="vessel" className="text-primary font-semibold">Vessel / Flight Information</Label>
-              <Input 
-                id="vessel"
-                placeholder="e.g. Maersk Hamburg (Voyage #123)" 
-                value={formData.vessel}
-                onChange={(e) => setFormData({ ...formData, vessel: e.target.value })}
-                className="bg-background"
-              />
+              <Label htmlFor="vessel" className="font-semibold text-primary/80">Vessel / Transport Identifier</Label>
+              <div className="relative">
+                <Truck className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+                <Input 
+                  id="vessel"
+                  placeholder="e.g. MS Hamburg Express (Voyage #9921)" 
+                  value={formData.vessel}
+                  onChange={(e) => setFormData({ ...formData, vessel: e.target.value })}
+                  className="pl-10 bg-background border-primary/20"
+                />
+              </div>
             </div>
-            <Button type="submit" className="md:col-span-2 py-6 text-lg" disabled={isSubmitting || !formData.userId}>
-              {isSubmitting ? <RefreshCw className="animate-spin mr-2" /> : <Plus className="mr-2" />}
-              Generate Tracking Link & Save
+            <Button type="submit" className="md:col-span-2 py-6 text-lg bg-primary hover:bg-primary/90 shadow-lg group" disabled={isSubmitting || !formData.userId}>
+              {isSubmitting ? (
+                <RefreshCw className="animate-spin mr-2" />
+              ) : (
+                <Plus className="mr-2 group-hover:rotate-90 transition-transform" />
+              )}
+              Initialize Tracking & Save Record
             </Button>
           </form>
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Global Inventory & Tracking</CardTitle>
-          <CardDescription>Monitor and manage all active shipments registered under Al-Israa.</CardDescription>
+      <Card className="shadow-sm">
+        <CardHeader className="bg-primary/5 rounded-t-lg">
+          <CardTitle className="flex items-center gap-2">
+            <Package className="w-5 h-5 text-accent" />
+            Global Manifest
+          </CardTitle>
+          <CardDescription>Active inventory managed by Al-Israa International.</CardDescription>
         </CardHeader>
-        <CardContent>
-          <div className="rounded-md border">
+        <CardContent className="p-0">
+          <div className="overflow-x-auto">
             <Table>
-              <TableHeader className="bg-muted/50">
+              <TableHeader className="bg-muted/30">
                 <TableRow>
-                  <TableHead>Tracking #</TableHead>
-                  <TableHead>Client</TableHead>
-                  <TableHead>Route</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead className="font-bold">Tracking #</TableHead>
+                  <TableHead className="font-bold">Client Account</TableHead>
+                  <TableHead className="font-bold">Route Manifest</TableHead>
+                  <TableHead className="font-bold">Status</TableHead>
+                  <TableHead className="text-right font-bold">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {isShipmentsLoading ? (
-                  <TableRow><TableCell colSpan={5} className="text-center py-12 text-muted-foreground"><RefreshCw className="animate-spin inline mr-2" /> Loading inventory...</TableCell></TableRow>
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center py-20 text-muted-foreground">
+                      <RefreshCw className="animate-spin inline mr-3 h-5 w-5" /> 
+                      Scanning Cargo Manifest...
+                    </TableCell>
+                  </TableRow>
                 ) : shipments?.length === 0 ? (
-                  <TableRow><TableCell colSpan={5} className="text-center py-12 text-muted-foreground">No active shipments found in the system.</TableCell></TableRow>
+                  <TableRow>
+                    <TableCell colSpan={5} className="text-center py-20 text-muted-foreground italic">
+                      No cargo found in active manifest.
+                    </TableCell>
+                  </TableRow>
                 ) : shipments?.map(shipment => (
-                  <TableRow key={shipment.id} className="hover:bg-muted/30 transition-colors">
-                    <TableCell className="font-mono font-bold text-primary">{shipment.trackingNumber}</TableCell>
+                  <TableRow key={shipment.id} className="hover:bg-accent/5 transition-colors">
+                    <TableCell className="font-mono font-black text-primary tracking-tighter">{shipment.trackingNumber}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <UserCheck className="w-3 h-3 text-muted-foreground" />
-                        {users?.find(u => u.id === shipment.userId)?.username || 'Unknown Client'}
+                        <UserCheck className="w-3 h-3 text-accent" />
+                        <span className="font-medium">
+                          {users?.find(u => u.id === shipment.userId)?.username || 'Archive Record'}
+                        </span>
                       </div>
                     </TableCell>
-                    <TableCell className="text-sm">{shipment.origin} → {shipment.destination}</TableCell>
+                    <TableCell className="text-sm">
+                      <span className="font-semibold">{shipment.origin}</span>
+                      <span className="mx-2 text-accent">→</span>
+                      <span className="font-semibold">{shipment.destination}</span>
+                    </TableCell>
                     <TableCell>
-                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                         shipment.status === 'Delivered' ? 'bg-green-100 text-green-800' :
-                         shipment.status === 'Delayed' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+                       <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                         shipment.status === 'Delivered' ? 'bg-green-100 text-green-700' :
+                         shipment.status === 'Delayed' ? 'bg-red-100 text-red-700' : 'bg-primary/10 text-primary'
                        }`}>
                          {shipment.status}
                        </span>
                     </TableCell>
-                    <TableCell className="text-right space-x-2">
-                      <Button variant="ghost" size="icon" onClick={() => handleDelete(shipment.id)} className="text-muted-foreground hover:text-destructive">
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="icon" onClick={() => handleDelete(shipment.id)} className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </TableCell>
