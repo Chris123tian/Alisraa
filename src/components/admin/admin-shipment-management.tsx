@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Trash2, Plus, RefreshCw } from 'lucide-react';
+import { Trash2, Plus, RefreshCw, UserCheck } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAdmin } from '@/hooks/useAdmin';
 
@@ -84,6 +84,9 @@ export function AdminShipmentManagement() {
           vessel: '',
         });
       })
+      .catch((err) => {
+          toast({ variant: 'destructive', title: 'Error', description: err.message });
+      })
       .finally(() => setIsSubmitting(false));
   };
 
@@ -107,21 +110,24 @@ export function AdminShipmentManagement() {
 
   return (
     <div className="space-y-8">
-      <Card>
+      <Card className="border-t-4 border-t-accent">
         <CardHeader>
-          <CardTitle>Create New Shipment</CardTitle>
+          <CardTitle className="flex items-center gap-2">
+            <Plus className="w-5 h-5 text-accent" />
+            Create New Shipment
+          </CardTitle>
           <CardDescription>Assign a new shipment to a client and generate a tracking code.</CardDescription>
         </CardHeader>
         <CardContent>
-          <form onSubmit={handleCreateShipment} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={handleCreateShipment} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="userId">Client</Label>
+              <Label htmlFor="userId" className="text-primary font-semibold">Select Client</Label>
               <Select 
                 onValueChange={(v) => setFormData({ ...formData, userId: v })} 
                 value={formData.userId}
               >
-                <SelectTrigger id="userId">
-                  <SelectValue placeholder={isUsersLoading ? "Loading clients..." : "Select a client"} />
+                <SelectTrigger id="userId" className="bg-background">
+                  <SelectValue placeholder={isUsersLoading ? "Loading clients..." : "Choose a client"} />
                 </SelectTrigger>
                 <SelectContent>
                   {isUsersLoading ? (
@@ -129,22 +135,25 @@ export function AdminShipmentManagement() {
                   ) : users && users.length > 0 ? (
                     users.map(user => (
                       <SelectItem key={user.id} value={user.id}>
-                        {user.username} ({user.email})
+                        <div className="flex flex-col">
+                           <span className="font-medium">{user.username}</span>
+                           <span className="text-xs text-muted-foreground">{user.email}</span>
+                        </div>
                       </SelectItem>
                     ))
                   ) : (
-                    <SelectItem value="none" disabled>No clients registered yet</SelectItem>
+                    <SelectItem value="none" disabled>No clients found in system</SelectItem>
                   )}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="status">Status</Label>
+              <Label htmlFor="status" className="text-primary font-semibold">Current Status</Label>
               <Select 
                 onValueChange={(v) => setFormData({ ...formData, status: v })} 
                 value={formData.status}
               >
-                <SelectTrigger id="status">
+                <SelectTrigger id="status" className="bg-background">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -157,35 +166,38 @@ export function AdminShipmentManagement() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="origin">Origin</Label>
+              <Label htmlFor="origin" className="text-primary font-semibold">Shipment Origin</Label>
               <Input 
                 id="origin"
                 placeholder="e.g. Syria" 
                 value={formData.origin}
                 onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
+                className="bg-background"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="destination">Destination</Label>
+              <Label htmlFor="destination" className="text-primary font-semibold">Shipment Destination</Label>
               <Input 
                 id="destination"
                 placeholder="e.g. Germany" 
                 value={formData.destination}
                 onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                className="bg-background"
               />
             </div>
             <div className="md:col-span-2 space-y-2">
-              <Label htmlFor="vessel">Vessel / Flight Info</Label>
+              <Label htmlFor="vessel" className="text-primary font-semibold">Vessel / Flight Information</Label>
               <Input 
                 id="vessel"
-                placeholder="e.g. Maersk Hamburg" 
+                placeholder="e.g. Maersk Hamburg (Voyage #123)" 
                 value={formData.vessel}
                 onChange={(e) => setFormData({ ...formData, vessel: e.target.value })}
+                className="bg-background"
               />
             </div>
-            <Button type="submit" className="md:col-span-2" disabled={isSubmitting}>
+            <Button type="submit" className="md:col-span-2 py-6 text-lg" disabled={isSubmitting || !formData.userId}>
               {isSubmitting ? <RefreshCw className="animate-spin mr-2" /> : <Plus className="mr-2" />}
-              Create Shipment & Generate Link
+              Generate Tracking Link & Save
             </Button>
           </form>
         </CardContent>
@@ -193,42 +205,54 @@ export function AdminShipmentManagement() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Manage Shipments</CardTitle>
-          <CardDescription>View and track all active shipments on the platform.</CardDescription>
+          <CardTitle>Global Inventory & Tracking</CardTitle>
+          <CardDescription>Monitor and manage all active shipments registered under Al-Israa.</CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Tracking #</TableHead>
-                <TableHead>Client</TableHead>
-                <TableHead>Route</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isShipmentsLoading ? (
-                <TableRow><TableCell colSpan={5} className="text-center py-8">Loading shipments...</TableCell></TableRow>
-              ) : shipments?.length === 0 ? (
-                <TableRow><TableCell colSpan={5} className="text-center py-8">No shipments found.</TableCell></TableRow>
-              ) : shipments?.map(shipment => (
-                <TableRow key={shipment.id}>
-                  <TableCell className="font-mono font-bold text-primary">{shipment.trackingNumber}</TableCell>
-                  <TableCell>
-                    {users?.find(u => u.id === shipment.userId)?.username || 'Unknown Client'}
-                  </TableCell>
-                  <TableCell>{shipment.origin} → {shipment.destination}</TableCell>
-                  <TableCell>{shipment.status}</TableCell>
-                  <TableCell className="text-right space-x-2">
-                    <Button variant="ghost" size="icon" onClick={() => handleDelete(shipment.id)}>
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </TableCell>
+          <div className="rounded-md border">
+            <Table>
+              <TableHeader className="bg-muted/50">
+                <TableRow>
+                  <TableHead>Tracking #</TableHead>
+                  <TableHead>Client</TableHead>
+                  <TableHead>Route</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+              </TableHeader>
+              <TableBody>
+                {isShipmentsLoading ? (
+                  <TableRow><TableCell colSpan={5} className="text-center py-12 text-muted-foreground"><RefreshCw className="animate-spin inline mr-2" /> Loading inventory...</TableCell></TableRow>
+                ) : shipments?.length === 0 ? (
+                  <TableRow><TableCell colSpan={5} className="text-center py-12 text-muted-foreground">No active shipments found in the system.</TableCell></TableRow>
+                ) : shipments?.map(shipment => (
+                  <TableRow key={shipment.id} className="hover:bg-muted/30 transition-colors">
+                    <TableCell className="font-mono font-bold text-primary">{shipment.trackingNumber}</TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-2">
+                        <UserCheck className="w-3 h-3 text-muted-foreground" />
+                        {users?.find(u => u.id === shipment.userId)?.username || 'Unknown Client'}
+                      </div>
+                    </TableCell>
+                    <TableCell className="text-sm">{shipment.origin} → {shipment.destination}</TableCell>
+                    <TableCell>
+                       <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                         shipment.status === 'Delivered' ? 'bg-green-100 text-green-800' :
+                         shipment.status === 'Delayed' ? 'bg-red-100 text-red-800' : 'bg-blue-100 text-blue-800'
+                       }`}>
+                         {shipment.status}
+                       </span>
+                    </TableCell>
+                    <TableCell className="text-right space-x-2">
+                      <Button variant="ghost" size="icon" onClick={() => handleDelete(shipment.id)} className="text-muted-foreground hover:text-destructive">
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
         </CardContent>
       </Card>
     </div>
