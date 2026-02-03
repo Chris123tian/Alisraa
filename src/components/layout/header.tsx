@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Mail, Phone, LogOut, LayoutDashboard, User } from 'lucide-react';
+import { Menu, Mail, Phone, LogOut, LayoutDashboard } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
@@ -30,23 +30,26 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm border-b">
-      <div className="bg-primary text-primary-foreground py-2 text-xs font-medium">
-        <div className="container mx-auto px-4 flex justify-between items-center">
-          <div className="flex items-center gap-4 md:gap-8">
-            <div className="flex items-center gap-2 hover:text-accent transition-colors">
-              <Mail size={14} />
-              <span className="hidden sm:inline">info@al-israa-frachtlogistik.de</span>
+      {/* Top Bar - Client Only for consistency */}
+      <ClientOnly fallback={<div className="bg-primary h-10 w-full" />}>
+        <div className="bg-primary text-primary-foreground py-2 text-xs font-medium">
+          <div className="container mx-auto px-4 flex justify-between items-center">
+            <div className="flex items-center gap-4 md:gap-8">
+              <div className="flex items-center gap-2 hover:text-accent transition-colors">
+                <Mail size={14} />
+                <span className="hidden sm:inline">info@al-israa-frachtlogistik.de</span>
+              </div>
+              <div className="flex items-center gap-2 hover:text-accent transition-colors">
+                <Phone size={14} />
+                <span className="hidden sm:inline">+49 (30) 12345678</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 hover:text-accent transition-colors">
-              <Phone size={14} />
-              <span className="hidden sm:inline">+49 (30) 12345678</span>
+            <div className="flex items-center gap-2">
+               <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white">Europe HQ</span>
             </div>
-          </div>
-          <div className="flex items-center gap-2">
-             <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white">Europe HQ</span>
           </div>
         </div>
-      </div>
+      </ClientOnly>
 
       <nav className="container mx-auto px-4 flex justify-between items-center h-20">
         <Logo />
@@ -84,9 +87,9 @@ export function Header() {
         <div className="flex items-center gap-4">
           {/* Auth section - Desktop & Tablet */}
           <div className="hidden sm:flex items-center gap-2 min-w-[180px] justify-end">
-            <ClientOnly fallback={<div className="h-10 w-32 bg-muted/20 animate-pulse rounded-md" />}>
+            <ClientOnly fallback={<div className="h-9 w-32 bg-muted/20 animate-pulse rounded-md" />}>
               {isUserLoading ? (
-                <div className="h-10 w-32 bg-muted/20 animate-pulse rounded-md" />
+                <div className="h-9 w-32 bg-muted/20 animate-pulse rounded-md" />
               ) : user && !user.isAnonymous ? (
                 <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2 border-primary/20 hover:bg-primary/5">
                     <LogOut className="h-4 w-4" />
@@ -98,7 +101,7 @@ export function Header() {
                     <Link href="/login">Login</Link>
                   </Button>
                   <Button asChild variant="default" size="sm" className="bg-accent hover:bg-accent/90 text-white shadow-md">
-                    <Link href="/signup">Join Al-Israa</Link>
+                    <Link href="/signup">Sign Up</Link>
                   </Button>
                 </div>
               )}
@@ -107,34 +110,34 @@ export function Header() {
 
           {/* Mobile Menu */}
           <div className="lg:hidden">
-            <Sheet open={isOpen} onOpenChange={setIsOpen}>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="border-primary/20">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Open Menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="right" className="w-[300px]">
-                <SheetHeader className="mb-8 border-b pb-4">
-                  <Logo />
-                  <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                </SheetHeader>
-                <div className="flex flex-col gap-5">
-                  {mainNavLinks.map((link) => (
-                    <Link
-                      key={link.href}
-                      href={link.href}
-                      onClick={() => setIsOpen(false)}
-                      className={cn(
-                        "text-lg font-semibold transition-colors flex items-center justify-between",
-                        pathname === link.href ? "text-accent" : "text-foreground/80 hover:text-primary"
-                      )}
-                    >
-                      {link.label}
-                    </Link>
-                  ))}
-                  
-                  <ClientOnly>
+            <ClientOnly fallback={<div className="h-10 w-10 bg-muted/20 rounded-md" />}>
+              <Sheet open={isOpen} onOpenChange={setIsOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon" className="border-primary/20">
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Open Menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="right" className="w-[300px]">
+                  <SheetHeader className="mb-8 border-b pb-4">
+                    <Logo />
+                    <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                  </SheetHeader>
+                  <div className="flex flex-col gap-5">
+                    {mainNavLinks.map((link) => (
+                      <Link
+                        key={link.href}
+                        href={link.href}
+                        onClick={() => setIsOpen(false)}
+                        className={cn(
+                          "text-lg font-semibold transition-colors flex items-center justify-between",
+                          pathname === link.href ? "text-accent" : "text-foreground/80 hover:text-primary"
+                        )}
+                      >
+                        {link.label}
+                      </Link>
+                    ))}
+                    
                     {user && !user.isAnonymous && (
                       <Link
                         href={isAdmin ? "/admin" : "/dashboard"}
@@ -163,15 +166,15 @@ export function Header() {
                             <Link href="/login" onClick={() => setIsOpen(false)}>Login</Link>
                           </Button>
                           <Button asChild variant="default" className="w-full bg-accent hover:bg-accent/90">
-                            <Link href="/signup" onClick={() => setIsOpen(false)}>Create Account</Link>
+                            <Link href="/signup" onClick={() => setIsOpen(false)}>Sign Up</Link>
                           </Button>
                         </>
                       )}
                     </div>
-                  </ClientOnly>
-                </div>
-              </SheetContent>
-            </Sheet>
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </ClientOnly>
           </div>
         </div>
       </nav>

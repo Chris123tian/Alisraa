@@ -31,20 +31,20 @@ export function AdminShipmentManagement() {
 
   // Defensive queries
   const shipmentsQuery = useMemoFirebase(() => {
-    if (!firestore || !isAdmin || isAdminCheckLoading) return null;
+    if (!firestore || !isAdmin) return null;
     return query(
       collection(firestore, 'shipments'), 
       orderBy('lastUpdate', 'desc'),
       limit(100)
     );
-  }, [firestore, isAdmin, isAdminCheckLoading]);
+  }, [firestore, isAdmin]);
 
   const { data: shipments, isLoading: isShipmentsLoading } = useCollection(shipmentsQuery);
 
   const usersQuery = useMemoFirebase(() => {
-    if (!firestore || !isAdmin || isAdminCheckLoading) return null;
+    if (!firestore || !isAdmin) return null;
     return query(collection(firestore, 'users'), limit(500));
-  }, [firestore, isAdmin, isAdminCheckLoading]);
+  }, [firestore, isAdmin]);
 
   const { data: users, isLoading: isUsersLoading } = useCollection(usersQuery);
 
@@ -115,20 +115,20 @@ export function AdminShipmentManagement() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-primary">
             <Plus className="w-5 h-5 text-accent" />
-            Register New Cargo
+            Initialize New Tracking
           </CardTitle>
-          <CardDescription>Generate a tracking ID and assign cargo to a registered client.</CardDescription>
+          <CardDescription>Assign cargo to a registered client and generate a tracking ID.</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleCreateShipment} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="userId" className="font-semibold text-primary/80">Select Client</Label>
+              <Label htmlFor="userId" className="font-semibold text-primary/80">Select Registered Client</Label>
               <Select 
                 onValueChange={(v) => setFormData({ ...formData, userId: v })} 
                 value={formData.userId}
               >
                 <SelectTrigger id="userId" className="bg-background border-primary/20">
-                  <SelectValue placeholder={isUsersLoading ? "Syncing clients..." : "Search registered clients"} />
+                  <SelectValue placeholder={isUsersLoading ? "Loading directory..." : "Select a client"} />
                 </SelectTrigger>
                 <SelectContent>
                   {isUsersLoading ? (
@@ -136,20 +136,17 @@ export function AdminShipmentManagement() {
                   ) : users && users.length > 0 ? (
                     users.map(user => (
                       <SelectItem key={user.id} value={user.id}>
-                        <div className="flex flex-col text-left">
-                           <span className="font-bold">{user.username}</span>
-                           <span className="text-[10px] uppercase tracking-wider text-muted-foreground">{user.email}</span>
-                        </div>
+                        {user.username} ({user.email})
                       </SelectItem>
                     ))
                   ) : (
-                    <SelectItem value="none" disabled>No clients found in directory</SelectItem>
+                    <SelectItem value="none" disabled>No clients found</SelectItem>
                   )}
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="status" className="font-semibold text-primary/80">Logistics Status</Label>
+              <Label htmlFor="status" className="font-semibold text-primary/80">Current Logistics Status</Label>
               <Select 
                 onValueChange={(v) => setFormData({ ...formData, status: v })} 
                 value={formData.status}
@@ -193,7 +190,7 @@ export function AdminShipmentManagement() {
               </div>
             </div>
             <div className="md:col-span-2 space-y-2">
-              <Label htmlFor="vessel" className="font-semibold text-primary/80">Vessel / Transport Identifier</Label>
+              <Label htmlFor="vessel" className="font-semibold text-primary/80">Vessel / Transport Info</Label>
               <div className="relative">
                 <Truck className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
                 <Input 
@@ -211,7 +208,7 @@ export function AdminShipmentManagement() {
               ) : (
                 <Plus className="mr-2 group-hover:rotate-90 transition-transform" />
               )}
-              Initialize Tracking & Save Record
+              Create Shipment & Generate Link
             </Button>
           </form>
         </CardContent>
@@ -221,9 +218,9 @@ export function AdminShipmentManagement() {
         <CardHeader className="bg-primary/5 rounded-t-lg">
           <CardTitle className="flex items-center gap-2">
             <Package className="w-5 h-5 text-accent" />
-            Global Manifest
+            Active Cargo Manifest
           </CardTitle>
-          <CardDescription>Active inventory managed by Al-Israa International.</CardDescription>
+          <CardDescription>View and track all active shipments on the platform.</CardDescription>
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto">
@@ -231,8 +228,8 @@ export function AdminShipmentManagement() {
               <TableHeader className="bg-muted/30">
                 <TableRow>
                   <TableHead className="font-bold">Tracking #</TableHead>
-                  <TableHead className="font-bold">Client Account</TableHead>
-                  <TableHead className="font-bold">Route Manifest</TableHead>
+                  <TableHead className="font-bold">Client</TableHead>
+                  <TableHead className="font-bold">Route</TableHead>
                   <TableHead className="font-bold">Status</TableHead>
                   <TableHead className="text-right font-bold">Actions</TableHead>
                 </TableRow>
@@ -240,48 +237,50 @@ export function AdminShipmentManagement() {
               <TableBody>
                 {isShipmentsLoading ? (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center py-20 text-muted-foreground">
+                    <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
                       <RefreshCw className="animate-spin inline mr-3 h-5 w-5" /> 
-                      Scanning Cargo Manifest...
+                      Syncing Cargo...
                     </TableCell>
                   </TableRow>
-                ) : shipments?.length === 0 ? (
+                ) : shipments && shipments.length > 0 ? (
+                  shipments.map(shipment => (
+                    <TableRow key={shipment.id} className="hover:bg-accent/5 transition-colors">
+                      <TableCell className="font-mono font-black text-primary tracking-tighter">{shipment.trackingNumber}</TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-2">
+                          <UserCheck className="w-3 h-3 text-accent" />
+                          <span className="font-medium">
+                            {users?.find(u => u.id === shipment.userId)?.username || 'User Record'}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm">
+                        <span className="font-semibold">{shipment.origin}</span>
+                        <span className="mx-2 text-accent">→</span>
+                        <span className="font-semibold">{shipment.destination}</span>
+                      </TableCell>
+                      <TableCell>
+                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                           shipment.status === 'Delivered' ? 'bg-green-100 text-green-700' :
+                           shipment.status === 'Delayed' ? 'bg-red-100 text-red-700' : 'bg-primary/10 text-primary'
+                         }`}>
+                           {shipment.status}
+                         </span>
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <Button variant="ghost" size="icon" onClick={() => handleDelete(shipment.id)} className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
                   <TableRow>
                     <TableCell colSpan={5} className="text-center py-20 text-muted-foreground italic">
-                      No cargo found in active manifest.
+                      No shipments found.
                     </TableCell>
                   </TableRow>
-                ) : shipments?.map(shipment => (
-                  <TableRow key={shipment.id} className="hover:bg-accent/5 transition-colors">
-                    <TableCell className="font-mono font-black text-primary tracking-tighter">{shipment.trackingNumber}</TableCell>
-                    <TableCell>
-                      <div className="flex items-center gap-2">
-                        <UserCheck className="w-3 h-3 text-accent" />
-                        <span className="font-medium">
-                          {users?.find(u => u.id === shipment.userId)?.username || 'Archive Record'}
-                        </span>
-                      </div>
-                    </TableCell>
-                    <TableCell className="text-sm">
-                      <span className="font-semibold">{shipment.origin}</span>
-                      <span className="mx-2 text-accent">→</span>
-                      <span className="font-semibold">{shipment.destination}</span>
-                    </TableCell>
-                    <TableCell>
-                       <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                         shipment.status === 'Delivered' ? 'bg-green-100 text-green-700' :
-                         shipment.status === 'Delayed' ? 'bg-red-100 text-red-700' : 'bg-primary/10 text-primary'
-                       }`}>
-                         {shipment.status}
-                       </span>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Button variant="ghost" size="icon" onClick={() => handleDelete(shipment.id)} className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </div>
