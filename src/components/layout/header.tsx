@@ -32,12 +32,6 @@ export function Header() {
 
   const mainNavLinks = navigationLinks.filter(l => !['Admin', 'Login'].includes(l.label));
 
-  // Dynamic navigation links based on auth state - Defer to client only
-  const showDashboard = mounted && user && !user.isAnonymous;
-  const dashboardLink = showDashboard 
-    ? { href: isAdmin ? "/admin" : "/dashboard", label: isAdmin ? "Admin" : "Dashboard" }
-    : null;
-
   return (
     <header className="sticky top-0 z-50 bg-background shadow-md">
       <div className="bg-primary text-primary-foreground py-2 text-sm">
@@ -61,7 +55,7 @@ export function Header() {
       <nav className="container mx-auto px-4 flex justify-between items-center h-20">
         <Logo />
         
-        {/* Desktop Nav */}
+        {/* Desktop Nav - Keep structure stable during hydration */}
         <div className="hidden lg:flex items-center gap-8">
           {mainNavLinks.map((link) => (
             <Link
@@ -75,16 +69,16 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          {dashboardLink && (
+          {mounted && user && !user.isAnonymous && (
             <Link 
-              href={dashboardLink.href} 
+              href={isAdmin ? "/admin" : "/dashboard"} 
               className={cn(
                 "font-semibold transition-colors flex items-center gap-1 hover:text-primary",
-                pathname === dashboardLink.href ? "text-primary" : "text-foreground/80"
+                pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-primary" : "text-foreground/80"
               )}
             >
               <LayoutDashboard size={16} />
-              {dashboardLink.label}
+              {isAdmin ? "Admin" : "Dashboard"}
             </Link>
           )}
         </div>
@@ -92,26 +86,22 @@ export function Header() {
         <div className="flex items-center gap-4">
           {/* Auth section - Desktop & Tablet */}
           <div className="hidden sm:flex items-center gap-2 min-w-[150px] justify-end">
-            {mounted && !isUserLoading ? (
-              <>
-                {user && !user.isAnonymous ? (
-                  <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
-                      <LogOut className="h-4 w-4" />
-                      Logout
-                  </Button>
-                ) : (
-                  <>
-                    <Button asChild variant="ghost" size="sm">
-                      <Link href="/login">Login</Link>
-                    </Button>
-                    <Button asChild variant="default" size="sm">
-                      <Link href="/signup">Sign Up</Link>
-                    </Button>
-                  </>
-                )}
-              </>
+            {!mounted || isUserLoading ? (
+              <div className="h-9 w-20 bg-muted/20 animate-pulse rounded-md" />
+            ) : user && !user.isAnonymous ? (
+              <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
+                  <LogOut className="h-4 w-4" />
+                  Logout
+              </Button>
             ) : (
-              <div className="h-9" /> // Placeholder to keep layout stable
+              <>
+                <Button asChild variant="ghost" size="sm">
+                  <Link href="/login">Login</Link>
+                </Button>
+                <Button asChild variant="default" size="sm">
+                  <Link href="/signup">Sign Up</Link>
+                </Button>
+              </>
             )}
           </div>
 
@@ -144,16 +134,16 @@ export function Header() {
                     </Link>
                   ))}
                   
-                  {dashboardLink && (
+                  {mounted && user && !user.isAnonymous && (
                     <Link
-                      href={dashboardLink.href}
+                      href={isAdmin ? "/admin" : "/dashboard"}
                       onClick={() => setIsOpen(false)}
                       className={cn(
                         "text-lg font-medium transition-colors hover:text-primary",
-                        pathname === dashboardLink.href ? "text-primary" : "text-foreground/80"
+                        pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-primary" : "text-foreground/80"
                       )}
                     >
-                      {dashboardLink.label}
+                      {isAdmin ? "Admin" : "Dashboard"}
                     </Link>
                   )}
 

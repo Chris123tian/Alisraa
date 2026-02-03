@@ -10,13 +10,12 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    // Robust admin check: allows the specific primary admin email OR users with the admin role in Firestore.
+    // Simplified and more robust admin check for Firestore query optimizer
     function isAdmin() {
-      return isSignedIn() && (
-        request.auth.token.email == 'alisraainternationaler@gmail.com' ||
-        (exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) &&
-         get(/databases/$(database)/documents/roles_admin/$(request.auth.uid)).data.isAdmin == true)
-      );
+      let isPrimaryAdmin = request.auth.token.email == 'alisraainternationaler@gmail.com';
+      let hasRoleDoc = exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) && 
+                       get(/databases/$(database)/documents/roles_admin/$(request.auth.uid)).data.isAdmin == true;
+      return isSignedIn() && (isPrimaryAdmin || hasRoleDoc);
     }
 
     match /users/{userId} {
@@ -47,9 +46,7 @@ service cloud.firestore {
     }
 
     match /roles_admin/{userId} {
-      // Allow any signed in user to see their own admin status
       allow get: if isSignedIn() && (request.auth.uid == userId || isAdmin());
-      // Only admins can manage the admin roles themselves
       allow list, create, update, delete: if isAdmin();
     }
   }
