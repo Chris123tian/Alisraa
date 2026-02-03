@@ -8,21 +8,17 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { navigationLinks } from '@/lib/data';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useUser, useAuth } from '@/firebase';
 import { useAdmin } from '@/hooks/useAdmin';
+import { ClientOnly } from '@/components/auth/client-only';
 
 export function Header() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
   const { user, isUserLoading } = useUser();
   const { isAdmin } = useAdmin();
   const auth = useAuth();
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const handleLogout = () => {
     auth.signOut().then(() => {
@@ -55,7 +51,7 @@ export function Header() {
       <nav className="container mx-auto px-4 flex justify-between items-center h-20">
         <Logo />
         
-        {/* Desktop Nav - Keep structure stable during hydration */}
+        {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-8">
           {mainNavLinks.map((link) => (
             <Link
@@ -69,40 +65,44 @@ export function Header() {
               {link.label}
             </Link>
           ))}
-          {mounted && user && !user.isAnonymous && (
-            <Link 
-              href={isAdmin ? "/admin" : "/dashboard"} 
-              className={cn(
-                "font-semibold transition-colors flex items-center gap-1 hover:text-primary",
-                pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-primary" : "text-foreground/80"
-              )}
-            >
-              <LayoutDashboard size={16} />
-              {isAdmin ? "Admin" : "Dashboard"}
-            </Link>
-          )}
+          <ClientOnly>
+            {user && !user.isAnonymous && (
+              <Link 
+                href={isAdmin ? "/admin" : "/dashboard"} 
+                className={cn(
+                  "font-semibold transition-colors flex items-center gap-1 hover:text-primary",
+                  pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-primary" : "text-foreground/80"
+                )}
+              >
+                <LayoutDashboard size={16} />
+                {isAdmin ? "Admin" : "Dashboard"}
+              </Link>
+            )}
+          </ClientOnly>
         </div>
 
         <div className="flex items-center gap-4">
           {/* Auth section - Desktop & Tablet */}
           <div className="hidden sm:flex items-center gap-2 min-w-[150px] justify-end">
-            {!mounted || isUserLoading ? (
-              <div className="h-9 w-20 bg-muted/20 animate-pulse rounded-md" />
-            ) : user && !user.isAnonymous ? (
-              <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
-                  <LogOut className="h-4 w-4" />
-                  Logout
-              </Button>
-            ) : (
-              <>
-                <Button asChild variant="ghost" size="sm">
-                  <Link href="/login">Login</Link>
+            <ClientOnly fallback={<div className="h-9 w-24 bg-muted animate-pulse rounded-md" />}>
+              {isUserLoading ? (
+                <div className="h-9 w-24 bg-muted animate-pulse rounded-md" />
+              ) : user && !user.isAnonymous ? (
+                <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2">
+                    <LogOut className="h-4 w-4" />
+                    Logout
                 </Button>
-                <Button asChild variant="default" size="sm">
-                  <Link href="/signup">Sign Up</Link>
-                </Button>
-              </>
-            )}
+              ) : (
+                <>
+                  <Button asChild variant="ghost" size="sm">
+                    <Link href="/login">Login</Link>
+                  </Button>
+                  <Button asChild variant="default" size="sm">
+                    <Link href="/signup">Sign Up</Link>
+                  </Button>
+                </>
+              )}
+            </ClientOnly>
           </div>
 
           {/* Mobile Menu */}
@@ -134,38 +134,40 @@ export function Header() {
                     </Link>
                   ))}
                   
-                  {mounted && user && !user.isAnonymous && (
-                    <Link
-                      href={isAdmin ? "/admin" : "/dashboard"}
-                      onClick={() => setIsOpen(false)}
-                      className={cn(
-                        "text-lg font-medium transition-colors hover:text-primary",
-                        pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-primary" : "text-foreground/80"
-                      )}
-                    >
-                      {isAdmin ? "Admin" : "Dashboard"}
-                    </Link>
-                  )}
+                  <ClientOnly>
+                    {user && !user.isAnonymous && (
+                      <Link
+                        href={isAdmin ? "/admin" : "/dashboard"}
+                        onClick={() => setIsOpen(false)}
+                        className={cn(
+                          "text-lg font-medium transition-colors hover:text-primary",
+                          pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-primary" : "text-foreground/80"
+                        )}
+                      >
+                        {isAdmin ? "Admin" : "Dashboard"}
+                      </Link>
+                    )}
 
-                  {mounted && !isUserLoading && (
-                    <div className="flex flex-col gap-2 mt-4 pt-4 border-t">
-                      {user && !user.isAnonymous ? (
-                        <Button variant="outline" className="w-full flex items-center gap-2" onClick={handleLogout}>
-                          <LogOut className="h-4 w-4" />
-                          Logout
-                        </Button>
-                      ) : (
-                        <>
-                          <Button asChild variant="outline" className="w-full">
-                            <Link href="/login" onClick={() => setIsOpen(false)}>Login</Link>
+                    {!isUserLoading && (
+                      <div className="flex flex-col gap-2 mt-4 pt-4 border-t">
+                        {user && !user.isAnonymous ? (
+                          <Button variant="outline" className="w-full flex items-center gap-2" onClick={handleLogout}>
+                            <LogOut className="h-4 w-4" />
+                            Logout
                           </Button>
-                          <Button asChild variant="default" className="w-full">
-                            <Link href="/signup" onClick={() => setIsOpen(false)}>Sign Up</Link>
-                          </Button>
-                        </>
-                      )}
-                    </div>
-                  )}
+                        ) : (
+                          <>
+                            <Button asChild variant="outline" className="w-full">
+                              <Link href="/login" onClick={() => setIsOpen(false)}>Login</Link>
+                            </Button>
+                            <Button asChild variant="default" className="w-full">
+                              <Link href="/signup" onClick={() => setIsOpen(false)}>Sign Up</Link>
+                            </Button>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </ClientOnly>
                 </div>
               </SheetContent>
             </Sheet>
