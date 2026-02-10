@@ -22,7 +22,7 @@ export function Header() {
 
   const handleLogout = () => {
     auth.signOut().then(() => {
-        window.location.href = '/';
+      window.location.href = '/';
     });
   };
 
@@ -30,9 +30,9 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm border-b">
-      {/* Top Bar - Static shell for hydration stability */}
-      <div className="bg-primary text-primary-foreground py-2 text-xs font-medium min-h-[40px]">
-        <div className="container mx-auto px-4 flex justify-between items-center">
+      {/* Top Bar - 100% Static Shell for Hydration Stability */}
+      <div className="bg-primary h-10 w-full">
+        <div className="container mx-auto px-4 h-full flex justify-between items-center text-primary-foreground text-xs font-medium">
           <ClientOnly fallback={<div className="h-4 w-48 bg-white/10 animate-pulse rounded" />}>
             <div className="flex items-center gap-4 md:gap-8">
               <div className="flex items-center gap-2 hover:text-accent transition-colors">
@@ -44,10 +44,10 @@ export function Header() {
                 <span className="hidden sm:inline">+49 (30) 12345678</span>
               </div>
             </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white">Global HQ</span>
+            </div>
           </ClientOnly>
-          <div className="flex items-center gap-2">
-             <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white">Europe HQ</span>
-          </div>
         </div>
       </div>
 
@@ -85,14 +85,14 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="hidden sm:flex items-center gap-2 min-w-[180px] justify-end">
+          <div className="hidden sm:flex items-center gap-2 min-w-[150px] justify-end">
             <ClientOnly fallback={<div className="h-9 w-32 bg-muted/20 animate-pulse rounded-md" />}>
               {isUserLoading ? (
                 <div className="h-9 w-32 bg-muted/20 animate-pulse rounded-md" />
               ) : user && !user.isAnonymous ? (
                 <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2 border-primary/20 hover:bg-primary/5">
-                    <LogOut className="h-4 w-4" />
-                    Sign Out
+                  <LogOut className="h-4 w-4" />
+                  Sign Out
                 </Button>
               ) : (
                 <div className="flex items-center gap-2">
