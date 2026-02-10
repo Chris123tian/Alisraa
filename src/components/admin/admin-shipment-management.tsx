@@ -124,7 +124,7 @@ export function AdminShipmentManagement() {
             <div className="space-y-2">
               <Label htmlFor="userId" className="font-semibold text-primary/80">Select Registered Client</Label>
               <Select 
-                onValueChange={(v) => setFormData({ ...formData, userId: v })} 
+                onValueChange={(v) => setFormData(prev => ({ ...prev, userId: v }))} 
                 value={formData.userId}
               >
                 <SelectTrigger id="userId" className="bg-background border-primary/20">
@@ -148,7 +148,7 @@ export function AdminShipmentManagement() {
             <div className="space-y-2">
               <Label htmlFor="status" className="font-semibold text-primary/80">Current Logistics Status</Label>
               <Select 
-                onValueChange={(v) => setFormData({ ...formData, status: v })} 
+                onValueChange={(v) => setFormData(prev => ({ ...prev, status: v }))} 
                 value={formData.status}
               >
                 <SelectTrigger id="status" className="bg-background border-primary/20">
@@ -171,7 +171,7 @@ export function AdminShipmentManagement() {
                   id="origin"
                   placeholder="e.g. Damascus, Syria" 
                   value={formData.origin}
-                  onChange={(e) => setFormData({ ...formData, origin: e.target.value })}
+                  onChange={(e) => setFormData(prev => ({ ...prev, origin: e.target.value }))}
                   className="pl-10 bg-background border-primary/20"
                 />
               </div>
@@ -184,7 +184,7 @@ export function AdminShipmentManagement() {
                   id="destination"
                   placeholder="e.g. Berlin, Germany" 
                   value={formData.destination}
-                  onChange={(e) => setFormData({ ...formData, destination: e.target.value })}
+                  onChange={(e) => setFormData(prev => ({ ...prev, destination: e.target.value }))}
                   className="pl-10 bg-background border-primary/20"
                 />
               </div>
@@ -197,7 +197,7 @@ export function AdminShipmentManagement() {
                   id="vessel"
                   placeholder="e.g. MS Hamburg Express (Voyage #9921)" 
                   value={formData.vessel}
-                  onChange={(e) => setFormData({ ...formData, vessel: e.target.value })}
+                  onChange={(e) => setFormData(prev => ({ ...prev, vessel: e.target.value }))}
                   className="pl-10 bg-background border-primary/20"
                 />
               </div>

@@ -30,10 +30,10 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 shadow-sm border-b">
-      {/* Top Bar - Client Only for consistency */}
-      <ClientOnly fallback={<div className="bg-primary h-10 w-full" />}>
-        <div className="bg-primary text-primary-foreground py-2 text-xs font-medium">
-          <div className="container mx-auto px-4 flex justify-between items-center">
+      {/* Top Bar - Static shell for hydration stability */}
+      <div className="bg-primary text-primary-foreground py-2 text-xs font-medium min-h-[40px]">
+        <div className="container mx-auto px-4 flex justify-between items-center">
+          <ClientOnly fallback={<div className="h-4 w-48 bg-white/10 animate-pulse rounded" />}>
             <div className="flex items-center gap-4 md:gap-8">
               <div className="flex items-center gap-2 hover:text-accent transition-colors">
                 <Mail size={14} />
@@ -44,12 +44,12 @@ export function Header() {
                 <span className="hidden sm:inline">+49 (30) 12345678</span>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-               <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white">Europe HQ</span>
-            </div>
+          </ClientOnly>
+          <div className="flex items-center gap-2">
+             <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white">Europe HQ</span>
           </div>
         </div>
-      </ClientOnly>
+      </div>
 
       <nav className="container mx-auto px-4 flex justify-between items-center h-20">
         <Logo />
@@ -85,7 +85,6 @@ export function Header() {
         </div>
 
         <div className="flex items-center gap-4">
-          {/* Auth section - Desktop & Tablet */}
           <div className="hidden sm:flex items-center gap-2 min-w-[180px] justify-end">
             <ClientOnly fallback={<div className="h-9 w-32 bg-muted/20 animate-pulse rounded-md" />}>
               {isUserLoading ? (
@@ -108,7 +107,6 @@ export function Header() {
             </ClientOnly>
           </div>
 
-          {/* Mobile Menu */}
           <div className="lg:hidden">
             <ClientOnly fallback={<div className="h-10 w-10 bg-muted/20 rounded-md" />}>
               <Sheet open={isOpen} onOpenChange={setIsOpen}>
