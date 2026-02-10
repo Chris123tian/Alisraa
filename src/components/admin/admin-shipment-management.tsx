@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Trash2, Plus, RefreshCw, UserCheck, Package, MapPin, Truck } from 'lucide-react';
+import { Trash2, Plus, RefreshCw, Package } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAdmin } from '@/hooks/useAdmin';
 
@@ -196,7 +196,7 @@ export function AdminShipmentManagement() {
                 onChange={(e) => setFormData(prev => ({ ...prev, vessel: e.target.value }))}
               />
             </div>
-            <Button type="submit" className="md:col-span-2 bg-primary hover:bg-primary/90 shadow-lg" disabled={isSubmitting || !formData.userId}>
+            <Button type="submit" className="md:col-span-2 bg-primary hover:bg-primary/90 shadow-lg" disabled={isSubmitting}>
               {isSubmitting ? (
                 <RefreshCw className="animate-spin mr-2" />
               ) : (
