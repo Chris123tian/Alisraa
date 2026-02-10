@@ -33,21 +33,19 @@ export function Header() {
       {/* Top Bar - 100% Static Shell for Hydration Stability */}
       <div className="bg-primary h-10 w-full">
         <div className="container mx-auto px-4 h-full flex justify-between items-center text-primary-foreground text-xs font-medium">
-          <ClientOnly fallback={<div className="h-4 w-48 bg-white/10 animate-pulse rounded" />}>
-            <div className="flex items-center gap-4 md:gap-8">
-              <div className="flex items-center gap-2 hover:text-accent transition-colors">
-                <Mail size={14} />
-                <span className="hidden sm:inline">info@al-israa-frachtlogistik.de</span>
-              </div>
-              <div className="flex items-center gap-2 hover:text-accent transition-colors">
-                <Phone size={14} />
-                <span className="hidden sm:inline">+49 (30) 12345678</span>
-              </div>
+          <div className="flex items-center gap-4 md:gap-8">
+            <div className="flex items-center gap-2">
+              <Mail size={14} className="text-accent" />
+              <span className="hidden sm:inline">info@al-israa-frachtlogistik.de</span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white">Global HQ</span>
+              <Phone size={14} className="text-accent" />
+              <span className="hidden sm:inline">+49 (30) 12345678</span>
             </div>
-          </ClientOnly>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white">Global Logistics</span>
+          </div>
         </div>
       </div>
 
@@ -62,7 +60,7 @@ export function Header() {
               href={link.href}
               className={cn(
                 "font-semibold transition-colors hover:text-accent relative py-1",
-                pathname === link.href ? "text-primary after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-accent" : "text-foreground/80"
+                pathname === link.href ? "text-primary border-b-2 border-accent" : "text-foreground/80"
               )}
             >
               {link.label}
@@ -78,7 +76,7 @@ export function Header() {
                 )}
               >
                 <LayoutDashboard size={16} />
-                {isAdmin ? "Admin Console" : "My Dashboard"}
+                {isAdmin ? "Admin" : "Dashboard"}
               </Link>
             )}
           </ClientOnly>
@@ -90,7 +88,7 @@ export function Header() {
               {isUserLoading ? (
                 <div className="h-9 w-32 bg-muted/20 animate-pulse rounded-md" />
               ) : user && !user.isAnonymous ? (
-                <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2 border-primary/20 hover:bg-primary/5">
+                <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2 border-primary/20">
                   <LogOut className="h-4 w-4" />
                   Sign Out
                 </Button>
@@ -99,7 +97,7 @@ export function Header() {
                   <Button asChild variant="ghost" size="sm" className="font-semibold">
                     <Link href="/login">Login</Link>
                   </Button>
-                  <Button asChild variant="default" size="sm" className="bg-accent hover:bg-accent/90 text-white shadow-md">
+                  <Button asChild variant="default" size="sm" className="bg-accent hover:bg-accent/90 text-white font-bold">
                     <Link href="/signup">Sign Up</Link>
                   </Button>
                 </div>
@@ -113,14 +111,14 @@ export function Header() {
                 <SheetTrigger asChild>
                   <Button variant="outline" size="icon" className="border-primary/20">
                     <Menu className="h-5 w-5" />
-                    <span className="sr-only">Open Menu</span>
+                    <span className="sr-only">Menu</span>
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="right" className="w-[300px]">
                   <SheetHeader className="mb-8 border-b pb-4">
                     <Logo />
-                    <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
-                    <SheetDescription className="sr-only">Access links for services, tracking, and account management.</SheetDescription>
+                    <SheetTitle className="sr-only">Navigation</SheetTitle>
+                    <SheetDescription className="sr-only">Access site links.</SheetDescription>
                   </SheetHeader>
                   <div className="flex flex-col gap-5">
                     {mainNavLinks.map((link) => (
@@ -129,8 +127,8 @@ export function Header() {
                         href={link.href}
                         onClick={() => setIsOpen(false)}
                         className={cn(
-                          "text-lg font-semibold transition-colors flex items-center justify-between",
-                          pathname === link.href ? "text-accent" : "text-foreground/80 hover:text-primary"
+                          "text-lg font-semibold",
+                          pathname === link.href ? "text-accent" : "text-foreground/80"
                         )}
                       >
                         {link.label}
@@ -142,29 +140,25 @@ export function Header() {
                         href={isAdmin ? "/admin" : "/dashboard"}
                         onClick={() => setIsOpen(false)}
                         className={cn(
-                          "text-lg font-semibold transition-colors flex items-center gap-2 border-t pt-4",
-                          pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-accent" : "text-foreground/80 hover:text-primary"
+                          "text-lg font-semibold border-t pt-4",
+                          pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-accent" : "text-foreground/80"
                         )}
                       >
-                        <LayoutDashboard size={18} />
-                        {isAdmin ? "Admin Console" : "My Dashboard"}
+                        {isAdmin ? "Admin Console" : "Client Dashboard"}
                       </Link>
                     )}
 
                     <div className="flex flex-col gap-3 mt-6 pt-6 border-t">
-                      {isUserLoading ? (
-                        <div className="h-10 w-full bg-muted animate-pulse rounded-md" />
-                      ) : user && !user.isAnonymous ? (
-                        <Button variant="outline" className="w-full flex items-center gap-2" onClick={handleLogout}>
-                          <LogOut className="h-4 w-4" />
-                          Log Out
+                      {user && !user.isAnonymous ? (
+                        <Button variant="outline" className="w-full" onClick={handleLogout}>
+                          Sign Out
                         </Button>
                       ) : (
                         <>
                           <Button asChild variant="outline" className="w-full">
                             <Link href="/login" onClick={() => setIsOpen(false)}>Login</Link>
                           </Button>
-                          <Button asChild variant="default" className="w-full bg-accent hover:bg-accent/90">
+                          <Button asChild variant="default" className="w-full bg-accent">
                             <Link href="/signup" onClick={() => setIsOpen(false)}>Sign Up</Link>
                           </Button>
                         </>

@@ -29,7 +29,7 @@ export function AdminShipmentManagement() {
     vessel: '',
   });
 
-  // Defensive queries
+  // Fetch all shipments
   const shipmentsQuery = useMemoFirebase(() => {
     if (!firestore || !isAdmin) return null;
     return query(
@@ -41,6 +41,7 @@ export function AdminShipmentManagement() {
 
   const { data: shipments, isLoading: isShipmentsLoading } = useCollection(shipmentsQuery);
 
+  // Fetch all users for the dropdown
   const usersQuery = useMemoFirebase(() => {
     if (!firestore || !isAdmin) return null;
     return query(collection(firestore, 'users'), limit(500));
@@ -58,7 +59,7 @@ export function AdminShipmentManagement() {
       toast({ 
         variant: 'destructive', 
         title: 'Form Incomplete', 
-        description: 'Please select a client and specify both origin and destination.' 
+        description: 'Please select a client and provide route details.' 
       });
       return;
     }
@@ -74,7 +75,7 @@ export function AdminShipmentManagement() {
 
     addDocumentNonBlocking(collection(firestore, 'shipments'), shipmentData)
       .then(() => {
-        toast({ title: 'Success!', description: `Shipment ${trackingNumber} has been registered.` });
+        toast({ title: 'Success!', description: `Shipment ${trackingNumber} created.` });
         setFormData({
           userId: '',
           origin: '',
@@ -106,7 +107,12 @@ export function AdminShipmentManagement() {
   }
 
   if (!isAdmin) {
-    return null;
+    return (
+      <Card className="p-8 text-center">
+        <CardTitle>Access Denied</CardTitle>
+        <CardDescription>You must be an administrator to view this manifest.</CardDescription>
+      </Card>
+    );
   }
 
   return (
@@ -128,7 +134,7 @@ export function AdminShipmentManagement() {
                 value={formData.userId}
               >
                 <SelectTrigger id="userId" className="bg-background border-primary/20">
-                  <SelectValue placeholder={isUsersLoading ? "Loading directory..." : "Select a client"} />
+                  <SelectValue placeholder={isUsersLoading ? "Loading clients..." : "Select a client"} />
                 </SelectTrigger>
                 <SelectContent>
                   {isUsersLoading ? (
@@ -136,7 +142,7 @@ export function AdminShipmentManagement() {
                   ) : users && users.length > 0 ? (
                     users.map(user => (
                       <SelectItem key={user.id} value={user.id}>
-                        {user.username} ({user.email})
+                        {user.username || user.email} ({user.email})
                       </SelectItem>
                     ))
                   ) : (
@@ -146,7 +152,7 @@ export function AdminShipmentManagement() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="status" className="font-semibold text-primary/80">Current Logistics Status</Label>
+              <Label htmlFor="status" className="font-semibold text-primary/80">Logistics Status</Label>
               <Select 
                 onValueChange={(v) => setFormData(prev => ({ ...prev, status: v }))} 
                 value={formData.status}
@@ -155,60 +161,48 @@ export function AdminShipmentManagement() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Pending">Pending Assignment</SelectItem>
+                  <SelectItem value="Pending">Pending</SelectItem>
                   <SelectItem value="In Transit">In Transit</SelectItem>
                   <SelectItem value="Customs Clearance">Customs Clearance</SelectItem>
-                  <SelectItem value="Delivered">Final Delivery</SelectItem>
-                  <SelectItem value="Delayed">Logistics Delay</SelectItem>
+                  <SelectItem value="Delivered">Delivered</SelectItem>
+                  <SelectItem value="Delayed">Delayed</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="origin" className="font-semibold text-primary/80">Port of Origin</Label>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="origin"
-                  placeholder="e.g. Damascus, Syria" 
-                  value={formData.origin}
-                  onChange={(e) => setFormData(prev => ({ ...prev, origin: e.target.value }))}
-                  className="pl-10 bg-background border-primary/20"
-                />
-              </div>
+              <Label htmlFor="origin" className="font-semibold text-primary/80">Origin</Label>
+              <Input 
+                id="origin"
+                placeholder="e.g. Damascus, Syria" 
+                value={formData.origin}
+                onChange={(e) => setFormData(prev => ({ ...prev, origin: e.target.value }))}
+              />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="destination" className="font-semibold text-primary/80">Port of Destination</Label>
-              <div className="relative">
-                <MapPin className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="destination"
-                  placeholder="e.g. Berlin, Germany" 
-                  value={formData.destination}
-                  onChange={(e) => setFormData(prev => ({ ...prev, destination: e.target.value }))}
-                  className="pl-10 bg-background border-primary/20"
-                />
-              </div>
+              <Label htmlFor="destination" className="font-semibold text-primary/80">Destination</Label>
+              <Input 
+                id="destination"
+                placeholder="e.g. Hamburg, Germany" 
+                value={formData.destination}
+                onChange={(e) => setFormData(prev => ({ ...prev, destination: e.target.value }))}
+              />
             </div>
             <div className="md:col-span-2 space-y-2">
               <Label htmlFor="vessel" className="font-semibold text-primary/80">Vessel / Transport Info</Label>
-              <div className="relative">
-                <Truck className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <Input 
-                  id="vessel"
-                  placeholder="e.g. MS Hamburg Express (Voyage #9921)" 
-                  value={formData.vessel}
-                  onChange={(e) => setFormData(prev => ({ ...prev, vessel: e.target.value }))}
-                  className="pl-10 bg-background border-primary/20"
-                />
-              </div>
+              <Input 
+                id="vessel"
+                placeholder="e.g. MS Express Voyage #9921" 
+                value={formData.vessel}
+                onChange={(e) => setFormData(prev => ({ ...prev, vessel: e.target.value }))}
+              />
             </div>
-            <Button type="submit" className="md:col-span-2 py-6 text-lg bg-primary hover:bg-primary/90 shadow-lg group" disabled={isSubmitting || !formData.userId}>
+            <Button type="submit" className="md:col-span-2 bg-primary hover:bg-primary/90 shadow-lg" disabled={isSubmitting || !formData.userId}>
               {isSubmitting ? (
                 <RefreshCw className="animate-spin mr-2" />
               ) : (
-                <Plus className="mr-2 group-hover:rotate-90 transition-transform" />
+                <Plus className="mr-2" />
               )}
-              Create Shipment & Generate Link
+              Create Shipment & Generate Tracking
             </Button>
           </form>
         </CardContent>
@@ -220,70 +214,61 @@ export function AdminShipmentManagement() {
             <Package className="w-5 h-5 text-accent" />
             Active Cargo Manifest
           </CardTitle>
-          <CardDescription>View and track all active shipments on the platform.</CardDescription>
+          <CardDescription>Monitor all live shipments on the platform.</CardDescription>
         </CardHeader>
         <CardContent className="p-0">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader className="bg-muted/30">
+          <Table>
+            <TableHeader className="bg-muted/30">
+              <TableRow>
+                <TableHead className="font-bold">Tracking #</TableHead>
+                <TableHead className="font-bold">Client</TableHead>
+                <TableHead className="font-bold">Route</TableHead>
+                <TableHead className="font-bold">Status</TableHead>
+                <TableHead className="text-right font-bold">Actions</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {isShipmentsLoading ? (
                 <TableRow>
-                  <TableHead className="font-bold">Tracking #</TableHead>
-                  <TableHead className="font-bold">Client</TableHead>
-                  <TableHead className="font-bold">Route</TableHead>
-                  <TableHead className="font-bold">Status</TableHead>
-                  <TableHead className="text-right font-bold">Actions</TableHead>
+                  <TableCell colSpan={5} className="text-center py-10">
+                    <RefreshCw className="animate-spin inline mr-3 h-5 w-5" /> 
+                    Loading...
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isShipmentsLoading ? (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center py-10 text-muted-foreground">
-                      <RefreshCw className="animate-spin inline mr-3 h-5 w-5" /> 
-                      Syncing Cargo...
+              ) : shipments && shipments.length > 0 ? (
+                shipments.map(shipment => (
+                  <TableRow key={shipment.id}>
+                    <TableCell className="font-mono font-bold">{shipment.trackingNumber}</TableCell>
+                    <TableCell>
+                      {users?.find(u => u.id === shipment.userId)?.username || shipment.userId}
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      {shipment.origin} → {shipment.destination}
+                    </TableCell>
+                    <TableCell>
+                       <span className={`px-2 py-1 rounded-full text-[10px] font-bold uppercase ${
+                         shipment.status === 'Delivered' ? 'bg-green-100 text-green-700' :
+                         shipment.status === 'Delayed' ? 'bg-red-100 text-red-700' : 'bg-primary/10 text-primary'
+                       }`}>
+                         {shipment.status}
+                       </span>
+                    </TableCell>
+                    <TableCell className="text-right">
+                      <Button variant="ghost" size="icon" onClick={() => handleDelete(shipment.id)}>
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </TableCell>
                   </TableRow>
-                ) : shipments && shipments.length > 0 ? (
-                  shipments.map(shipment => (
-                    <TableRow key={shipment.id} className="hover:bg-accent/5 transition-colors">
-                      <TableCell className="font-mono font-black text-primary tracking-tighter">{shipment.trackingNumber}</TableCell>
-                      <TableCell>
-                        <div className="flex items-center gap-2">
-                          <UserCheck className="w-3 h-3 text-accent" />
-                          <span className="font-medium">
-                            {users?.find(u => u.id === shipment.userId)?.username || 'User Record'}
-                          </span>
-                        </div>
-                      </TableCell>
-                      <TableCell className="text-sm">
-                        <span className="font-semibold">{shipment.origin}</span>
-                        <span className="mx-2 text-accent">→</span>
-                        <span className="font-semibold">{shipment.destination}</span>
-                      </TableCell>
-                      <TableCell>
-                         <span className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider ${
-                           shipment.status === 'Delivered' ? 'bg-green-100 text-green-700' :
-                           shipment.status === 'Delayed' ? 'bg-red-100 text-red-700' : 'bg-primary/10 text-primary'
-                         }`}>
-                           {shipment.status}
-                         </span>
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <Button variant="ghost" size="icon" onClick={() => handleDelete(shipment.id)} className="text-muted-foreground hover:text-destructive hover:bg-destructive/10">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={5} className="text-center py-20 text-muted-foreground italic">
-                      No shipments found.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={5} className="text-center py-20 text-muted-foreground">
+                    No active shipments found.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>

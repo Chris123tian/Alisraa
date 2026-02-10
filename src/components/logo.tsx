@@ -11,8 +11,8 @@ export function Logo() {
         <Ship className="w-6 h-6 md:w-8 md:h-8 text-white shrink-0" />
       </div>
       <div className="flex flex-col">
-        <span className="leading-none tracking-tighter uppercase">Al-Israa</span>
-        <span className="text-accent text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase">Frachtlogistik</span>
+        <span className="leading-none tracking-tighter uppercase font-black text-primary">Al-Israa</span>
+        <span className="text-accent text-[10px] md:text-xs font-bold tracking-[0.3em] uppercase">Logistik</span>
       </div>
     </Link>
   );

@@ -10,30 +10,31 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    // Comprehensive admin check
+    // Simplified Admin Check
     function isAdmin() {
-      let isPrimaryAdmin = request.auth.token.email == 'alisraainternationaler@gmail.com';
-      let hasRoleDoc = exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid)) && 
-                       get(/databases/$(database)/documents/roles_admin/$(request.auth.uid)).data.isAdmin == true;
-      return isSignedIn() && (isPrimaryAdmin || hasRoleDoc);
+      return isSignedIn() && (
+        request.auth.token.email == 'alisraainternationaler@gmail.com' ||
+        exists(/databases/$(database)/documents/roles_admin/$(request.auth.uid))
+      );
     }
 
     match /users/{userId} {
       allow get: if isSignedIn();
+      allow list: if isAdmin();
       allow update: if isOwner(userId);
-      allow create: if isSignedIn() && request.resource.data.id == request.auth.uid;
-      allow list, delete: if isAdmin();
+      allow create: if isSignedIn();
+      allow delete: if isAdmin();
     }
 
     match /shipments/{shipmentId} {
       // Allow specific document read for admins or owners
       allow get: if isSignedIn() && (isAdmin() || resource.data.userId == request.auth.uid);
       
-      // Explicitly allow admins to list all shipments
+      // Allow admins to list all shipments
       allow list: if isAdmin();
       
       // Allow regular users to list ONLY their own shipments (query must filter by userId)
-      allow list: if isSignedIn() && request.query.limit <= 100 && resource.data.userId == request.auth.uid;
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
       
       // Full write access for admins
       allow write: if isAdmin();
