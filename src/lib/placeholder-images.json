@@ -2,21 +2,33 @@
   "placeholderImages": [
     {
       "id": "hero-image",
-      "description": "Logistics hub collage showing container ship and cargo transport.",
-      "imageUrl": "https://images.unsplash.com/photo-1493946740644-2d8a1f1a6aff?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxsb2dpc3RpY3MlMjB0cmFuc3BvcnR8ZW58MHx8fHwxNzcwMDEzNDUwfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "logistics transport"
+      "description": "Premium cinematic shot of a massive container ship at sunset.",
+      "imageUrl": "https://images.unsplash.com/photo-1605745341112-85968b19335b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb250YWluZXIlMjBzaGlwfGVufDB8fHx8MTc3MDcxNDc1MHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "container ship"
     },
     {
-      "id": "about-image",
-      "description": "Modern warehouse interior with organized cargo.",
-      "imageUrl": "https://images.unsplash.com/photo-1504376830547-506dedfe1fe9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3YXJlaG91c2UlMjBsb2dpc3RpY3N8ZW58MHx8fHwxNzY5OTkzNDI4fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "warehouse logistics"
+      "id": "service-ocean",
+      "description": "Deep blue ocean with container ships.",
+      "imageUrl": "https://images.unsplash.com/photo-1703977883249-d959f2b0c1ae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxvY2VhbiUyMGNhcmdvfGVufDB8fHx8MTc3MDc2NTg4OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "ocean cargo"
     },
     {
-      "id": "contact-image",
-      "description": "Logistics management team in a modern office environment.",
-      "imageUrl": "https://images.unsplash.com/photo-1556761175-b413da4baf72?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxvZmZpY2UlMjB0ZWFtfGVufDB8fHx8MTc3MDAwMDgyNnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "office team"
+      "id": "service-air",
+      "description": "Cargo plane loading at night.",
+      "imageUrl": "https://images.unsplash.com/photo-1570710891163-6d3b5c47248b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYXJnbyUyMHBsYW5lfGVufDB8fHx8MTc3MDczMjQ1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cargo plane"
+    },
+    {
+      "id": "service-truck",
+      "description": "Logistics truck on a highway.",
+      "imageUrl": "https://images.unsplash.com/photo-1591419478162-a4dd21b7ec0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsb2dpc3RpY3MlMjB0cnVja3xlbnwwfHx8fDE3NzA3NTk3MTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "logistics truck"
+    },
+    {
+      "id": "about-warehouse",
+      "description": "Modern high-tech warehouse.",
+      "imageUrl": "https://images.unsplash.com/photo-1652878856788-6dc9e56c9235?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjB3YXJlaG91c2V8ZW58MHx8fHwxNzcwNzU0NDQyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern warehouse"
     }
   ]
 }

@@ -10,25 +10,23 @@
     --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 215 25% 18%;
+    /* Primary: Deep Midnight Navy */
+    --primary: 217 33% 17%;
     --primary-foreground: 210 40% 98%;
+    /* Secondary: Professional Slate */
     --secondary: 215 25% 27%;
     --secondary-foreground: 210 40% 98%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 41 96% 40%;
+    /* Accent: Vibrant Amber/Gold */
+    --accent: 38 92% 50%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 41 96% 40%;
-    --chart-1: 221.2 83.2% 53.3%;
-    --chart-2: 41 96% 40%;
-    --chart-3: 142.1 76.2% 36.3%;
-    --chart-4: 47.9 95.8% 53.1%;
-    --chart-5: 262.1 83.3% 57.8%;
-    --radius: 0.75rem;
+    --ring: 38 92% 50%;
+    --radius: 1rem;
   }
   .dark {
     --background: 222.2 84% 4.9%;
@@ -43,13 +41,13 @@
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
     --muted-foreground: 215 20.2% 65.1%;
-    --accent: 41 96% 40%;
+    --accent: 38 92% 50%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 41 96% 40%;
+    --ring: 38 92% 50%;
   }
 }
 
@@ -59,5 +57,20 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
