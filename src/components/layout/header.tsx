@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Menu, Mail, Phone, LogOut, LayoutDashboard } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 import { navigationLinks } from '@/lib/data';
 import React, { useState } from 'react';
@@ -120,6 +120,7 @@ export function Header() {
                   <SheetHeader className="mb-8 border-b pb-4">
                     <Logo />
                     <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+                    <SheetDescription className="sr-only">Access links for services, tracking, and account management.</SheetDescription>
                   </SheetHeader>
                   <div className="flex flex-col gap-5">
                     {mainNavLinks.map((link) => (
