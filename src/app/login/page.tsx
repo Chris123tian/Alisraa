@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -9,11 +10,13 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useToast } from '@/hooks/use-toast';
 import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { useAuth, useFirestore } from '@/firebase';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, getDoc } from 'firebase/firestore';
+import { useAuth, useFirestore, useUser } from '@/firebase';
+import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Chrome, Mail as MailIcon, Lock } from 'lucide-react';
+import { useEffect } from 'react';
 
 const formSchema = z.object({
   email: z.string().email('Invalid email address.'),
@@ -25,7 +28,35 @@ export default function LoginPage() {
   const auth = useAuth();
   const firestore = useFirestore();
   const router = useRouter();
-  
+  const { user, isUserLoading } = useUser();
+
+  const PRIMARY_ADMIN_EMAIL = 'alisraainternationaler@gmail.com';
+
+  // Effect to handle redirection once authenticated
+  useEffect(() => {
+    if (!isUserLoading && user && !user.isAnonymous) {
+      const email = user.email?.toLowerCase();
+      const isPrimaryAdmin = email === PRIMARY_ADMIN_EMAIL;
+
+      if (isPrimaryAdmin) {
+        router.push('/admin');
+        return;
+      }
+
+      // Check Firestore roles for other admins
+      const checkAdmin = async () => {
+        const adminDocRef = doc(firestore, 'roles_admin', user.uid);
+        const adminDoc = await getDoc(adminDocRef);
+        if (adminDoc.exists() && adminDoc.data()?.isAdmin === true) {
+          router.push('/admin');
+        } else {
+          router.push('/dashboard');
+        }
+      };
+      checkAdmin();
+    }
+  }, [user, isUserLoading, router, firestore]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -34,41 +65,52 @@ export default function LoginPage() {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function handleGoogleSignIn() {
     try {
-      const email = values.email.trim().toLowerCase();
-      const userCredential = await signInWithEmailAndPassword(auth, email, values.password);
-      const user = userCredential.user;
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
 
-      // Primary Admin Check
-      const PRIMARY_ADMIN_EMAIL = 'alisraainternationaler@gmail.com';
-      const isPrimaryAdmin = email === PRIMARY_ADMIN_EMAIL;
-
-      // Check Firestore roles if not primary admin
-      let hasAdminRole = false;
-      if (!isPrimaryAdmin) {
-        const adminDocRef = doc(firestore, 'roles_admin', user.uid);
-        const adminDoc = await getDoc(adminDocRef);
-        hasAdminRole = adminDoc.exists() && adminDoc.data()?.isAdmin === true;
+      // Ensure user document exists in Firestore
+      const userDocRef = doc(firestore, 'users', user.uid);
+      const userDoc = await getDoc(userDocRef);
+      
+      if (!userDoc.exists()) {
+        await setDoc(userDocRef, {
+          id: user.uid,
+          username: user.displayName || 'Google User',
+          email: user.email,
+          isAdmin: user.email?.toLowerCase() === PRIMARY_ADMIN_EMAIL,
+        }, { merge: true });
       }
 
       toast({
-        title: 'Login Successful',
-        description: isPrimaryAdmin || hasAdminRole ? 'Welcome back, Administrator.' : 'Welcome back to Al-Israa.',
+        title: 'Welcome',
+        description: 'Signed in successfully with Google.',
       });
-      
-      // Routing based on role
-      if (isPrimaryAdmin || hasAdminRole) {
-        router.push('/admin');
-      } else {
-        router.push('/dashboard');
-      }
+    } catch (error: any) {
+      toast({
+        variant: 'destructive',
+        title: 'Google Sign-In Failed',
+        description: error.message,
+      });
+    }
+  }
 
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const email = values.email.trim().toLowerCase();
+      await signInWithEmailAndPassword(auth, email, values.password);
+      
+      toast({
+        title: 'Authenticating...',
+        description: 'Verifying your credentials.',
+      });
     } catch (error: any) {
       toast({
         variant: 'destructive',
         title: 'Login Failed',
-        description: 'Invalid email or password. Please try again.',
+        description: 'Invalid email or password. Ensure you have created this account in the Firebase Console.',
       });
     }
   }
@@ -78,12 +120,26 @@ export default function LoginPage() {
       <PageHeader title="Access Your Account" breadcrumb={[{ href: '/login', label: 'Login' }]} />
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-lg">
-          <Card className="shadow-2xl border-none">
-            <CardHeader className="text-center bg-primary text-white rounded-t-lg">
-              <CardTitle className="text-2xl font-black uppercase tracking-tight">Sign In</CardTitle>
-              <CardDescription className="text-primary-foreground/70">Enter your credentials to manage your logistics.</CardDescription>
+          <Card className="shadow-2xl border-none overflow-hidden">
+            <CardHeader className="text-center bg-primary text-white p-8">
+              <CardTitle className="text-3xl font-black uppercase tracking-tight">Sign In</CardTitle>
+              <CardDescription className="text-primary-foreground/70 mt-2">Manage your global logistics manifest.</CardDescription>
             </CardHeader>
-            <CardContent className="pt-8">
+            <CardContent className="p-8 space-y-8">
+              <Button 
+                onClick={handleGoogleSignIn} 
+                variant="outline" 
+                className="w-full h-14 border-2 hover:bg-muted transition-all flex items-center justify-center gap-3 text-lg font-bold"
+              >
+                <Chrome className="w-6 h-6 text-red-500" />
+                Sign in with Google
+              </Button>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center"><span className="w-full border-t" /></div>
+                <div className="relative flex justify-center text-xs uppercase"><span className="bg-background px-4 text-muted-foreground font-bold">Or continue with email</span></div>
+              </div>
+
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <FormField
@@ -91,9 +147,11 @@ export default function LoginPage() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-bold text-primary">Email Address</FormLabel>
+                        <FormLabel className="font-bold text-primary flex items-center gap-2">
+                          <MailIcon className="w-4 h-4" /> Email Address
+                        </FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="client@example.com" {...field} className="h-12" />
+                          <Input type="email" placeholder="admin@al-israa.de" {...field} className="h-12 text-lg" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -104,24 +162,30 @@ export default function LoginPage() {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel className="font-bold text-primary">Password</FormLabel>
+                        <FormLabel className="font-bold text-primary flex items-center gap-2">
+                          <Lock className="w-4 h-4" /> Password
+                        </FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="********" {...field} className="h-12" />
+                          <Input type="password" placeholder="********" {...field} className="h-12 text-lg" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full h-12 bg-accent hover:bg-accent/90 text-white font-bold text-lg" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Authenticating...' : 'Sign In'}
+                  <Button type="submit" className="w-full h-14 bg-accent hover:bg-accent/90 text-white font-black text-xl uppercase tracking-widest shadow-xl transition-transform hover:scale-[1.02]" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? 'Verifying...' : 'Sign In Now'}
                   </Button>
                 </form>
               </Form>
-              <div className="mt-8 text-center text-sm text-muted-foreground">
-                Don't have an account yet?{' '}
-                <Link href="/signup" className="text-accent font-bold hover:underline">
-                  Create Account
-                </Link>
+
+              <div className="text-center space-y-4">
+                <p className="text-sm text-muted-foreground">
+                  Don't have an account?{' '}
+                  <Link href="/signup" className="text-accent font-bold hover:underline">Create One</Link>
+                </p>
+                <div className="p-4 bg-muted/50 rounded-xl text-[10px] text-muted-foreground uppercase tracking-widest leading-relaxed">
+                  System Notice: Primary Admin access is restricted to authorized personnel.
+                </div>
               </div>
             </CardContent>
           </Card>
