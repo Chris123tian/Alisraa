@@ -54,36 +54,36 @@ export default function LoginPage() {
 
       toast({
         title: 'Login Successful',
-        description: 'Welcome back!',
+        description: isPrimaryAdmin || hasAdminRole ? 'Welcome back, Administrator.' : 'Welcome back to Al-Israa.',
       });
       
-      // Force direct routing based on role
+      // Routing based on role
       if (isPrimaryAdmin || hasAdminRole) {
-        window.location.href = '/admin'; // Force full state reset and direct route
+        router.push('/admin');
       } else {
-        window.location.href = '/dashboard';
+        router.push('/dashboard');
       }
 
     } catch (error: any) {
       toast({
         variant: 'destructive',
         title: 'Login Failed',
-        description: error.message,
+        description: 'Invalid email or password. Please try again.',
       });
     }
   }
 
   return (
     <>
-      <PageHeader title="Login" breadcrumb={[{ href: '/login', label: 'Login' }]} />
+      <PageHeader title="Access Your Account" breadcrumb={[{ href: '/login', label: 'Login' }]} />
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 max-w-lg">
-          <Card>
-            <CardHeader>
-              <CardTitle>Sign In</CardTitle>
-              <CardDescription>Enter your credentials to access your dashboard.</CardDescription>
+          <Card className="shadow-2xl border-none">
+            <CardHeader className="text-center bg-primary text-white rounded-t-lg">
+              <CardTitle className="text-2xl font-black uppercase tracking-tight">Sign In</CardTitle>
+              <CardDescription className="text-primary-foreground/70">Enter your credentials to manage your logistics.</CardDescription>
             </CardHeader>
-            <CardContent>
+            <CardContent className="pt-8">
               <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                   <FormField
@@ -91,9 +91,9 @@ export default function LoginPage() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Email Address</FormLabel>
+                        <FormLabel className="font-bold text-primary">Email Address</FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="client@example.com" {...field} />
+                          <Input type="email" placeholder="client@example.com" {...field} className="h-12" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -104,23 +104,23 @@ export default function LoginPage() {
                     name="password"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Password</FormLabel>
+                        <FormLabel className="font-bold text-primary">Password</FormLabel>
                         <FormControl>
-                          <Input type="password" placeholder="********" {...field} />
+                          <Input type="password" placeholder="********" {...field} className="h-12" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? 'Logging in...' : 'Login'}
+                  <Button type="submit" className="w-full h-12 bg-accent hover:bg-accent/90 text-white font-bold text-lg" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? 'Authenticating...' : 'Sign In'}
                   </Button>
                 </form>
               </Form>
-              <div className="mt-4 text-center text-sm">
-                Don't have an account?{' '}
-                <Link href="/signup" className="underline">
-                  Sign up
+              <div className="mt-8 text-center text-sm text-muted-foreground">
+                Don't have an account yet?{' '}
+                <Link href="/signup" className="text-accent font-bold hover:underline">
+                  Create Account
                 </Link>
               </div>
             </CardContent>

@@ -30,21 +30,23 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-      {/* Top Bar - 100% Static Shell for Hydration Stability */}
-      <div className="bg-primary h-10 w-full">
+      {/* Top Bar - Stable Header Shell */}
+      <div className="bg-primary h-10 w-full overflow-hidden">
         <div className="container mx-auto px-4 h-full flex justify-between items-center text-primary-foreground text-xs font-medium">
-          <div className="flex items-center gap-4 md:gap-8">
-            <div className="flex items-center gap-2">
-              <Mail size={14} className="text-accent" />
-              <span className="hidden sm:inline">info@al-israa-frachtlogistik.de</span>
+          <ClientOnly fallback={<div className="h-4 w-48 bg-white/10 animate-pulse rounded" />}>
+            <div className="flex items-center gap-4 md:gap-8">
+              <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">
+                <Mail size={14} className="text-accent" />
+                <span className="hidden sm:inline">info@al-israa-frachtlogistik.de</span>
+              </div>
+              <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">
+                <Phone size={14} className="text-accent" />
+                <span className="hidden sm:inline">+49 (30) 12345678</span>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <Phone size={14} className="text-accent" />
-              <span className="hidden sm:inline">+49 (30) 12345678</span>
-            </div>
-          </div>
+          </ClientOnly>
           <div className="flex items-center gap-2">
-            <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white">
+            <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white shadow-sm">
               Global Logistics
             </span>
           </div>
@@ -54,7 +56,7 @@ export function Header() {
       <nav className="container mx-auto px-4 flex justify-between items-center h-20">
         <Logo />
         
-        {/* Desktop Nav - Static structure with Dynamic Gating inside */}
+        {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-8">
           {mainNavLinks.map((link) => (
             <Link
@@ -108,7 +110,7 @@ export function Header() {
             </ClientOnly>
           </div>
 
-          {/* Mobile Menu Trigger - Always in the DOM structure, dynamic content gated */}
+          {/* Mobile Menu */}
           <div className="lg:hidden">
             <ClientOnly fallback={<div className="h-10 w-10 bg-muted/20 rounded-md" />}>
               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>

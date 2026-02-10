@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Trash2, Plus, RefreshCw, Package } from 'lucide-react';
+import { Trash2, Plus, RefreshCw, Package, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAdmin } from '@/hooks/useAdmin';
 
@@ -55,11 +55,22 @@ export function AdminShipmentManagement() {
 
   const handleCreateShipment = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firestore || !formData.userId || !formData.origin || !formData.destination) {
+    if (!firestore) return;
+
+    if (!formData.userId || formData.userId === 'loading' || formData.userId === 'none') {
       toast({ 
         variant: 'destructive', 
-        title: 'Form Incomplete', 
-        description: 'Please select a client and provide route details.' 
+        title: 'Selection Error', 
+        description: 'Please select a valid registered client from the directory.' 
+      });
+      return;
+    }
+
+    if (!formData.origin || !formData.destination) {
+      toast({ 
+        variant: 'destructive', 
+        title: 'Missing Route', 
+        description: 'Origin and Destination are required.' 
       });
       return;
     }
@@ -75,7 +86,7 @@ export function AdminShipmentManagement() {
 
     addDocumentNonBlocking(collection(firestore, 'shipments'), shipmentData)
       .then(() => {
-        toast({ title: 'Success!', description: `Shipment ${trackingNumber} created.` });
+        toast({ title: 'Success!', description: `Shipment ${trackingNumber} has been initialized.` });
         setFormData({
           userId: '',
           origin: '',
@@ -86,7 +97,7 @@ export function AdminShipmentManagement() {
         });
       })
       .catch((err) => {
-          toast({ variant: 'destructive', title: 'Error', description: err.message });
+          toast({ variant: 'destructive', title: 'Manifest Error', description: err.message });
       })
       .finally(() => setIsSubmitting(false));
   };
@@ -94,7 +105,7 @@ export function AdminShipmentManagement() {
   const handleDelete = (id: string) => {
     if (!firestore) return;
     deleteDocumentNonBlocking(doc(firestore, 'shipments', id));
-    toast({ title: 'Removed', description: 'Shipment record deleted.' });
+    toast({ title: 'Removed', description: 'Shipment record deleted from manifest.' });
   };
 
   if (isAdminCheckLoading) {
@@ -108,9 +119,9 @@ export function AdminShipmentManagement() {
 
   if (!isAdmin) {
     return (
-      <Card className="p-8 text-center">
-        <CardTitle>Access Denied</CardTitle>
-        <CardDescription>You must be an administrator to view this manifest.</CardDescription>
+      <Card className="p-8 text-center border-dashed border-2">
+        <CardTitle className="text-destructive">Access Restricted</CardTitle>
+        <CardDescription>You must be an administrator to manage the global cargo manifest.</CardDescription>
       </Card>
     );
   }
@@ -128,7 +139,9 @@ export function AdminShipmentManagement() {
         <CardContent>
           <form onSubmit={handleCreateShipment} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label htmlFor="userId" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">Select Registered Client</Label>
+              <Label htmlFor="userId" className="font-bold uppercase text-[10px] tracking-widest text-primary/60 flex items-center gap-2">
+                <Users className="w-3 h-3" /> Select Registered Client
+              </Label>
               <Select 
                 onValueChange={(v) => setFormData(prev => ({ ...prev, userId: v }))} 
                 value={formData.userId}
@@ -146,7 +159,7 @@ export function AdminShipmentManagement() {
                       </SelectItem>
                     ))
                   ) : (
-                    <SelectItem value="none" disabled>No clients found</SelectItem>
+                    <SelectItem value="none" disabled>No clients registered yet</SelectItem>
                   )}
                 </SelectContent>
               </Select>
@@ -175,7 +188,7 @@ export function AdminShipmentManagement() {
                 id="origin"
                 placeholder="e.g. Damascus, Syria" 
                 value={formData.origin}
-                className="h-12"
+                className="h-12 border-primary/20"
                 onChange={(e) => setFormData(prev => ({ ...prev, origin: e.target.value }))}
               />
             </div>
@@ -185,7 +198,7 @@ export function AdminShipmentManagement() {
                 id="destination"
                 placeholder="e.g. Hamburg, Germany" 
                 value={formData.destination}
-                className="h-12"
+                className="h-12 border-primary/20"
                 onChange={(e) => setFormData(prev => ({ ...prev, destination: e.target.value }))}
               />
             </div>
@@ -195,7 +208,7 @@ export function AdminShipmentManagement() {
                 id="vessel"
                 placeholder="e.g. MS Express Voyage #9921" 
                 value={formData.vessel}
-                className="h-12"
+                className="h-12 border-primary/20"
                 onChange={(e) => setFormData(prev => ({ ...prev, vessel: e.target.value }))}
               />
             </div>
@@ -205,7 +218,7 @@ export function AdminShipmentManagement() {
               ) : (
                 <Plus className="mr-2" />
               )}
-              Create Shipment & Generate Tracking
+              Initialize Shipment & Track
             </Button>
           </form>
         </CardContent>
@@ -267,7 +280,7 @@ export function AdminShipmentManagement() {
                 <TableRow>
                   <TableCell colSpan={5} className="text-center py-24 text-muted-foreground">
                     <Package className="w-12 h-12 mx-auto mb-4 opacity-10" />
-                    <p className="font-bold">No active shipments in the manifest.</p>
+                    <p className="font-bold text-lg">No active shipments in the manifest.</p>
                   </TableCell>
                 </TableRow>
               )}
