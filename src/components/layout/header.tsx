@@ -2,16 +2,18 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Mail, Phone, LogOut, LayoutDashboard } from 'lucide-react';
+import { Menu, Mail, Phone, LogOut, LayoutDashboard, Globe } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from '@/components/ui/sheet';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { navigationLinks } from '@/lib/data';
 import React, { useState } from 'react';
 import { useUser, useAuth } from '@/firebase';
 import { useAdmin } from '@/hooks/useAdmin';
 import { ClientOnly } from '@/components/auth/client-only';
+import { useLanguage } from '@/hooks/use-language';
+import { Language } from '@/lib/translations';
 
 export function Header() {
   const pathname = usePathname();
@@ -19,6 +21,7 @@ export function Header() {
   const { user, isUserLoading } = useUser();
   const { isAdmin } = useAdmin();
   const auth = useAuth();
+  const { t, language, setLanguage } = useLanguage();
 
   const handleLogout = () => {
     auth.signOut().then(() => {
@@ -26,12 +29,18 @@ export function Header() {
     });
   };
 
-  const mainNavLinks = navigationLinks.filter(l => !['Admin', 'Login'].includes(l.label));
+  const navItems = [
+    { href: '/', label: t.nav.home },
+    { href: '/services', label: t.nav.services },
+    { href: '/tracking', label: t.nav.tracking },
+    { href: '/about', label: t.nav.about },
+    { href: '/contact', label: t.nav.contact },
+  ];
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-      {/* Top Bar - Strictly Static Shell Wrapper */}
-      <div className="bg-primary h-10 w-full overflow-hidden">
+      {/* Top Bar - 100% Static Shell for Hydration Stability */}
+      <div className="bg-primary h-10 w-full">
         <div className="container mx-auto px-4 h-full flex justify-between items-center text-primary-foreground text-xs font-medium">
           <ClientOnly fallback={<div className="h-4 w-48 bg-white/10 animate-pulse rounded" />}>
             <div className="flex items-center gap-4 md:gap-8">
@@ -44,8 +53,21 @@ export function Header() {
                 <span className="hidden sm:inline">+49 (30) 12345678</span>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white shadow-sm">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Globe size={14} className="text-accent" />
+                <Select value={language} onValueChange={(v) => setLanguage(v as Language)}>
+                  <SelectTrigger className="bg-transparent border-none text-white h-auto p-0 focus:ring-0 w-[100px] text-xs font-bold uppercase tracking-wider">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent className="bg-primary border-white/10 text-white">
+                    <SelectItem value="en">English</SelectItem>
+                    <SelectItem value="de">Deutsch</SelectItem>
+                    <SelectItem value="nl">Nederlands</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <span className="hidden md:inline text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white shadow-sm">
                 Global Logistics
               </span>
             </div>
@@ -58,7 +80,7 @@ export function Header() {
         
         {/* Desktop Nav */}
         <div className="hidden lg:flex items-center gap-8">
-          {mainNavLinks.map((link) => (
+          {navItems.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -81,7 +103,7 @@ export function Header() {
                 )}
               >
                 <LayoutDashboard size={16} />
-                {isAdmin ? "Admin" : "Dashboard"}
+                {isAdmin ? t.nav.admin : t.nav.dashboard}
               </Link>
             )}
           </ClientOnly>
@@ -95,15 +117,15 @@ export function Header() {
               ) : user && !user.isAnonymous ? (
                 <Button variant="outline" size="sm" onClick={handleLogout} className="flex items-center gap-2 border-primary/20 font-bold uppercase tracking-tighter">
                   <LogOut className="h-4 w-4 text-accent" />
-                  Sign Out
+                  {t.nav.signOut}
                 </Button>
               ) : (
                 <div className="flex items-center gap-2">
                   <Button asChild variant="ghost" size="sm" className="font-bold uppercase tracking-tighter">
-                    <Link href="/login">Login</Link>
+                    <Link href="/login">{t.nav.login}</Link>
                   </Button>
                   <Button asChild variant="default" size="sm" className="bg-accent hover:bg-accent/90 text-white font-bold uppercase tracking-tighter shadow-lg shadow-accent/20">
-                    <Link href="/signup">Sign Up</Link>
+                    <Link href="/signup">{t.nav.signup}</Link>
                   </Button>
                 </div>
               )}
@@ -127,7 +149,7 @@ export function Header() {
                     <SheetDescription className="sr-only">Site navigation links.</SheetDescription>
                   </SheetHeader>
                   <div className="flex flex-col gap-5">
-                    {mainNavLinks.map((link) => (
+                    {navItems.map((link) => (
                       <Link
                         key={link.href}
                         href={link.href}
@@ -150,22 +172,22 @@ export function Header() {
                           pathname === (isAdmin ? "/admin" : "/dashboard") ? "text-accent" : "text-foreground/80"
                         )}
                       >
-                        {isAdmin ? "Admin Console" : "Client Dashboard"}
+                        {isAdmin ? t.nav.admin : t.nav.dashboard}
                       </Link>
                     )}
 
                     <div className="flex flex-col gap-3 mt-6 pt-6 border-t">
                       {user && !user.isAnonymous ? (
                         <Button variant="outline" className="w-full font-bold uppercase" onClick={handleLogout}>
-                          Sign Out
+                          {t.nav.signOut}
                         </Button>
                       ) : (
                         <>
                           <Button asChild variant="outline" className="w-full font-bold uppercase">
-                            <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>Login</Link>
+                            <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.login}</Link>
                           </Button>
                           <Button asChild variant="default" className="w-full bg-accent text-white font-bold uppercase">
-                            <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>Sign Up</Link>
+                            <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.signup}</Link>
                           </Button>
                         </>
                       )}

@@ -1,3 +1,5 @@
+'use client';
+
 import { Hero } from '@/components/homepage/hero';
 import { Button } from '@/components/ui/button';
 import { services } from '@/lib/data';
@@ -6,8 +8,11 @@ import Image from 'next/image';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { CheckCircle2, Globe2, ShieldCheck, Zap } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function Home() {
+  const { t } = useLanguage();
+
   return (
     <>
       <Hero />
@@ -16,8 +21,8 @@ export default function Home() {
       <section className="py-24 bg-background overflow-hidden">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-20 animate-fade-up">
-            <h2 className="text-sm font-bold uppercase text-accent mb-2 tracking-[0.2em]">Our Expertise</h2>
-            <h3 className="text-4xl md:text-5xl font-extrabold text-primary">Global Logistics Solutions</h3>
+            <h2 className="text-sm font-bold uppercase text-accent mb-2 tracking-[0.2em]">{t.home.expertise}</h2>
+            <h3 className="text-4xl md:text-5xl font-extrabold text-primary">{t.home.solutionsTitle}</h3>
             <div className="w-20 h-1.5 bg-accent mx-auto mt-6 rounded-full" />
           </div>
           
@@ -48,7 +53,7 @@ export default function Home() {
           
           <div className="text-center mt-16">
             <Button size="lg" variant="outline" className="rounded-full px-10 border-primary text-primary hover:bg-primary hover:text-white transition-all" asChild>
-              <Link href="/services">Explore All Services</Link>
+              <Link href="/services">{t.home.exploreBtn}</Link>
             </Button>
           </div>
         </div>

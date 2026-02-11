@@ -4,6 +4,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase';
+import { LanguageProvider } from '@/hooks/use-language';
 
 export const metadata: Metadata = {
   title: 'Al-Israa | International Freight & Logistics',
@@ -27,10 +28,12 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased bg-background text-foreground selection:bg-accent/30">
         <FirebaseClientProvider>
-          <Header />
-          <main className="min-h-[calc(100vh-80px-40px)]">{children}</main>
-          <Footer />
-          <Toaster />
+          <LanguageProvider>
+            <Header />
+            <main className="min-h-[calc(100vh-80px-40px)]">{children}</main>
+            <Footer />
+            <Toaster />
+          </LanguageProvider>
         </FirebaseClientProvider>
       </body>
     </html>

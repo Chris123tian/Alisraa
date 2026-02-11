@@ -3,9 +3,11 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { ArrowRight, Ship } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 export function Hero() {
   const heroImage = PlaceHolderImages.find(img => img.id === 'hero-image');
+  const { t } = useLanguage();
 
   return (
     <section className="relative h-[85vh] w-full flex items-center justify-center text-white overflow-hidden">
@@ -14,7 +16,7 @@ export function Hero() {
           src={heroImage.imageUrl}
           alt={heroImage.description}
           fill
-          className="object-cover scale-105 animate-pulse duration-[8000ms]"
+          className="object-cover scale-105"
           priority
           data-ai-hint={heroImage.imageHint}
         />
@@ -25,23 +27,23 @@ export function Hero() {
         <div className="max-w-3xl space-y-8 animate-fade-up">
           <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/30 rounded-full px-4 py-1.5 text-accent-foreground">
             <Ship className="w-4 h-4 text-accent" />
-            <span className="text-xs font-bold tracking-widest uppercase">Global Freight Excellence</span>
+            <span className="text-xs font-bold tracking-widest uppercase">{t.hero.tag}</span>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight drop-shadow-lg">
-            Reliable Logistics for a <span className="text-accent">Connected World.</span>
+            {t.hero.title} <span className="text-accent">{t.hero.titleAccent}</span>
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-200 max-w-2xl drop-shadow">
-            Al-Israa delivers precision international freight solutions. From ocean ports to your doorstep, we manage the complex so you can focus on growth.
+            {t.hero.subtitle}
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 pt-4">
             <Button size="lg" className="bg-accent hover:bg-accent/90 text-white font-bold h-14 px-8 text-lg rounded-full transition-transform hover:scale-105" asChild>
-              <Link href="/tracking">Track Your Cargo <ArrowRight className="ml-2 w-5 h-5" /></Link>
+              <Link href="/tracking">{t.hero.trackBtn} <ArrowRight className="ml-2 w-5 h-5" /></Link>
             </Button>
             <Button size="lg" variant="outline" className="border-white/30 text-white bg-white/10 backdrop-blur-md hover:bg-white hover:text-primary h-14 px-8 text-lg rounded-full transition-transform hover:scale-105" asChild>
-              <Link href="/services">Our Solutions</Link>
+              <Link href="/services">{t.hero.solutionsBtn}</Link>
             </Button>
           </div>
         </div>
