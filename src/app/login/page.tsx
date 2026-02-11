@@ -32,30 +32,16 @@ export default function LoginPage() {
 
   const PRIMARY_ADMIN_EMAIL = 'alisraainternationaler@gmail.com';
 
-  // Effect to handle redirection once authenticated
   useEffect(() => {
     if (!isUserLoading && user && !user.isAnonymous) {
       const email = user.email?.toLowerCase();
-      const isPrimaryAdmin = email === PRIMARY_ADMIN_EMAIL;
-
-      if (isPrimaryAdmin) {
+      if (email === PRIMARY_ADMIN_EMAIL) {
         router.push('/admin');
-        return;
+      } else {
+        router.push('/dashboard');
       }
-
-      // Check Firestore roles for other admins
-      const checkAdmin = async () => {
-        const adminDocRef = doc(firestore, 'roles_admin', user.uid);
-        const adminDoc = await getDoc(adminDocRef);
-        if (adminDoc.exists() && adminDoc.data()?.isAdmin === true) {
-          router.push('/admin');
-        } else {
-          router.push('/dashboard');
-        }
-      };
-      checkAdmin();
     }
-  }, [user, isUserLoading, router, firestore]);
+  }, [user, isUserLoading, router]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -71,7 +57,6 @@ export default function LoginPage() {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Ensure user document exists in Firestore
       const userDocRef = doc(firestore, 'users', user.uid);
       const userDoc = await getDoc(userDocRef);
       
@@ -183,9 +168,6 @@ export default function LoginPage() {
                   Don't have an account?{' '}
                   <Link href="/signup" className="text-accent font-bold hover:underline">Create One</Link>
                 </p>
-                <div className="p-4 bg-muted/50 rounded-xl text-[10px] text-muted-foreground uppercase tracking-widest leading-relaxed">
-                  System Notice: Primary Admin access is restricted to authorized personnel.
-                </div>
               </div>
             </CardContent>
           </Card>

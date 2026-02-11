@@ -1,3 +1,4 @@
+
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
@@ -10,7 +11,6 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
-    // Simplified Admin Check
     function isAdmin() {
       return isSignedIn() && (
         request.auth.token.email == 'alisraainternationaler@gmail.com' ||
@@ -21,22 +21,14 @@ service cloud.firestore {
     match /users/{userId} {
       allow get: if isSignedIn();
       allow list: if isAdmin();
-      allow update: if isOwner(userId);
       allow create: if isSignedIn();
+      allow update: if isOwner(userId) || isAdmin();
       allow delete: if isAdmin();
     }
 
     match /shipments/{shipmentId} {
-      // Allow specific document read for admins or owners
       allow get: if isSignedIn() && (isAdmin() || resource.data.userId == request.auth.uid);
-      
-      // Allow admins to list all shipments
-      allow list: if isAdmin();
-      
-      // Allow regular users to list ONLY their own shipments (query must filter by userId)
-      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
-      
-      // Full write access for admins
+      allow list: if isSignedIn() && (isAdmin() || resource.data.userId == request.auth.uid);
       allow write: if isAdmin();
     }
 
