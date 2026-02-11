@@ -7,8 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, Package, MapPin, Truck, CheckCircle2, Clock, ShieldCheck, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function TrackingPage() {
+  const { t } = useLanguage();
   const [trackingCode, setTrackingCode] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [hasResult, setHasResult] = useState(false);
@@ -17,7 +19,7 @@ export default function TrackingPage() {
   useEffect(() => {
     const date = new Date();
     date.setDate(date.getDate() + 14);
-    setArrivalDate(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+    setArrivalDate(date.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }));
   }, []);
 
   const handleTrack = (e: React.FormEvent) => {
@@ -31,28 +33,28 @@ export default function TrackingPage() {
   };
 
   const steps = [
-    { label: 'Booking Confirmed', icon: CheckCircle2, status: 'completed' },
-    { label: 'In Transit', icon: Truck, status: 'active' },
-    { label: 'Customs Clearance', icon: ShieldCheck, status: 'pending' },
-    { label: 'Out for Delivery', icon: MapPin, status: 'pending' },
+    { label: t.tracking.steps.confirmed, icon: CheckCircle2, status: 'completed' },
+    { label: t.tracking.steps.transit, icon: Truck, status: 'active' },
+    { label: t.tracking.steps.customs, icon: ShieldCheck, status: 'pending' },
+    { label: t.tracking.steps.delivery, icon: MapPin, status: 'pending' },
   ];
 
   return (
     <>
-      <PageHeader title="Global Tracking" breadcrumb={[{ href: '/tracking', label: 'Tracking' }]} />
+      <PageHeader title={t.tracking.title} breadcrumb={[{ href: '/tracking', label: t.nav.tracking }]} />
       <section className="py-20 bg-background overflow-hidden relative">
         <div className="absolute top-40 -left-20 w-80 h-80 bg-accent/5 blur-[100px] rounded-full" />
         
         <div className="container mx-auto px-4 max-w-4xl relative z-10">
           <Card className="shadow-2xl border-none rounded-3xl overflow-hidden animate-fade-up">
             <div className="bg-primary p-8 text-white text-center">
-              <CardTitle className="text-3xl mb-2">Track Your Journey</CardTitle>
-              <CardDescription className="text-gray-400">Enter your unique tracking ID for live cargo updates.</CardDescription>
+              <CardTitle className="text-3xl mb-2">{t.tracking.trackJourney}</CardTitle>
+              <CardDescription className="text-gray-400">{t.tracking.enterId}</CardDescription>
             </div>
             <CardContent className="p-8 md:p-12">
               <form onSubmit={handleTrack} className="relative group">
                 <Input 
-                  placeholder="e.g. AL-X92B10J..." 
+                  placeholder={t.tracking.placeholder} 
                   value={trackingCode}
                   onChange={(e) => setTrackingCode(e.target.value.toUpperCase())}
                   className="h-16 pl-12 pr-40 text-xl rounded-2xl border-2 border-primary/10 focus:border-accent transition-all shadow-inner" 
@@ -63,7 +65,7 @@ export default function TrackingPage() {
                   disabled={isSearching}
                   className="absolute right-2 top-2 h-12 px-10 rounded-xl bg-accent hover:bg-accent/90 shadow-lg text-lg font-bold"
                 >
-                  {isSearching ? 'Syncing...' : 'Track'}
+                  {isSearching ? t.tracking.syncing : t.tracking.trackBtn}
                 </Button>
               </form>
 
@@ -71,13 +73,13 @@ export default function TrackingPage() {
                 <div className="mt-16 space-y-12 animate-fade-up">
                   <div className="flex flex-col md:flex-row justify-between items-center gap-6 p-6 bg-accent/5 rounded-2xl border border-accent/20">
                     <div>
-                      <p className="text-sm font-bold text-accent uppercase tracking-widest mb-1">Current Status</p>
+                      <p className="text-sm font-bold text-accent uppercase tracking-widest mb-1">{t.tracking.currentStatus}</p>
                       <h4 className="text-2xl font-black text-primary">In Transit (Mediterranean Sea)</h4>
                     </div>
                     <div className="text-right">
-                      <p className="text-sm text-muted-foreground mb-1">Estimated Arrival</p>
+                      <p className="text-sm text-muted-foreground mb-1">{t.tracking.estimatedArrival}</p>
                       <h4 className="text-xl font-bold flex items-center gap-2">
-                        <Clock className="w-5 h-5 text-accent" /> {arrivalDate || 'Calculating...'}
+                        <Clock className="w-5 h-5 text-accent" /> {arrivalDate || t.tracking.calculating}
                       </h4>
                     </div>
                   </div>
@@ -107,12 +109,12 @@ export default function TrackingPage() {
 
                   <div className="grid md:grid-cols-2 gap-8 pt-8 border-t">
                     <div className="space-y-4">
-                      <h5 className="font-bold flex items-center gap-2"><MapPin className="w-4 h-4 text-accent" /> Origin</h5>
-                      <p className="text-muted-foreground">Port of Latakia, Syria<br/><span className="text-xs">Departed Oct 10, 09:12 AM</span></p>
+                      <h5 className="font-bold flex items-center gap-2"><MapPin className="w-4 h-4 text-accent" /> {t.tracking.origin}</h5>
+                      <p className="text-muted-foreground">Port of Latakia, Syria</p>
                     </div>
                     <div className="space-y-4">
-                      <h5 className="font-bold flex items-center gap-2"><MapPin className="w-4 h-4 text-accent" /> Destination</h5>
-                      <p className="text-muted-foreground">Port of Hamburg, Germany<br/><span className="text-xs">Expected Arrival {arrivalDate}</span></p>
+                      <h5 className="font-bold flex items-center gap-2"><MapPin className="w-4 h-4 text-accent" /> {t.tracking.destination}</h5>
+                      <p className="text-muted-foreground">Port of Hamburg, Germany</p>
                     </div>
                   </div>
                 </div>
@@ -123,14 +125,14 @@ export default function TrackingPage() {
                   <div className="bg-primary/5 w-20 h-20 rounded-full flex items-center justify-center mx-auto">
                     <Package className="w-10 h-10 text-primary/20" />
                   </div>
-                  <p className="text-muted-foreground text-lg">No tracking details yet. Enter a valid ID to see live logistics data.</p>
+                  <p className="text-muted-foreground text-lg">{t.tracking.noDetails}</p>
                 </div>
               )}
             </CardContent>
           </Card>
           
           <div className="mt-20 text-center space-y-12">
-            <h3 className="text-3xl font-black text-primary">Regional Express Hubs</h3>
+            <h3 className="text-3xl font-black text-primary">{t.tracking.regionalHubs}</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {['Syria', 'Germany', 'USA', 'Africa'].map(country => (
                 <div key={country} className="p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-accent hover:shadow-md transition-all group cursor-default">

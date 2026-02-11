@@ -1,5 +1,8 @@
+'use client';
+
 import Link from 'next/link';
 import { Home, ChevronRight } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 type PageHeaderProps = {
   title: string;
@@ -7,13 +10,15 @@ type PageHeaderProps = {
 };
 
 export function PageHeader({ title, breadcrumb }: PageHeaderProps) {
+  const { t } = useLanguage();
+  
   return (
     <section className="bg-primary/5 py-12">
       <div className="container mx-auto px-4 text-center">
         <h1 className="text-4xl font-bold text-primary mb-4">{title}</h1>
         <nav className="flex justify-center items-center text-sm">
           <Link href="/" className="flex items-center gap-1 text-muted-foreground hover:text-primary">
-            <Home size={16} /> Home
+            <Home size={16} /> {t.nav.home}
           </Link>
           {breadcrumb.map((item, index) => (
             <span key={item.href} className="flex items-center">

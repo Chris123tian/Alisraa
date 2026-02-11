@@ -1,4 +1,3 @@
-
 'use client';
 
 import { PageHeader } from '@/components/page-header';
@@ -18,11 +17,13 @@ import { Package, Truck, Clock, MapPin } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function UserDashboard() {
   const { user, isUserLoading } = useUser();
   const firestore = useFirestore();
   const router = useRouter();
+  const { t } = useLanguage();
 
   useEffect(() => {
     if (!isUserLoading && !user) {
@@ -32,7 +33,6 @@ export default function UserDashboard() {
 
   const shipmentsQuery = useMemoFirebase(() => {
     if (!firestore || !user) return null;
-    // Simple query to avoid index requirements during initial setup
     return query(
       collection(firestore, 'shipments'),
       where('userId', '==', user.uid)
@@ -52,13 +52,13 @@ export default function UserDashboard() {
 
   return (
     <>
-      <PageHeader title="Client Dashboard" breadcrumb={[{ href: '/dashboard', label: 'Dashboard' }]} />
+      <PageHeader title={t.dashboard.title} breadcrumb={[{ href: '/dashboard', label: t.nav.dashboard }]} />
       <section className="py-12 bg-background">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                <CardTitle className="text-sm font-medium">Total Shipments</CardTitle>
+                <CardTitle className="text-sm font-medium">{t.dashboard.totalShipments}</CardTitle>
                 <Package className="w-4 h-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -67,7 +67,7 @@ export default function UserDashboard() {
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                <CardTitle className="text-sm font-medium">In Transit</CardTitle>
+                <CardTitle className="text-sm font-medium">{t.dashboard.inTransit}</CardTitle>
                 <Truck className="w-4 h-4 text-muted-foreground" />
               </CardHeader>
               <CardContent>
@@ -78,9 +78,9 @@ export default function UserDashboard() {
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-                <CardTitle className="text-sm font-medium">Delivered</CardTitle>
+                <CardTitle className="text-sm font-medium">{t.dashboard.delivered}</CardTitle>
                 <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
-                  Goal
+                  {t.dashboard.goal}
                 </Badge>
               </CardHeader>
               <CardContent>
@@ -93,8 +93,8 @@ export default function UserDashboard() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Your Shipments</CardTitle>
-              <CardDescription>Monitor your active and past shipments in real-time.</CardDescription>
+              <CardTitle>{t.dashboard.yourShipments}</CardTitle>
+              <CardDescription>{t.dashboard.monitorDesc}</CardDescription>
             </CardHeader>
             <CardContent>
               {isShipmentsLoading ? (
@@ -104,16 +104,16 @@ export default function UserDashboard() {
               ) : !shipments || shipments.length === 0 ? (
                 <div className="text-center py-12">
                   <Package className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">No shipments found. Contact Al-Israa to start your first shipment.</p>
+                  <p className="text-muted-foreground">{t.dashboard.noShipments}</p>
                 </div>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Tracking #</TableHead>
-                      <TableHead>Origin & Destination</TableHead>
-                      <TableHead>Status</TableHead>
-                      <TableHead>Last Update</TableHead>
+                      <TableHead>{t.dashboard.trackingNum}</TableHead>
+                      <TableHead>{t.dashboard.route}</TableHead>
+                      <TableHead>{t.dashboard.status}</TableHead>
+                      <TableHead>{t.dashboard.lastUpdate}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>

@@ -12,12 +12,14 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Trash2, Plus, RefreshCw, Package, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAdmin } from '@/hooks/useAdmin';
+import { useLanguage } from '@/hooks/use-language';
 
 export function AdminShipmentManagement() {
   const firestore = useFirestore();
   const { toast } = useToast();
   const { isAdmin, isLoading: isAdminCheckLoading } = useAdmin();
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { t } = useLanguage();
 
   // Form State
   const [formData, setFormData] = useState({
@@ -132,22 +134,22 @@ export function AdminShipmentManagement() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-primary font-black uppercase tracking-tight">
             <Plus className="w-5 h-5 text-accent" />
-            Initialize New Tracking
+            {t.admin.newTracking}
           </CardTitle>
-          <CardDescription>Assign cargo to a registered client and generate a tracking ID.</CardDescription>
+          <CardDescription>{t.admin.assignDesc}</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleCreateShipment} className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
               <Label htmlFor="userId" className="font-bold uppercase text-[10px] tracking-widest text-primary/60 flex items-center gap-2">
-                <Users className="w-3 h-3" /> Select Registered Client
+                <Users className="w-3 h-3" /> {t.admin.selectClient}
               </Label>
               <Select 
                 onValueChange={(v) => setFormData(prev => ({ ...prev, userId: v }))} 
                 value={formData.userId}
               >
                 <SelectTrigger id="userId" className="bg-background border-primary/20 h-12">
-                  <SelectValue placeholder={isUsersLoading ? "Syncing directory..." : "Choose a client"} />
+                  <SelectValue placeholder={isUsersLoading ? "Syncing directory..." : t.admin.chooseClient} />
                 </SelectTrigger>
                 <SelectContent>
                   {isUsersLoading ? (
@@ -165,7 +167,7 @@ export function AdminShipmentManagement() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="status" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">Logistics Status</Label>
+              <Label htmlFor="status" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">{t.admin.logisticsStatus}</Label>
               <Select 
                 onValueChange={(v) => setFormData(prev => ({ ...prev, status: v }))} 
                 value={formData.status}
@@ -183,7 +185,7 @@ export function AdminShipmentManagement() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="origin" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">Route: Origin</Label>
+              <Label htmlFor="origin" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">{t.admin.origin}</Label>
               <Input 
                 id="origin"
                 placeholder="e.g. Damascus, Syria" 
@@ -193,7 +195,7 @@ export function AdminShipmentManagement() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="destination" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">Route: Destination</Label>
+              <Label htmlFor="destination" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">{t.admin.destination}</Label>
               <Input 
                 id="destination"
                 placeholder="e.g. Hamburg, Germany" 
@@ -203,7 +205,7 @@ export function AdminShipmentManagement() {
               />
             </div>
             <div className="md:col-span-2 space-y-2">
-              <Label htmlFor="vessel" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">Vessel / Transport Info</Label>
+              <Label htmlFor="vessel" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">{t.admin.vessel}</Label>
               <Input 
                 id="vessel"
                 placeholder="e.g. MS Express Voyage #9921" 
@@ -218,7 +220,7 @@ export function AdminShipmentManagement() {
               ) : (
                 <Plus className="mr-2" />
               )}
-              Initialize Shipment & Track
+              {t.admin.initiateBtn}
             </Button>
           </form>
         </CardContent>
@@ -228,19 +230,19 @@ export function AdminShipmentManagement() {
         <CardHeader className="bg-primary text-white">
           <CardTitle className="flex items-center gap-2 font-black uppercase tracking-tight">
             <Package className="w-5 h-5 text-accent" />
-            Active Cargo Manifest
+            {t.admin.manifest}
           </CardTitle>
-          <CardDescription className="text-primary-foreground/70">Real-time status of all global shipments.</CardDescription>
+          <CardDescription className="text-primary-foreground/70">{t.admin.manifestDesc}</CardDescription>
         </CardHeader>
         <CardContent className="p-0">
           <Table>
             <TableHeader className="bg-muted/50">
               <TableRow>
-                <TableHead className="font-black uppercase text-[10px] tracking-widest">Tracking #</TableHead>
-                <TableHead className="font-black uppercase text-[10px] tracking-widest">Client</TableHead>
-                <TableHead className="font-black uppercase text-[10px] tracking-widest">Route</TableHead>
-                <TableHead className="font-black uppercase text-[10px] tracking-widest">Status</TableHead>
-                <TableHead className="text-right font-black uppercase text-[10px] tracking-widest">Actions</TableHead>
+                <TableHead className="font-black uppercase text-[10px] tracking-widest">{t.dashboard.trackingNum}</TableHead>
+                <TableHead className="font-black uppercase text-[10px] tracking-widest">{t.admin.client}</TableHead>
+                <TableHead className="font-black uppercase text-[10px] tracking-widest">{t.dashboard.route}</TableHead>
+                <TableHead className="font-black uppercase text-[10px] tracking-widest">{t.dashboard.status}</TableHead>
+                <TableHead className="text-right font-black uppercase text-[10px] tracking-widest">{t.admin.actions}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -280,7 +282,7 @@ export function AdminShipmentManagement() {
                 <TableRow>
                   <TableCell colSpan={5} className="text-center py-24 text-muted-foreground">
                     <Package className="w-12 h-12 mx-auto mb-4 opacity-10" />
-                    <p className="font-bold text-lg">No active shipments in the manifest.</p>
+                    <p className="font-bold text-lg">{t.admin.manifestDesc}</p>
                   </TableCell>
                 </TableRow>
               )}

@@ -67,18 +67,18 @@ export default function Home() {
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
             <div className="space-y-8 animate-fade-up">
-              <h2 className="text-sm font-bold uppercase text-accent tracking-[0.2em]">The Al-Israa Advantage</h2>
-              <h3 className="text-4xl md:text-5xl font-extrabold leading-tight">Why Industry Leaders <span className="text-accent">Trust Us.</span></h3>
+              <h2 className="text-sm font-bold uppercase text-accent tracking-[0.2em]">{t.home.advantage}</h2>
+              <h3 className="text-4xl md:text-5xl font-extrabold leading-tight">{t.home.trustTitle}</h3>
               <p className="text-lg text-gray-300 max-w-xl">
-                With decades of experience and a global network, we provide more than just transport. we provide peace of mind through every mile of the journey.
+                {t.home.trustDesc}
               </p>
               
               <div className="grid sm:grid-cols-2 gap-8 pt-4">
                 {[
-                  { icon: Globe2, title: "Global Network", desc: "Access to 150+ ports worldwide." },
-                  { icon: Zap, title: "Fast Delivery", desc: "Optimized routes for quick transit." },
-                  { icon: ShieldCheck, title: "Secure Cargo", desc: "Premium insurance and handling." },
-                  { icon: CheckCircle2, title: "Full Compliance", desc: "Hassle-free customs brokerage." }
+                  { icon: Globe2, title: t.home.globalNetwork, desc: t.home.globalNetworkDesc },
+                  { icon: Zap, title: t.home.fastDelivery, desc: t.home.fastDeliveryDesc },
+                  { icon: ShieldCheck, title: t.home.secureCargo, desc: t.home.secureCargoDesc },
+                  { icon: CheckCircle2, title: t.home.fullCompliance, desc: t.home.fullComplianceDesc }
                 ].map((item, i) => (
                   <div key={i} className="flex gap-4 group">
                     <div className="bg-white/10 p-3 rounded-lg h-fit group-hover:bg-accent group-hover:text-white transition-colors">
@@ -113,13 +113,13 @@ export default function Home() {
       {/* Call to Action */}
       <section className="py-20 bg-accent overflow-hidden">
         <div className="container mx-auto px-4 text-center space-y-8">
-          <h2 className="text-4xl md:text-6xl font-black text-white leading-tight">Ready to ship? <br/><span className="text-primary opacity-90">Get a priority quote today.</span></h2>
+          <h2 className="text-4xl md:text-6xl font-black text-white leading-tight">{t.home.quoteTitle} <br/><span className="text-primary opacity-90">{t.home.quoteSubtitle}</span></h2>
           <div className="flex flex-col sm:flex-row justify-center gap-6 pt-6">
             <Button size="lg" className="bg-primary text-white hover:bg-primary/90 text-xl px-12 h-16 rounded-full shadow-2xl transition-transform hover:scale-105" asChild>
-              <Link href="/contact">Request a Quote</Link>
+              <Link href="/contact">{t.home.requestQuote}</Link>
             </Button>
             <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-accent text-xl px-12 h-16 rounded-full backdrop-blur-sm transition-transform hover:scale-105" asChild>
-              <Link href="/tracking">Track Package</Link>
+              <Link href="/tracking">{t.home.trackPackage}</Link>
             </Button>
           </div>
         </div>

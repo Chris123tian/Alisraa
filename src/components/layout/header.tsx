@@ -40,7 +40,7 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
       {/* Top Bar - 100% Static Shell for Hydration Stability */}
-      <div className="bg-primary h-10 w-full">
+      <div className="bg-primary h-10 w-full overflow-hidden">
         <div className="container mx-auto px-4 h-full flex justify-between items-center text-primary-foreground text-xs font-medium">
           <ClientOnly fallback={<div className="h-4 w-48 bg-white/10 animate-pulse rounded" />}>
             <div className="flex items-center gap-4 md:gap-8">
@@ -67,9 +67,6 @@ export function Header() {
                   </SelectContent>
                 </Select>
               </div>
-              <span className="hidden md:inline text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white shadow-sm">
-                Global Logistics
-              </span>
             </div>
           </ClientOnly>
         </div>
