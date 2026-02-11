@@ -20,7 +20,8 @@ export function ClientOnly({
     setMounted(true);
   }, []);
 
-  // Renders fallback on server and first client paint to ensure perfect hydration
+  // Renders fallback on server and first client paint to ensure perfect hydration.
+  // This satisfies the requirement that the server render and first client render match.
   if (!mounted) {
     return <>{fallback}</>;
   }

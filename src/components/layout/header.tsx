@@ -30,7 +30,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-      {/* Top Bar - Stable Header Shell */}
+      {/* Top Bar - Strictly Static Shell Wrapper */}
       <div className="bg-primary h-10 w-full overflow-hidden">
         <div className="container mx-auto px-4 h-full flex justify-between items-center text-primary-foreground text-xs font-medium">
           <ClientOnly fallback={<div className="h-4 w-48 bg-white/10 animate-pulse rounded" />}>
@@ -44,12 +44,12 @@ export function Header() {
                 <span className="hidden sm:inline">+49 (30) 12345678</span>
               </div>
             </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white shadow-sm">
+                Global Logistics
+              </span>
+            </div>
           </ClientOnly>
-          <div className="flex items-center gap-2">
-            <span className="text-[10px] uppercase font-bold tracking-widest bg-accent px-2 py-0.5 rounded text-white shadow-sm">
-              Global Logistics
-            </span>
-          </div>
         </div>
       </div>
 
