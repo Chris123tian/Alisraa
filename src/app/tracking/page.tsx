@@ -5,7 +5,7 @@ import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Package, MapPin, Truck, CheckCircle2, Clock, ShieldCheck } from 'lucide-react';
+import { Search, Package, MapPin, Truck, CheckCircle2, Clock, ShieldCheck, Globe2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function TrackingPage() {
