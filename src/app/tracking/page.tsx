@@ -1,23 +1,29 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { PageHeader } from '@/components/page-header';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Search, Package, MapPin, Truck, CheckCircle2, Clock, ShieldCheck, Globe2 } from 'lucide-react';
+import { Search, Package, MapPin, Truck, CheckCircle2, Clock, ShieldCheck, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 export default function TrackingPage() {
   const [trackingCode, setTrackingCode] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const [hasResult, setHasResult] = useState(false);
+  const [arrivalDate, setArrivalDate] = useState('');
+
+  useEffect(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 14);
+    setArrivalDate(date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }));
+  }, []);
 
   const handleTrack = (e: React.FormEvent) => {
     e.preventDefault();
     if (!trackingCode) return;
     setIsSearching(true);
-    // Simulate API call
     setTimeout(() => {
       setIsSearching(false);
       setHasResult(true);
@@ -71,12 +77,11 @@ export default function TrackingPage() {
                     <div className="text-right">
                       <p className="text-sm text-muted-foreground mb-1">Estimated Arrival</p>
                       <h4 className="text-xl font-bold flex items-center gap-2">
-                        <Clock className="w-5 h-5 text-accent" /> Oct 24, 2023
+                        <Clock className="w-5 h-5 text-accent" /> {arrivalDate || 'Calculating...'}
                       </h4>
                     </div>
                   </div>
 
-                  {/* Progress Tracker */}
                   <div className="relative flex justify-between">
                     <div className="absolute top-5 left-0 right-0 h-1 bg-gray-200 -z-10 rounded-full overflow-hidden">
                       <div className="h-full bg-accent w-[40%] transition-all duration-1000" />
@@ -107,7 +112,7 @@ export default function TrackingPage() {
                     </div>
                     <div className="space-y-4">
                       <h5 className="font-bold flex items-center gap-2"><MapPin className="w-4 h-4 text-accent" /> Destination</h5>
-                      <p className="text-muted-foreground">Port of Hamburg, Germany<br/><span className="text-xs">Expected Arrival Oct 24</span></p>
+                      <p className="text-muted-foreground">Port of Hamburg, Germany<br/><span className="text-xs">Expected Arrival {arrivalDate}</span></p>
                     </div>
                   </div>
                 </div>
@@ -129,7 +134,7 @@ export default function TrackingPage() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {['Syria', 'Germany', 'USA', 'Africa'].map(country => (
                 <div key={country} className="p-6 bg-white rounded-2xl shadow-sm border border-gray-100 hover:border-accent hover:shadow-md transition-all group cursor-default">
-                  <Globe2 className="w-8 h-8 text-primary/20 group-hover:text-accent mx-auto mb-4 transition-colors" />
+                  <Globe className="w-8 h-8 text-primary/20 group-hover:text-accent mx-auto mb-4 transition-colors" />
                   <span className="font-bold text-primary">{country}</span>
                 </div>
               ))}
