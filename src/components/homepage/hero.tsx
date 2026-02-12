@@ -1,4 +1,3 @@
-
 'use client';
 
 import Link from 'next/link';
@@ -44,7 +43,7 @@ export function Hero() {
   }, [emblaApi]);
 
   return (
-    <section className="relative h-[85vh] w-full text-white overflow-hidden bg-primary">
+    <section className="relative h-[70vh] sm:h-[80vh] md:h-[85vh] w-full text-white overflow-hidden bg-primary">
       {/* Background Slideshow */}
       <div className="absolute inset-0 z-0" ref={emblaRef}>
         <div className="flex h-full">
@@ -61,7 +60,7 @@ export function Hero() {
                 priority={index === 0}
                 data-ai-hint={img.imageHint}
               />
-              <div className="absolute inset-0 bg-gradient-to-r from-primary/90 via-primary/60 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/95 via-primary/60 to-transparent lg:via-primary/40" />
             </div>
           ))}
         </div>
@@ -69,25 +68,25 @@ export function Hero() {
       
       {/* Content */}
       <div className="container relative z-10 px-4 h-full flex items-center">
-        <div className="max-w-3xl space-y-8 animate-fade-up">
-          <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/30 rounded-full px-4 py-1.5 text-accent-foreground backdrop-blur-sm">
-            <Ship className="w-4 h-4 text-accent" />
-            <span className="text-xs font-bold tracking-widest uppercase">{t.hero.tag}</span>
+        <div className="max-w-3xl space-y-6 md:space-y-8 animate-fade-up text-center md:text-left mx-auto md:mx-0">
+          <div className="inline-flex items-center gap-2 bg-accent/20 border border-accent/30 rounded-full px-3 py-1 md:px-4 md:py-1.5 text-accent-foreground backdrop-blur-sm">
+            <Ship className="w-3 h-3 md:w-4 md:h-4 text-accent" />
+            <span className="text-[10px] md:text-xs font-bold tracking-widest uppercase">{t.hero.tag}</span>
           </div>
           
-          <h1 className="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight drop-shadow-2xl">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-extrabold leading-tight tracking-tight drop-shadow-2xl">
             {t.hero.title} <span className="text-accent">{t.hero.titleAccent}</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-200 max-w-2xl drop-shadow-md">
+          <p className="text-lg md:text-2xl text-gray-200 max-w-2xl drop-shadow-md mx-auto md:mx-0">
             {t.hero.subtitle}
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-4 pt-4">
-            <Button size="lg" className="bg-accent hover:bg-accent/90 text-white font-bold h-14 px-8 text-lg rounded-full transition-transform hover:scale-105 shadow-xl shadow-accent/20" asChild>
+          <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center md:justify-start">
+            <Button size="lg" className="bg-accent hover:bg-accent/90 text-white font-bold h-12 md:h-14 px-8 text-base md:text-lg rounded-full transition-transform hover:scale-105 shadow-xl shadow-accent/20" asChild>
               <Link href="/tracking">{t.hero.trackBtn} <ArrowRight className="ml-2 w-5 h-5" /></Link>
             </Button>
-            <Button size="lg" variant="outline" className="border-white/30 text-white bg-white/5 hover:bg-white hover:text-primary h-14 px-8 text-lg rounded-full backdrop-blur-md transition-transform hover:scale-105" asChild>
+            <Button size="lg" variant="outline" className="border-white/30 text-white bg-white/5 hover:bg-white hover:text-primary h-12 md:h-14 px-8 text-base md:text-lg rounded-full backdrop-blur-md transition-transform hover:scale-105" asChild>
               <Link href="/services">{t.hero.solutionsBtn}</Link>
             </Button>
           </div>
@@ -95,18 +94,18 @@ export function Hero() {
       </div>
 
       {/* Slideshow Controls (Dots) */}
-      <div className="absolute bottom-10 left-10 flex gap-3 z-20">
+      <div className="absolute bottom-6 md:bottom-10 left-1/2 md:left-10 -translate-x-1/2 md:translate-x-0 flex gap-3 z-20">
         {heroImages.map((_, i) => (
           <button
             key={i}
             onClick={() => scrollTo(i)}
             className={cn(
-              "transition-all duration-300",
+              "transition-all duration-300 p-1",
               selectedIndex === i ? "text-accent scale-125" : "text-white/40 hover:text-white"
             )}
             aria-label={`Go to slide ${i + 1}`}
           >
-            <Circle className={cn("w-3 h-3 fill-current")} />
+            <Circle className={cn("w-2 h-2 md:w-3 md:h-3 fill-current")} />
           </button>
         ))}
       </div>
