@@ -1,10 +1,28 @@
 {
   "placeholderImages": [
     {
-      "id": "hero-image",
+      "id": "hero-1",
       "description": "Premium cinematic shot of a massive container ship at sunset.",
       "imageUrl": "https://images.unsplash.com/photo-1605745341112-85968b19335b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb250YWluZXIlMjBzaGlwfGVufDB8fHx8MTc3MDcxNDc1MHww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "container ship"
+    },
+    {
+      "id": "hero-2",
+      "description": "Cargo plane loading at night with glowing lights.",
+      "imageUrl": "https://images.unsplash.com/photo-1570710891163-6d3b5c47248b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjYXJnbyUyMHBsYW5lfGVufDB8fHx8MTc3MDczMjQ1M3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cargo plane"
+    },
+    {
+      "id": "hero-3",
+      "description": "Logistics truck traveling on a scenic coastal highway.",
+      "imageUrl": "https://images.unsplash.com/photo-1591419478162-a4dd21b7ec0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxsb2dpc3RpY3MlMjB0cnVja3xlbnwwfHx8fDE3NzA3NTk3MTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "logistics truck"
+    },
+    {
+      "id": "hero-4",
+      "description": "Modern high-tech warehouse logistics center operations.",
+      "imageUrl": "https://images.unsplash.com/photo-1652878856788-6dc9e56c9235?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxtb2Rlcm4lMjB3YXJlaG91c2V8ZW58MHx8fHwxNzcwNzU0NDQyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern warehouse"
     },
     {
       "id": "service-ocean",
