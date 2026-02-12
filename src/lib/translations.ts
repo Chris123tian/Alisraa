@@ -132,6 +132,11 @@ export const translations = {
       policies: 'Policies',
       contactInfo: 'Contact Info',
       rights: 'All Rights Reserved.'
+    },
+    chatbot: {
+      title: 'AI Assistant',
+      welcome: 'Hello! How can I help you with your logistics today?',
+      placeholder: 'Type your question...',
     }
   },
   de: {
@@ -265,6 +270,11 @@ export const translations = {
       policies: 'Richtlinien',
       contactInfo: 'Kontaktinformationen',
       rights: 'Alle Rechte vorbehalten.'
+    },
+    chatbot: {
+      title: 'KI-Assistent',
+      welcome: 'Hallo! Wie kann ich Ihnen heute bei Ihrer Logistik helfen?',
+      placeholder: 'Geben Sie Ihre Frage ein...',
     }
   },
   nl: {
@@ -398,6 +408,11 @@ export const translations = {
       policies: 'Beleid',
       contactInfo: 'Contactinformatie',
       rights: 'Alle rechten voorbehouden.'
+    },
+    chatbot: {
+      title: 'AI-assistent',
+      welcome: 'Hallo! Hoe kan ik u vandaag helpen met uw logistiek?',
+      placeholder: 'Typ je vraag...',
     }
   }
 };

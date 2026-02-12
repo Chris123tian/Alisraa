@@ -5,6 +5,7 @@ import { Footer } from '@/components/layout/footer';
 import { Toaster } from '@/components/ui/toaster';
 import { FirebaseClientProvider } from '@/firebase';
 import { LanguageProvider } from '@/hooks/use-language';
+import { AIChatbot } from '@/components/ai-chatbot';
 
 export const metadata: Metadata = {
   title: 'Al-Israa | International Freight & Logistics',
@@ -32,6 +33,7 @@ export default function RootLayout({
             <Header />
             <main className="min-h-[calc(100vh-80px-40px)]">{children}</main>
             <Footer />
+            <AIChatbot />
             <Toaster />
           </LanguageProvider>
         </FirebaseClientProvider>
