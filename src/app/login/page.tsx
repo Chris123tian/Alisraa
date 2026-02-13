@@ -135,7 +135,7 @@ export default function LoginPage() {
                           <MailIcon className="w-4 h-4" /> Email Address
                         </FormLabel>
                         <FormControl>
-                          <Input type="email" placeholder="alisraainternationaler@gmail.com" {...field} className="h-12 text-lg" />
+                          <Input type="email" placeholder="name@example.com" {...field} className="h-12 text-lg" />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
