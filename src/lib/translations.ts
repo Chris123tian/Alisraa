@@ -40,7 +40,18 @@ export const translations = {
       quoteTitle: 'Ready to ship?',
       quoteSubtitle: 'Request a consultation today.',
       requestQuote: 'Contact Us',
-      trackPackage: 'Track Package'
+      trackPackage: 'Track Package',
+      missionTitle: 'Our Mission',
+      missionDesc: 'To provide seamless, efficient, and transparent logistics solutions that bridge the gap between continents, empowering businesses to thrive in a global economy.',
+      visionTitle: 'Our Vision',
+      visionDesc: 'To be the world\'s most reliable logistics partner, recognized for our technological innovation, sustainable practices, and unwavering commitment to client success.',
+      faqTitle: 'Frequently Asked Questions',
+      faqs: [
+        { q: 'How do I track my shipment?', a: 'You can use our global tracking page with your AL- tracking ID for real-time updates.' },
+        { q: 'What services do you offer?', a: 'We specialize in ocean freight, air cargo, road transport, and end-to-end supply chain management.' },
+        { q: 'Which regions do you cover?', a: 'We have a robust network covering Syria, Germany, Africa, the USA, and over 150 ports worldwide.' },
+        { q: 'Are my goods insured?', a: 'Yes, we offer premium cargo insurance options to ensure your goods are protected throughout their journey.' }
+      ]
     },
     tracking: {
       title: 'Global Tracking',
@@ -106,8 +117,8 @@ export const translations = {
       route: 'Origin & Destination',
       status: 'Status',
       lastUpdate: 'Last Update',
-      supportTitle: 'Support & Messages',
-      supportDesc: 'Chat with our logistics team in real-time.'
+      supportTitle: 'Direct Support Inbox',
+      supportDesc: 'Secure messaging with your dedicated logistics manager.'
     },
     admin: {
       title: 'Admin Dashboard',
@@ -180,7 +191,18 @@ export const translations = {
       quoteTitle: 'Bereit zum Versand?',
       quoteSubtitle: 'Fordern Sie heute eine Beratung an.',
       requestQuote: 'Kontaktieren Sie uns',
-      trackPackage: 'Paket verfolgen'
+      trackPackage: 'Paket verfolgen',
+      missionTitle: 'Unsere Mission',
+      missionDesc: 'Nahtlose, effiziente und transparente Logistiklösungen anzubieten, die die Lücke zwischen den Kontinenten schließen.',
+      visionTitle: 'Unsere Vision',
+      visionDesc: 'Der weltweit zuverlässigste Logistikpartner zu sein, bekannt für technologische Innovation und Nachhaltigkeit.',
+      faqTitle: 'Häufig gestellte Fragen',
+      faqs: [
+        { q: 'Wie verfolge ich meine Sendung?', a: 'Nutzen Sie unsere Tracking-Seite mit Ihrer AL- Tracking-ID für Echtzeit-Updates.' },
+        { q: 'Welche Dienstleistungen bieten Sie an?', a: 'Wir sind spezialisiert auf Seefracht, Luftfracht, Straßentransport und Supply Chain Management.' },
+        { q: 'Welche Regionen decken Sie ab?', a: 'Unser Netzwerk umfasst Syrien, Deutschland, Afrika, die USA und über 150 Häfen weltweit.' },
+        { q: 'Sind meine Waren versichert?', a: 'Ja, wir bieten erstklassige Transportversicherungsoptionen an.' }
+      ]
     },
     tracking: {
       title: 'Globale Verfolgung',
@@ -246,8 +268,8 @@ export const translations = {
       route: 'Herkunft & Ziel',
       status: 'Status',
       lastUpdate: 'Letzte Aktualisierung',
-      supportTitle: 'Support & Nachrichten',
-      supportDesc: 'Chatten Sie in Echtzeit mit unserem Logistik-Team.'
+      supportTitle: 'Support-Posteingang',
+      supportDesc: 'Sichere Nachrichtenübermittlung mit Ihrem Logistik-Manager.'
     },
     admin: {
       title: 'Admin-Dashboard',
@@ -320,7 +342,18 @@ export const translations = {
       quoteTitle: 'Klaar om te verzenden?',
       quoteSubtitle: 'Vraag vandaag nog een adviesgesprek aan.',
       requestQuote: 'Neem contact op',
-      trackPackage: 'Pakket volgen'
+      trackPackage: 'Pakket volgen',
+      missionTitle: 'Onze Missie',
+      missionDesc: 'Naadloze, efficiënte en transparante logistieke oplossingen bieden die de kloof tussen continenten overbruggen.',
+      visionTitle: 'Onze Visie',
+      visionDesc: 'S werelds meest betrouwbare logistieke partner zijn, erkend voor technologische innovatie en duurzaamheid.',
+      faqTitle: 'Veelgestelde Vragen',
+      faqs: [
+        { q: 'Hoe volg ik mijn zending?', a: 'Gebruik onze trackingpagina met uw AL- ID voor realtime updates.' },
+        { q: 'Welke diensten bieden jullie aan?', a: 'Wij zijn gespecialiseerd in zeevracht, luchtvracht, wegtransport en supply chain management.' },
+        { q: 'Welke regio\'s dekken jullie?', a: 'Ons netwerk omvat Syrië, Duitsland, Afrika, de VS en meer dan 150 havens.' },
+        { q: 'Zijn mijn goederen verzekerd?', a: 'Ja, wij bieden premium transportverzekeringsopties.' }
+      ]
     },
     tracking: {
       title: 'Wereldwijde Tracking',
@@ -386,8 +419,8 @@ export const translations = {
       route: 'Herkomst & Bestemming',
       status: 'Status',
       lastUpdate: 'Laatste Update',
-      supportTitle: 'Support & Berichten',
-      supportDesc: 'Chat in realtime met ons logistiek team.'
+      supportTitle: 'Directe Inbox',
+      supportDesc: 'Veilige berichtenuitwisseling met uw logistiek manager.'
     },
     admin: {
       title: 'Beheerdersdashboard',

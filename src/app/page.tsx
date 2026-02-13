@@ -7,14 +7,16 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardTitle } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Globe2, ShieldCheck, Zap, ArrowRight, Ship } from 'lucide-react';
+import { Globe2, ShieldCheck, Zap, ArrowRight, Ship, Target, Eye, HelpCircle } from 'lucide-react';
 import { useLanguage } from '@/hooks/use-language';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
 export default function Home() {
   const { t } = useLanguage();
 
   const servicesImg = PlaceHolderImages.find(img => img.id === 'service-ocean')?.imageUrl || 'https://picsum.photos/seed/services/800/600';
   const aboutImg = PlaceHolderImages.find(img => img.id === 'about-team')?.imageUrl || 'https://picsum.photos/seed/about/800/600';
+  const missionImg = PlaceHolderImages.find(img => img.id === 'about-supply')?.imageUrl || 'https://picsum.photos/seed/mission/800/600';
 
   return (
     <>
@@ -38,8 +40,8 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {services.slice(0, 3).map((service) => (
-              <Card key={service.title} className="relative overflow-hidden group border-none shadow-xl md:shadow-2xl rounded-[1.5rem] md:rounded-[2rem] transition-all duration-500 hover:-translate-y-2 flex flex-col h-full bg-card">
+            {services.slice(0, 3).map((service, idx) => (
+              <Card key={service.title} className={`relative overflow-hidden group border-none shadow-xl md:shadow-2xl rounded-[1.5rem] md:rounded-[2rem] transition-all duration-700 hover:-translate-y-2 flex flex-col h-full bg-card animate-in fade-in slide-in-from-bottom-8 duration-500`} style={{ animationDelay: `${idx * 150}ms` }}>
                 <div className="h-48 md:h-64 relative overflow-hidden">
                   <Image 
                     src={PlaceHolderImages.find(img => img.id.includes(service.title.split(' ')[0].toLowerCase()))?.imageUrl || servicesImg}
@@ -51,7 +53,7 @@ export default function Home() {
                 </div>
                 <div className="flex-grow p-6 md:p-10 flex flex-col justify-between">
                   <div className="space-y-4">
-                    <div className="bg-accent text-white rounded-xl md:rounded-2xl p-3 md:p-4 w-fit shadow-lg shadow-accent/20">
+                    <div className="bg-accent text-white rounded-xl md:rounded-2xl p-3 md:p-4 w-fit shadow-lg shadow-accent/20 transition-transform group-hover:rotate-12">
                       <service.icon className="w-6 h-6 md:w-8 md:h-8" />
                     </div>
                     <CardTitle className="text-xl md:text-2xl font-black text-primary uppercase tracking-tight">{service.title}</CardTitle>
@@ -62,6 +64,48 @@ export default function Home() {
                 </div>
               </Card>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Mission & Vision Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-12">
+              <div className="flex gap-6 animate-in slide-in-from-left duration-700">
+                <div className="bg-primary text-white p-4 rounded-2xl h-fit">
+                  <Target className="w-8 h-8" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-black text-primary uppercase tracking-tight">{t.home.missionTitle}</h3>
+                  <p className="text-muted-foreground leading-relaxed text-lg">
+                    {t.home.missionDesc}
+                  </p>
+                </div>
+              </div>
+              <div className="flex gap-6 animate-in slide-in-from-left duration-700 delay-200">
+                <div className="bg-accent text-white p-4 rounded-2xl h-fit">
+                  <Eye className="w-8 h-8" />
+                </div>
+                <div className="space-y-2">
+                  <h3 className="text-2xl font-black text-primary uppercase tracking-tight">{t.home.visionTitle}</h3>
+                  <p className="text-muted-foreground leading-relaxed text-lg">
+                    {t.home.visionDesc}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="relative h-[500px] rounded-[3rem] overflow-hidden shadow-2xl animate-in fade-in duration-1000">
+              <Image 
+                src={missionImg}
+                alt="Al-Israa Mission"
+                fill
+                className="object-cover"
+                data-ai-hint="supply chain logistics"
+              />
+              <div className="absolute inset-0 bg-primary/10" />
+            </div>
           </div>
         </div>
       </section>
@@ -94,7 +138,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="space-y-8 md:order-1 lg:order-2 animate-fade-up">
+            <div className="space-y-8 md:order-1 lg:order-2">
               <div className="space-y-4 md:space-y-6 text-center lg:text-left">
                 <h2 className="text-xs md:text-sm font-bold uppercase text-accent tracking-[0.4em]">{t.about.explained}</h2>
                 <h3 className="text-4xl md:text-7xl font-black leading-[1.1] md:leading-[1] tracking-tighter uppercase">
@@ -112,7 +156,7 @@ export default function Home() {
                   { icon: ShieldCheck, title: t.home.secureCargo, desc: t.home.secureCargoDesc },
                   { icon: Ship, title: t.about.vesselSchedule, desc: t.about.planShipments }
                 ].map((item, i) => (
-                  <div key={i} className="group flex flex-col items-center lg:items-start space-y-3 md:space-y-4 text-center lg:text-left">
+                  <div key={i} className="group flex flex-col items-center lg:items-start space-y-3 md:space-y-4 text-center lg:text-left animate-in fade-in duration-500" style={{ animationDelay: `${i * 100}ms` }}>
                     <div className="bg-white/5 border border-white/10 p-4 md:p-5 rounded-xl md:rounded-2xl w-fit group-hover:bg-accent group-hover:text-white transition-all duration-300">
                       <item.icon className="w-6 h-6 md:w-8 md:h-8" />
                     </div>
@@ -131,6 +175,26 @@ export default function Home() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <div className="text-center mb-12">
+            <HelpCircle className="w-12 h-12 text-accent mx-auto mb-4" />
+            <h2 className="text-3xl md:text-5xl font-black text-primary uppercase tracking-tight">{t.home.faqTitle}</h2>
+          </div>
+          <Accordion type="single" collapsible className="w-full space-y-4">
+            {t.home.faqs.map((faq: any, i: number) => (
+              <AccordionItem key={i} value={`item-${i}`} className="border rounded-2xl px-6 bg-card shadow-sm hover:shadow-md transition-shadow">
+                <AccordionTrigger className="font-bold text-lg text-primary py-6 hover:no-underline">{faq.q}</AccordionTrigger>
+                <AccordionContent className="text-muted-foreground text-base pb-6">
+                  {faq.a}
+                </AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
         </div>
       </section>
 
