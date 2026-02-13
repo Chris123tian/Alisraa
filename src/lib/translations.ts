@@ -51,6 +51,20 @@ export const translations = {
         { q: 'What services do you offer?', a: 'We specialize in ocean freight, air cargo, road transport, and end-to-end supply chain management.' },
         { q: 'Which regions do you cover?', a: 'We have a robust network covering Syria, Germany, Africa, the USA, and over 150 ports worldwide.' },
         { q: 'Are my goods insured?', a: 'Yes, we offer premium cargo insurance options to ensure your goods are protected throughout their journey.' }
+      ],
+      servicesList: [
+        {
+          title: 'Ocean Transportation',
+          description: 'Reliable and cost-effective ocean freight services for global shipping.'
+        },
+        {
+          title: 'Air Transportation',
+          description: 'Fast and secure air freight for time-sensitive cargo deliveries worldwide.'
+        },
+        {
+          title: 'Side Truck Transportation',
+          description: 'Flexible road and rail transport for domestic and cross-border logistics.'
+        }
       ]
     },
     tracking: {
@@ -202,6 +216,20 @@ export const translations = {
         { q: 'Welche Dienstleistungen bieten Sie an?', a: 'Wir sind spezialisiert auf Seefracht, Luftfracht, Straßentransport und Supply Chain Management.' },
         { q: 'Welche Regionen decken Sie ab?', a: 'Unser Netzwerk umfasst Syrien, Deutschland, Afrika, die USA und über 150 Häfen weltweit.' },
         { q: 'Sind meine Waren versichert?', a: 'Ja, wir bieten erstklassige Transportversicherungsoptionen an.' }
+      ],
+      servicesList: [
+        {
+          title: 'Seefracht',
+          description: 'Zuverlässige und kostengünstige Seefrachtdienste für den weltweiten Versand.'
+        },
+        {
+          title: 'Luftfracht',
+          description: 'Schnelle und sichere Luftfracht für zeitkritische Frachtlieferungen weltweit.'
+        },
+        {
+          title: 'LKW-Transport',
+          description: 'Flexibler Straßen- und Schienentransport für nationale und grenzüberschreitende Logistik.'
+        }
       ]
     },
     tracking: {
@@ -345,7 +373,7 @@ export const translations = {
       trackPackage: 'Pakket volgen',
       missionTitle: 'Onze Missie',
       missionDesc: 'Naadloze, efficiënte en transparante logistieke oplossingen bieden die de kloof tussen continenten overbruggen.',
-      visionTitle: 'Onze Visie',
+      visionTitle: 'Our Vision',
       visionDesc: 'S werelds meest betrouwbare logistieke partner zijn, erkend voor technologische innovatie en duurzaamheid.',
       faqTitle: 'Veelgestelde Vragen',
       faqs: [
@@ -353,6 +381,20 @@ export const translations = {
         { q: 'Welke diensten bieden jullie aan?', a: 'Wij zijn gespecialiseerd in zeevracht, luchtvracht, wegtransport en supply chain management.' },
         { q: 'Welke regio\'s dekken jullie?', a: 'Ons netwerk omvat Syrië, Duitsland, Afrika, de VS en meer dan 150 havens.' },
         { q: 'Zijn mijn goederen verzekerd?', a: 'Ja, wij bieden premium transportverzekeringsopties.' }
+      ],
+      servicesList: [
+        {
+          title: 'Zeetransport',
+          description: 'Betrouwbare and kosteneffectieve zeevrachtdiensten voor wereldwijde verzending.'
+        },
+        {
+          title: 'Luchttransport',
+          description: 'Snelle and veilige luchtvracht voor tijdkritische leveringen wereldwijd.'
+        },
+        {
+          title: 'Vrachtwagentransport',
+          description: 'Flexibel weg- en railtransport voor binnenlandse en grensoverschrijdende logistiek.'
+        }
       ]
     },
     tracking: {

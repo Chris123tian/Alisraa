@@ -2,12 +2,11 @@
 
 import { Hero } from '@/components/homepage/hero';
 import { Button } from '@/components/ui/button';
-import { services } from '@/lib/data';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Card, CardTitle } from '@/components/ui/card';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Globe2, ShieldCheck, Zap, ArrowRight, Ship, Target, Eye, HelpCircle } from 'lucide-react';
+import { Globe2, ShieldCheck, Zap, ArrowRight, Ship, Target, Eye, HelpCircle, Plane, Truck } from 'lucide-react';
 import { useLanguage } from '@/hooks/use-language';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 
@@ -17,6 +16,9 @@ export default function Home() {
   const servicesImg = PlaceHolderImages.find(img => img.id === 'service-ocean')?.imageUrl || 'https://picsum.photos/seed/services/800/600';
   const aboutImg = PlaceHolderImages.find(img => img.id === 'about-team')?.imageUrl || 'https://picsum.photos/seed/about/800/600';
   const missionImg = PlaceHolderImages.find(img => img.id === 'about-supply')?.imageUrl || 'https://picsum.photos/seed/mission/800/600';
+
+  // Map of service types to icons
+  const serviceIcons = [Ship, Plane, Truck];
 
   return (
     <>
@@ -40,30 +42,36 @@ export default function Home() {
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {services.slice(0, 3).map((service, idx) => (
-              <Card key={service.title} className={`relative overflow-hidden group border-none shadow-xl md:shadow-2xl rounded-[1.5rem] md:rounded-[2rem] transition-all duration-700 hover:-translate-y-2 flex flex-col h-full bg-card animate-in fade-in slide-in-from-bottom-8 duration-500`} style={{ animationDelay: `${idx * 150}ms` }}>
-                <div className="h-48 md:h-64 relative overflow-hidden">
-                  <Image 
-                    src={PlaceHolderImages.find(img => img.id.includes(service.title.split(' ')[0].toLowerCase()))?.imageUrl || servicesImg}
-                    alt={service.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-primary/40 group-hover:bg-primary/20 transition-colors" />
-                </div>
-                <div className="flex-grow p-6 md:p-10 flex flex-col justify-between">
-                  <div className="space-y-4">
-                    <div className="bg-accent text-white rounded-xl md:rounded-2xl p-3 md:p-4 w-fit shadow-lg shadow-accent/20 transition-transform group-hover:rotate-12">
-                      <service.icon className="w-6 h-6 md:w-8 md:h-8" />
-                    </div>
-                    <CardTitle className="text-xl md:text-2xl font-black text-primary uppercase tracking-tight">{service.title}</CardTitle>
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed font-medium">
-                      {service.description}
-                    </p>
+            {t.home.servicesList.map((service: any, idx: number) => {
+              const Icon = serviceIcons[idx] || Ship;
+              const imageId = idx === 0 ? 'service-ocean' : idx === 1 ? 'service-air' : 'service-truck';
+              const imageUrl = PlaceHolderImages.find(img => img.id === imageId)?.imageUrl || servicesImg;
+
+              return (
+                <Card key={idx} className={`relative overflow-hidden group border-none shadow-xl md:shadow-2xl rounded-[1.5rem] md:rounded-[2rem] transition-all duration-700 hover:-translate-y-2 flex flex-col h-full bg-card animate-in fade-in slide-in-from-bottom-8 duration-500`} style={{ animationDelay: `${idx * 150}ms` }}>
+                  <div className="h-48 md:h-64 relative overflow-hidden">
+                    <Image 
+                      src={imageUrl}
+                      alt={service.title}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    />
+                    <div className="absolute inset-0 bg-primary/40 group-hover:bg-primary/20 transition-colors" />
                   </div>
-                </div>
-              </Card>
-            ))}
+                  <div className="flex-grow p-6 md:p-10 flex flex-col justify-between">
+                    <div className="space-y-4">
+                      <div className="bg-accent text-white rounded-xl md:rounded-2xl p-3 md:p-4 w-fit shadow-lg shadow-accent/20 transition-transform group-hover:rotate-12">
+                        <Icon className="w-6 h-6 md:w-8 md:h-8" />
+                      </div>
+                      <CardTitle className="text-xl md:text-2xl font-black text-primary uppercase tracking-tight">{service.title}</CardTitle>
+                      <p className="text-sm md:text-base text-muted-foreground leading-relaxed font-medium">
+                        {service.description}
+                      </p>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })}
           </div>
         </div>
       </section>
