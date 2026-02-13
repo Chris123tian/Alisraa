@@ -13,11 +13,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Package, Truck, Clock, MapPin } from 'lucide-react';
+import { Package, Truck, Clock, MapPin, MessageSquare } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { useLanguage } from '@/hooks/use-language';
+import { Chat } from '@/components/chat';
 
 export default function UserDashboard() {
   const { user, isUserLoading } = useUser();
@@ -91,66 +92,85 @@ export default function UserDashboard() {
             </Card>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>{t.dashboard.yourShipments}</CardTitle>
-              <CardDescription>{t.dashboard.monitorDesc}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              {isShipmentsLoading ? (
-                <div className="space-y-4">
-                  {[1, 2, 3].map(i => <Skeleton key={i} className="h-12 w-full" />)}
-                </div>
-              ) : !shipments || shipments.length === 0 ? (
-                <div className="text-center py-12">
-                  <Package className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                  <p className="text-muted-foreground">{t.dashboard.noShipments}</p>
-                </div>
-              ) : (
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>{t.dashboard.trackingNum}</TableHead>
-                      <TableHead>{t.dashboard.route}</TableHead>
-                      <TableHead>{t.dashboard.status}</TableHead>
-                      <TableHead>{t.dashboard.lastUpdate}</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {shipments.map((shipment) => (
-                      <TableRow key={shipment.id}>
-                        <TableCell className="font-mono font-bold text-primary">
-                          {shipment.trackingNumber}
-                        </TableCell>
-                        <TableCell>
-                          <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4 text-muted-foreground" />
-                            <span>{shipment.origin} → {shipment.destination}</span>
-                          </div>
-                        </TableCell>
-                        <TableCell>
-                          <Badge 
-                            variant={
-                              shipment.status === 'Delivered' ? 'default' : 
-                              shipment.status === 'Delayed' ? 'destructive' : 'secondary'
-                            }
-                          >
-                            {shipment.status}
-                          </Badge>
-                        </TableCell>
-                        <TableCell className="text-muted-foreground text-sm">
-                          <div className="flex items-center gap-1">
-                            <Clock className="w-3 h-3" />
-                            {shipment.lastUpdate ? new Date(shipment.lastUpdate).toLocaleString() : 'N/A'}
-                          </div>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              )}
-            </CardContent>
-          </Card>
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <Card>
+                <CardHeader>
+                  <CardTitle>{t.dashboard.yourShipments}</CardTitle>
+                  <CardDescription>{t.dashboard.monitorDesc}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {isShipmentsLoading ? (
+                    <div className="space-y-4">
+                      {[1, 2, 3].map(i => <Skeleton key={i} className="h-12 w-full" />)}
+                    </div>
+                  ) : !shipments || shipments.length === 0 ? (
+                    <div className="text-center py-12">
+                      <Package className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                      <p className="text-muted-foreground">{t.dashboard.noShipments}</p>
+                    </div>
+                  ) : (
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>{t.dashboard.trackingNum}</TableHead>
+                          <TableHead>{t.dashboard.route}</TableHead>
+                          <TableHead>{t.dashboard.status}</TableHead>
+                          <TableHead>{t.dashboard.lastUpdate}</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {shipments.map((shipment) => (
+                          <TableRow key={shipment.id}>
+                            <TableCell className="font-mono font-bold text-primary">
+                              {shipment.trackingNumber}
+                            </TableCell>
+                            <TableCell>
+                              <div className="flex items-center gap-2">
+                                <MapPin className="w-4 h-4 text-muted-foreground" />
+                                <span>{shipment.origin} → {shipment.destination}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <Badge 
+                                variant={
+                                  shipment.status === 'Delivered' ? 'default' : 
+                                  shipment.status === 'Delayed' ? 'destructive' : 'secondary'
+                                }
+                              >
+                                {shipment.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-muted-foreground text-sm">
+                              <div className="flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {shipment.lastUpdate ? new Date(shipment.lastUpdate).toLocaleString() : 'N/A'}
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="lg:col-span-1">
+              <Card className="h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <MessageSquare className="w-5 h-5 text-accent" />
+                    {t.dashboard.supportTitle}
+                  </CardTitle>
+                  <CardDescription>{t.dashboard.supportDesc}</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Chat />
+                </CardContent>
+              </Card>
+            </div>
+          </div>
         </div>
       </section>
     </>

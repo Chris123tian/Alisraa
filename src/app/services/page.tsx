@@ -64,14 +64,12 @@ export default function ServicesPage() {
                           <TableHeader>
                             <TableRow className="bg-primary text-white hover:bg-primary">
                               <TableHead className="text-white font-bold">{t.services.duration}</TableHead>
-                              <TableHead className="text-right text-white font-bold">{t.services.cost}</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
                             {rate.ocean.map((option) => (
                               <TableRow key={option.duration}>
                                 <TableCell className="font-medium text-xs md:text-sm">{option.duration}</TableCell>
-                                <TableCell className="text-right font-black text-accent text-xs md:text-sm">{option.cost}</TableCell>
                               </TableRow>
                             ))}
                           </TableBody>
@@ -91,14 +89,12 @@ export default function ServicesPage() {
                           <TableHeader>
                             <TableRow className="bg-primary text-white hover:bg-primary">
                               <TableHead className="text-white font-bold">{t.services.duration}</TableHead>
-                              <TableHead className="text-right text-white font-bold">{t.services.cost}</TableHead>
                             </TableRow>
                           </TableHeader>
                           <TableBody>
                             {rate.air.map((option) => (
                               <TableRow key={option.duration}>
                                 <TableCell className="font-medium text-xs md:text-sm">{option.duration}</TableCell>
-                                <TableCell className="text-right font-black text-accent text-xs md:text-sm">{option.cost}</TableCell>
                               </TableRow>
                             ))}
                           </TableBody>

@@ -38,8 +38,8 @@ export const translations = {
       fullCompliance: 'Full Compliance',
       fullComplianceDesc: 'Hassle-free customs brokerage.',
       quoteTitle: 'Ready to ship?',
-      quoteSubtitle: 'Get a priority quote today.',
-      requestQuote: 'Request a Quote',
+      quoteSubtitle: 'Request a consultation today.',
+      requestQuote: 'Contact Us',
       trackPackage: 'Track Package'
     },
     tracking: {
@@ -65,14 +65,14 @@ export const translations = {
     },
     services: {
       title: 'Our Services',
-      shippingCosts: 'Shipping Costs',
-      transparentPricing: 'Transparent Pricing',
-      pricingDesc: 'Find detailed shipping costs for various destinations below. We offer both ocean and air transportation to suit your budget and timeline.',
-      goodsTo: 'Goods to',
+      shippingCosts: 'Transit Times',
+      transparentPricing: 'Global Routes',
+      pricingDesc: 'Find detailed transit information for various destinations below. We offer both ocean and air transportation to suit your timeline.',
+      goodsTo: 'Routes to',
       ocean: 'Ocean Transportation',
       air: 'Air Transportation',
       duration: 'Duration',
-      cost: 'Cost'
+      cost: 'Details'
     },
     about: {
       title: 'About Us',
@@ -105,7 +105,9 @@ export const translations = {
       trackingNum: 'Tracking #',
       route: 'Origin & Destination',
       status: 'Status',
-      lastUpdate: 'Last Update'
+      lastUpdate: 'Last Update',
+      supportTitle: 'Support & Messages',
+      supportDesc: 'Chat with our logistics team in real-time.'
     },
     admin: {
       title: 'Admin Dashboard',
@@ -176,8 +178,8 @@ export const translations = {
       fullCompliance: 'Vollständige Einhaltung',
       fullComplianceDesc: 'Reibungslose Zollabwicklung.',
       quoteTitle: 'Bereit zum Versand?',
-      quoteSubtitle: 'Holen Sie sich noch heute ein vorrangiges Angebot.',
-      requestQuote: 'Angebot anfordern',
+      quoteSubtitle: 'Fordern Sie heute eine Beratung an.',
+      requestQuote: 'Kontaktieren Sie uns',
       trackPackage: 'Paket verfolgen'
     },
     tracking: {
@@ -203,14 +205,14 @@ export const translations = {
     },
     services: {
       title: 'Unsere Dienstleistungen',
-      shippingCosts: 'Versandkosten',
-      transparentPricing: 'Transparente Preise',
-      pricingDesc: 'Nachfolgend finden Sie detaillierte Versandkosten für verschiedene Ziele. Wir bieten sowohl See- als auch Lufttransport an.',
-      goodsTo: 'Waren nach',
+      shippingCosts: 'Transitzeiten',
+      transparentPricing: 'Globale Routen',
+      pricingDesc: 'Nachfolgend finden Sie detaillierte Transitinformationen für verschiedene Ziele. Wir bieten sowohl See- als auch Lufttransport an.',
+      goodsTo: 'Routen nach',
       ocean: 'Seetransport',
       air: 'Lufttransport',
       duration: 'Dauer',
-      cost: 'Kosten'
+      cost: 'Details'
     },
     about: {
       title: 'Über uns',
@@ -243,7 +245,9 @@ export const translations = {
       trackingNum: 'Tracking-Nr.',
       route: 'Herkunft & Ziel',
       status: 'Status',
-      lastUpdate: 'Letzte Aktualisierung'
+      lastUpdate: 'Letzte Aktualisierung',
+      supportTitle: 'Support & Nachrichten',
+      supportDesc: 'Chatten Sie in Echtzeit mit unserem Logistik-Team.'
     },
     admin: {
       title: 'Admin-Dashboard',
@@ -314,8 +318,8 @@ export const translations = {
       fullCompliance: 'Volledige Naleving',
       fullComplianceDesc: 'Probleemloze douanebemiddeling.',
       quoteTitle: 'Klaar om te verzenden?',
-      quoteSubtitle: 'Ontvang vandaag nog een prioriteitsofferte.',
-      requestQuote: 'Offerte aanvragen',
+      quoteSubtitle: 'Vraag vandaag nog een adviesgesprek aan.',
+      requestQuote: 'Neem contact op',
       trackPackage: 'Pakket volgen'
     },
     tracking: {
@@ -341,14 +345,14 @@ export const translations = {
     },
     services: {
       title: 'Onze Diensten',
-      shippingCosts: 'Verzendkosten',
-      transparentPricing: 'Transparante Prijzen',
-      pricingDesc: 'Vind hieronder gedetailleerde verzendkosten voor verschillende bestemmingen.',
-      goodsTo: 'Goederen naar',
+      shippingCosts: 'Transittijden',
+      transparentPricing: 'Wereldwijde Routes',
+      pricingDesc: 'Vind hieronder gedetailleerde transitinformatie voor verschillende bestemmingen.',
+      goodsTo: 'Routes naar',
       ocean: 'Zeetransport',
       air: 'Luchttransport',
       duration: 'Duur',
-      cost: 'Kosten'
+      cost: 'Details'
     },
     about: {
       title: 'Over ons',
@@ -381,7 +385,9 @@ export const translations = {
       trackingNum: 'Tracking-nr.',
       route: 'Herkomst & Bestemming',
       status: 'Status',
-      lastUpdate: 'Laatste Update'
+      lastUpdate: 'Laatste Update',
+      supportTitle: 'Support & Berichten',
+      supportDesc: 'Chat in realtime met ons logistiek team.'
     },
     admin: {
       title: 'Beheerdersdashboard',
@@ -401,7 +407,7 @@ export const translations = {
       manifest: 'Actieve Vrachtmanifest',
       manifestDesc: 'Real-time status van alle wereldwijde zendingen.',
       client: 'Klant',
-      actions: 'Acties'
+      actions: 'Aaties'
     },
     footer: {
       quickLinks: 'Snelkoppelingen',
