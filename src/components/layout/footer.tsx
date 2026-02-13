@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
 import Link from 'next/link';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, MapPin } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { policyLinks } from '@/lib/data';
 import { useLanguage } from '@/hooks/use-language';
@@ -50,12 +50,8 @@ export function Footer() {
                 <span className="text-muted-foreground">Musterstraße 1, 10117 Berlin, Germany</span>
               </li>
               <li className="flex items-start gap-3">
-                <Phone size={20} className="text-primary mt-1 shrink-0" />
-                <span className="text-muted-foreground">+49 (30) 12345678</span>
-              </li>
-              <li className="flex items-start gap-3">
                 <Mail size={20} className="text-primary mt-1 shrink-0" />
-                <span className="text-muted-foreground">info@al-israa-frachtlogistik.de</span>
+                <span className="text-muted-foreground">alisraainternationaler@gmail.com</span>
               </li>
             </ul>
           </div>
