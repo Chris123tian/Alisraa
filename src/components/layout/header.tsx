@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, Mail, LogOut, LayoutDashboard, Globe } from 'lucide-react';
+import { Menu, Mail, LogOut, LayoutDashboard, Globe, Phone } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger, SheetDescription } from '@/components/ui/sheet';
@@ -47,6 +47,10 @@ export function Header() {
               <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">
                 <Mail size={14} className="text-accent" />
                 <span className="hidden sm:inline">alisraainternationaler@gmail.com</span>
+              </div>
+              <div className="hidden lg:flex items-center gap-2 hover:text-accent transition-colors cursor-default">
+                <Phone size={14} className="text-accent" />
+                <span>+380 44 235 67 77</span>
               </div>
             </div>
             <div className="flex items-center gap-4">

@@ -1,7 +1,7 @@
 "use client";
 
 import { PageHeader } from '@/components/page-header';
-import { Mail, MapPin } from 'lucide-react';
+import { Mail, MapPin, Phone } from 'lucide-react';
 import { Chat } from '@/components/chat';
 import { useLanguage } from '@/hooks/use-language';
 
@@ -21,22 +21,34 @@ export default function ContactPage() {
                 {t.contact.contactDesc}
               </p>
               <div className="space-y-6">
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-4 p-6 bg-muted/20 rounded-2xl border border-primary/5">
                   <div className="bg-primary/10 text-primary p-3 rounded-md">
                     <MapPin />
                   </div>
                   <div>
                     <h3 className="font-semibold text-lg">{t.contact.office}</h3>
-                    <p className="text-muted-foreground">Musterstraße 1, 10117 Berlin, Germany</p>
+                    <p className="text-muted-foreground">Velyka Vasylkivska Street, 72</p>
+                    <p className="text-muted-foreground">Office 314</p>
+                    <p className="text-muted-foreground">Kyiv, 03150, Ukraine</p>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
+                <div className="flex items-start gap-4 p-6 bg-muted/20 rounded-2xl border border-primary/5">
                   <div className="bg-primary/10 text-primary p-3 rounded-md">
                     <Mail />
                   </div>
-                  <div>
+                  <div className="space-y-1">
                     <h3 className="font-semibold text-lg">{t.contact.emailUs}</h3>
-                    <p className="text-muted-foreground">alisraainternationaler@gmail.com</p>
+                    <p className="text-muted-foreground font-medium">Customer.alisraashipping@outlook.com</p>
+                    <p className="text-muted-foreground text-sm">alisraainternationaler@gmail.com</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4 p-6 bg-muted/20 rounded-2xl border border-primary/5">
+                  <div className="bg-primary/10 text-primary p-3 rounded-md">
+                    <Phone />
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-lg">{t.contact.callUs}</h3>
+                    <p className="text-muted-foreground font-bold">+380 44 235 67 77</p>
                   </div>
                 </div>
               </div>

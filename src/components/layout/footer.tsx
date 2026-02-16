@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import { Mail, MapPin } from 'lucide-react';
+import { Mail, MapPin, Phone } from 'lucide-react';
 import { Logo } from '@/components/logo';
 import { policyLinks } from '@/lib/data';
 import { useLanguage } from '@/hooks/use-language';
@@ -16,7 +16,7 @@ export function Footer() {
           <div className="space-y-4">
             <Logo />
             <p className="text-sm text-muted-foreground">
-              Your trusted partner for international freight logistics and transport.
+              Your trusted partner for international freight logistics and transport. Global excellence since 1998.
             </p>
           </div>
           
@@ -47,11 +47,18 @@ export function Footer() {
             <ul className="space-y-4 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={20} className="text-primary mt-1 shrink-0" />
-                <span className="text-muted-foreground">Musterstraße 1, 10117 Berlin, Germany</span>
+                <span className="text-muted-foreground">Velyka Vasylkivska Street, 72, Office 314, Kyiv, 03150, Ukraine</span>
               </li>
               <li className="flex items-start gap-3">
                 <Mail size={20} className="text-primary mt-1 shrink-0" />
-                <span className="text-muted-foreground">alisraainternationaler@gmail.com</span>
+                <div className="flex flex-col gap-1">
+                  <span className="text-muted-foreground">alisraainternationaler@gmail.com</span>
+                  <span className="text-muted-foreground text-[10px] break-all">Customer.alisraashipping@outlook.com</span>
+                </div>
+              </li>
+              <li className="flex items-start gap-3">
+                <Phone size={20} className="text-primary mt-1 shrink-0" />
+                <span className="text-muted-foreground">+380 44 235 67 77</span>
               </li>
             </ul>
           </div>
