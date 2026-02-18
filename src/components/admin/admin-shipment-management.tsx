@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking, deleteDocumentNonBlocking } from '@/firebase';
+import { useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking, deleteDocumentNonBlocking, updateDocumentNonBlocking } from '@/firebase';
 import { collection, query, orderBy, doc, limit } from 'firebase/firestore';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Trash2, Plus, RefreshCw, Package, Users } from 'lucide-react';
+import { Trash2, Plus, RefreshCw, Package, Users, Edit3 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useLanguage } from '@/hooks/use-language';
@@ -102,6 +102,19 @@ export function AdminShipmentManagement() {
           toast({ variant: 'destructive', title: 'Manifest Error', description: err.message });
       })
       .finally(() => setIsSubmitting(false));
+  };
+
+  const handleUpdateStatus = (shipmentId: string, newStatus: string) => {
+    if (!firestore) return;
+    const docRef = doc(firestore, 'shipments', shipmentId);
+    updateDocumentNonBlocking(docRef, { 
+      status: newStatus,
+      lastUpdate: new Date().toISOString()
+    });
+    toast({ 
+      title: 'Status Updated', 
+      description: `Shipment record updated to ${newStatus}.` 
+    });
   };
 
   const handleDelete = (id: string) => {
@@ -264,12 +277,21 @@ export function AdminShipmentManagement() {
                       <span className="font-bold">{s.origin}</span> <span className="text-muted-foreground mx-1">→</span> <span className="font-bold">{s.destination}</span>
                     </TableCell>
                     <TableCell>
-                       <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest ${
-                         s.status === 'Delivered' ? 'bg-green-100 text-green-700' :
-                         s.status === 'Delayed' ? 'bg-red-100 text-red-700' : 'bg-accent/10 text-accent'
-                       }`}>
-                         {s.status}
-                       </span>
+                       <Select 
+                        defaultValue={s.status} 
+                        onValueChange={(val) => handleUpdateStatus(s.id, val)}
+                       >
+                         <SelectTrigger className="h-8 w-[160px] text-[10px] font-black uppercase tracking-widest border-accent/20 bg-accent/5 text-accent hover:bg-accent/10 transition-colors">
+                           <SelectValue />
+                         </SelectTrigger>
+                         <SelectContent>
+                           <SelectItem value="Pending">Pending</SelectItem>
+                           <SelectItem value="In Transit">In Transit</SelectItem>
+                           <SelectItem value="Customs Clearance">Customs Clearance</SelectItem>
+                           <SelectItem value="Delivered">Delivered</SelectItem>
+                           <SelectItem value="Delayed">Delayed</SelectItem>
+                         </SelectContent>
+                       </Select>
                     </TableCell>
                     <TableCell className="text-right">
                       <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive transition-colors" onClick={() => handleDelete(s.id)}>

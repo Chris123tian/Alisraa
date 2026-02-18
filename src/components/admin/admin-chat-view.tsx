@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 
 export function AdminChatView() {
-  const { user } = userUser();
+  const { user } = useUser();
   const firestore = useFirestore();
   const [reply, setReply] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
@@ -143,10 +143,4 @@ export function AdminChatView() {
       </Card>
     </div>
   );
-}
-
-// Helper to ensure useUser is properly typed
-function userUser() {
-  const { user, isUserLoading } = useUser();
-  return { user, isUserLoading };
 }
