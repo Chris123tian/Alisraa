@@ -46,14 +46,14 @@ export function Header() {
             <div className="flex items-center gap-4 md:gap-8">
               <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">
                 <Mail size={14} className="text-accent" />
-                <span className="hidden sm:inline">alisraainternationaler@gmail.com</span>
+                <span className="hidden sm:inline">Customer.alisraashipping@outlook.com</span>
               </div>
-              <div className="hidden lg:flex items-center gap-2 hover:text-accent transition-colors cursor-default">
+              <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">
                 <Phone size={14} className="text-accent" />
                 <span>+380 44 235 67 77</span>
               </div>
             </div>
-            <div className="flex items-center gap-4">
+            <div className="hidden sm:flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <Globe size={14} className="text-accent" />
                 <Select value={language} onValueChange={(v) => setLanguage(v as Language)}>
