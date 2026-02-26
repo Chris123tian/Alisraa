@@ -20,6 +20,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-scroll-behavior="smooth" className="scroll-smooth">
       <head>
+        <meta name="google-site-verification" content="XaFcZhc3N6vnHqqFKRem_D_AhetbPwlt62lYADCAMKw" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
