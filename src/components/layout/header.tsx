@@ -39,14 +39,14 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-      {/* Top Bar - 100% Static Shell for Hydration Stability */}
+      {/* Top Bar - High Visibility Contact Info */}
       <div className="bg-primary h-10 w-full overflow-hidden">
-        <div className="container mx-auto px-4 h-full flex justify-between items-center text-primary-foreground text-xs font-medium">
+        <div className="container mx-auto px-4 h-full flex justify-between items-center text-primary-foreground text-[10px] md:text-xs font-medium">
           <ClientOnly fallback={<div className="h-4 w-48 bg-white/10 animate-pulse rounded" />}>
             <div className="flex items-center gap-4 md:gap-8">
               <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">
                 <Mail size={14} className="text-accent" />
-                <span className="hidden sm:inline">Customer.alisraashipping@outlook.com</span>
+                <span>Customer.alisraashipping@outlook.com</span>
               </div>
               <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">
                 <Phone size={14} className="text-accent" />
