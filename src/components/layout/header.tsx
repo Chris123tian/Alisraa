@@ -46,7 +46,8 @@ export function Header() {
             <div className="flex items-center gap-4 md:gap-8">
               <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">
                 <Mail size={14} className="text-accent" />
-                <span>Customer.alisraashipping@outlook.com</span>
+                <span className="hidden xs:inline">Customer.alisraashipping@outlook.com</span>
+                <span className="xs:hidden">Email Us</span>
               </div>
               <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">
                 <Phone size={14} className="text-accent" />
@@ -173,17 +174,50 @@ export function Header() {
                       </Link>
                     )}
 
+                    {/* Mobile Language Switcher */}
+                    <div className="flex flex-col gap-3 mt-4 pt-4 border-t">
+                      <span className="text-[10px] font-black uppercase text-muted-foreground tracking-[0.2em] flex items-center gap-2">
+                        <Globe size={14} className="text-accent" /> Select Language
+                      </span>
+                      <div className="grid grid-cols-3 gap-2">
+                        <Button 
+                          variant={language === 'en' ? 'default' : 'outline'} 
+                          size="sm" 
+                          onClick={() => setLanguage('en')}
+                          className="text-[10px] font-bold h-10"
+                        >
+                          EN
+                        </Button>
+                        <Button 
+                          variant={language === 'de' ? 'default' : 'outline'} 
+                          size="sm" 
+                          onClick={() => setLanguage('de')}
+                          className="text-[10px] font-bold h-10"
+                        >
+                          DE
+                        </Button>
+                        <Button 
+                          variant={language === 'nl' ? 'default' : 'outline'} 
+                          size="sm" 
+                          onClick={() => setLanguage('nl')}
+                          className="text-[10px] font-bold h-10"
+                        >
+                          NL
+                        </Button>
+                      </div>
+                    </div>
+
                     <div className="flex flex-col gap-3 mt-6 pt-6 border-t">
                       {user && !user.isAnonymous ? (
-                        <Button variant="outline" className="w-full font-bold uppercase" onClick={handleLogout}>
+                        <Button variant="outline" className="w-full font-bold uppercase h-12" onClick={handleLogout}>
                           {t.nav.signOut}
                         </Button>
                       ) : (
                         <>
-                          <Button asChild variant="outline" className="w-full font-bold uppercase">
+                          <Button asChild variant="outline" className="w-full font-bold uppercase h-12">
                             <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.login}</Link>
                           </Button>
-                          <Button asChild variant="default" className="w-full bg-accent text-white font-bold uppercase">
+                          <Button asChild variant="default" className="w-full bg-accent text-white font-bold uppercase h-12 shadow-lg">
                             <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>{t.nav.signup}</Link>
                           </Button>
                         </>
