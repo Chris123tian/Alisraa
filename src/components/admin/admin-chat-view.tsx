@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -10,17 +9,19 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/com
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { useAdmin } from '@/hooks/useAdmin';
 
 export function AdminChatView() {
   const { user } = useUser();
   const firestore = useFirestore();
+  const { isAdmin } = useAdmin();
   const [reply, setReply] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const messagesRef = useMemoFirebase(() => {
-    if (!firestore) return null;
+    if (!firestore || !isAdmin) return null;
     return collection(firestore, 'chat_messages');
-  }, [firestore]);
+  }, [firestore, isAdmin]);
   
   const messagesQuery = useMemoFirebase(() => {
     if (!messagesRef) return null;
@@ -51,7 +52,6 @@ export function AdminChatView() {
 
     // For simplicity, admins are replying globally. 
     // In a production app, we would reply to a specific thread's clientId.
-    // For now, we use a generic clientId or the sender's clientId if available.
     const messageData = {
       senderId: user.uid,
       clientId: 'SYSTEM_ADMIN_GENERAL', // Admins can use a broad ID or we can target individual threads

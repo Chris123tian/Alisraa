@@ -11,15 +11,17 @@ import { useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
 import { Badge } from '@/components/ui/badge';
 import { MessageSquare } from 'lucide-react';
+import { useAdmin } from '@/hooks/useAdmin';
 
 export default function AdminPage() {
   const { t } = useLanguage();
   const firestore = useFirestore();
+  const { isAdmin } = useAdmin();
 
   const messagesQuery = useMemoFirebase(() => {
-    if (!firestore) return null;
+    if (!firestore || !isAdmin) return null;
     return collection(firestore, 'chat_messages');
-  }, [firestore]);
+  }, [firestore, isAdmin]);
 
   const { data: messages } = useCollection(messagesQuery);
   const messageCount = messages?.length || 0;
