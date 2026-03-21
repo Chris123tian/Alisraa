@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
@@ -7,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Trash2, Send, MessageSquare, ShieldAlert } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 
 export function AdminChatView() {
@@ -32,7 +33,9 @@ export function AdminChatView() {
     if (scrollAreaRef.current) {
         const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
         if (viewport) {
-            viewport.scrollTop = viewport.scrollHeight;
+            setTimeout(() => {
+              viewport.scrollTop = viewport.scrollHeight;
+            }, 100);
         }
     }
   }, [messages]);
@@ -43,12 +46,15 @@ export function AdminChatView() {
     deleteDocumentNonBlocking(messageDocRef);
   };
 
-  const handleSendReply = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSendReply = () => {
     if (!reply.trim() || !firestore || !user || !messagesRef) return;
 
+    // For simplicity, admins are replying globally. 
+    // In a production app, we would reply to a specific thread's clientId.
+    // For now, we use a generic clientId or the sender's clientId if available.
     const messageData = {
       senderId: user.uid,
+      clientId: 'SYSTEM_ADMIN_GENERAL', // Admins can use a broad ID or we can target individual threads
       displayName: 'Support Agent (Admin)',
       message: reply,
       timestamp: serverTimestamp(),
@@ -106,7 +112,7 @@ export function AdminChatView() {
                     }`}>
                       {msg.displayName}
                     </p>
-                    <p className="text-sm md:text-base font-medium leading-relaxed">{msg.message}</p>
+                    <p className="text-sm md:text-base font-medium leading-relaxed whitespace-pre-wrap">{msg.message}</p>
                     <div className="flex items-center justify-between mt-3 gap-6">
                       <p className="text-[10px] opacity-40 font-mono">
                         {msg.timestamp?.toDate() ? msg.timestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Syncing...'}
@@ -126,18 +132,22 @@ export function AdminChatView() {
           </ScrollArea>
           
           <div className="p-6 bg-muted/20 border-t">
-            <form onSubmit={handleSendReply} className="flex gap-4 max-w-5xl mx-auto">
-              <Input 
+            <div className="flex gap-4 max-w-5xl mx-auto items-end">
+              <Textarea 
                 placeholder="Type your response as Al-Israa Support..." 
                 value={reply}
                 onChange={(e) => setReply(e.target.value)}
-                className="bg-white border-primary/10 h-14 text-lg rounded-xl shadow-inner focus:ring-accent"
+                className="bg-white border-primary/10 min-h-[56px] max-h-[200px] text-lg rounded-xl shadow-inner focus:ring-accent resize-none py-4"
               />
-              <Button type="submit" className="h-14 bg-accent hover:bg-accent/90 px-8 rounded-xl shadow-xl transition-transform hover:scale-105" disabled={!reply.trim()}>
+              <Button 
+                onClick={handleSendReply}
+                className="h-14 bg-accent hover:bg-accent/90 px-8 rounded-xl shadow-xl transition-transform hover:scale-105 shrink-0" 
+                disabled={!reply.trim()}
+              >
                 <Send className="w-5 h-5 mr-2" />
                 <span className="font-bold uppercase tracking-widest text-xs">Send Reply</span>
               </Button>
-            </form>
+            </div>
           </div>
         </CardContent>
       </Card>

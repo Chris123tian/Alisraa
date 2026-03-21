@@ -80,7 +80,12 @@
           "type": "string"
         },
         "senderId": {
-          "type": "string"
+          "type": "string",
+          "description": "The UID of the person who sent the message."
+        },
+        "clientId": {
+          "type": "string",
+          "description": "The UID of the client this conversation belongs to (for privacy)."
         },
         "displayName": {
           "type": "string"
@@ -95,6 +100,7 @@
       },
       "required": [
         "senderId",
+        "clientId",
         "displayName",
         "message",
         "timestamp"

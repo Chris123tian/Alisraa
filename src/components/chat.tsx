@@ -1,9 +1,10 @@
+
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
 import { useUser, useFirestore, useCollection, useMemoFirebase, addDocumentNonBlocking, initiateAnonymousSignIn, useAuth } from '@/firebase';
-import { collection, query, orderBy, serverTimestamp } from 'firebase/firestore';
-import { Input } from './ui/input';
+import { collection, query, orderBy, serverTimestamp, where } from 'firebase/firestore';
+import { Textarea } from './ui/textarea';
 import { Button } from './ui/button';
 import { Send, Loader2 } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
@@ -33,12 +34,17 @@ export function Chat() {
 
   const messagesQuery = useMemoFirebase(() => {
     if (!messagesRef || !user) return null;
-    return query(messagesRef, orderBy('timestamp', 'asc'));
+    // Filter by clientId to ensure privacy: only the owner sees their messages
+    return query(
+      messagesRef, 
+      where('clientId', '==', user.uid),
+      orderBy('timestamp', 'asc')
+    );
   }, [messagesRef, user]);
 
   const { data: messages, isLoading: isMessagesLoading } = useCollection(messagesQuery);
 
-  // Improved scroll to bottom logic.
+  // Robust scroll to bottom logic.
   useEffect(() => {
     if (scrollAreaRef.current) {
       const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
@@ -50,8 +56,9 @@ export function Chat() {
     }
   }, [messages, isMessagesLoading]);
 
-  const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSendMessage = async (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    
     if (!message.trim() || !user) {
       if (!user && !isUserLoading) {
         toast({ variant: 'destructive', title: 'Authenticating...', description: 'Please wait a moment and try again.' });
@@ -61,6 +68,7 @@ export function Chat() {
 
     const messageData = {
       senderId: user.uid,
+      clientId: user.uid, // Required for security rules filtering
       displayName: user.isAnonymous ? 'Guest' : (user.displayName || 'Client'),
       message: message,
       timestamp: serverTimestamp(),
@@ -118,7 +126,7 @@ export function Chat() {
                       msg.senderId === user?.uid ? "text-accent/80" : "text-primary/60"
                     )}>{msg.displayName}</p>
                   </div>
-                  <p className="text-sm leading-relaxed">{msg.message}</p>
+                  <p className="text-sm leading-relaxed whitespace-pre-wrap">{msg.message}</p>
                   <p className={cn(
                     "text-[9px] font-mono opacity-50 mt-1.5 text-right",
                     msg.senderId === user?.uid ? "text-white" : "text-primary"
@@ -131,23 +139,23 @@ export function Chat() {
           )}
         </div>
       </ScrollArea>
-      <form onSubmit={handleSendMessage} className="flex gap-2 p-4 border-t border-x border-b rounded-b-2xl bg-card shadow-lg">
-        <Input
+      <div className="flex gap-2 p-4 border-t border-x border-b rounded-b-2xl bg-card shadow-lg">
+        <Textarea
           placeholder={user ? "Type your message..." : "Authenticating session..."}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           disabled={!user || isLoading}
-          className="flex-grow h-12 rounded-xl bg-muted/30 border-none focus:ring-accent"
+          className="flex-grow min-h-[48px] max-h-[150px] rounded-xl bg-muted/30 border-none focus:ring-accent resize-none py-3"
         />
         <Button 
-          type="submit" 
+          onClick={() => handleSendMessage()}
           size="icon" 
           disabled={!user || !message.trim() || isLoading}
-          className="h-12 w-12 rounded-xl bg-accent hover:bg-accent/90 shadow-xl shadow-accent/20 transition-transform active:scale-95"
+          className="h-12 w-12 rounded-xl bg-accent hover:bg-accent/90 shadow-xl shadow-accent/20 transition-transform active:scale-95 shrink-0"
         >
           <Send className="h-5 w-5 text-white" />
         </Button>
-      </form>
+      </div>
     </div>
   );
 }
