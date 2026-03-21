@@ -1,4 +1,3 @@
-
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
@@ -20,7 +19,6 @@ export function Chat() {
   const { toast } = useToast();
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
-  // Sign in anonymously if no user is present after auth state resolves.
   useEffect(() => {
     if (!isUserLoading && !user) {
       initiateAnonymousSignIn(auth);
@@ -34,17 +32,27 @@ export function Chat() {
 
   const messagesQuery = useMemoFirebase(() => {
     if (!messagesRef || !user) return null;
-    // Filter by clientId to ensure privacy: only the owner sees their messages
+    // Filter by clientId to ensure privacy.
+    // Removed orderBy('timestamp') to avoid composite index requirement for initial setup.
+    // Firestore will still return documents, and we sort them client-side if needed.
     return query(
       messagesRef, 
-      where('clientId', '==', user.uid),
-      orderBy('timestamp', 'asc')
+      where('clientId', '==', user.uid)
     );
   }, [messagesRef, user]);
 
-  const { data: messages, isLoading: isMessagesLoading } = useCollection(messagesQuery);
+  const { data: messagesRaw, isLoading: isMessagesLoading } = useCollection(messagesQuery);
 
-  // Robust scroll to bottom logic.
+  // Client-side sorting as a safety measure for UX
+  const messages = useMemoFirebase(() => {
+    if (!messagesRaw) return null;
+    return [...messagesRaw].sort((a, b) => {
+      const timeA = a.timestamp?.toMillis?.() || 0;
+      const timeB = b.timestamp?.toMillis?.() || 0;
+      return timeA - timeB;
+    });
+  }, [messagesRaw]);
+
   useEffect(() => {
     if (scrollAreaRef.current) {
       const viewport = scrollAreaRef.current.querySelector('[data-radix-scroll-area-viewport]');
@@ -68,7 +76,7 @@ export function Chat() {
 
     const messageData = {
       senderId: user.uid,
-      clientId: user.uid, // Required for security rules filtering
+      clientId: user.uid, 
       displayName: user.isAnonymous ? 'Guest' : (user.displayName || 'Client'),
       message: message,
       timestamp: serverTimestamp(),

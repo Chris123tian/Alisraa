@@ -19,7 +19,7 @@ export default function AdminPage() {
   const { isAdmin, isLoading: isAdminLoading } = useAdmin();
 
   const messagesQuery = useMemoFirebase(() => {
-    // Guard: Only create query if firestore is ready, admin check is done, and user IS an admin
+    // Only run if admin is confirmed and not loading
     if (!firestore || isAdminLoading || !isAdmin) return null;
     return collection(firestore, 'chat_messages');
   }, [firestore, isAdmin, isAdminLoading]);
