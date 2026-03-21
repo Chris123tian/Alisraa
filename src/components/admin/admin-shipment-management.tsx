@@ -9,7 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { Trash2, Plus, RefreshCw, Package, Users, Edit3 } from 'lucide-react';
+import { Trash2, Plus, RefreshCw, Package, Users } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useAdmin } from '@/hooks/useAdmin';
 import { useLanguage } from '@/hooks/use-language';
@@ -21,7 +21,6 @@ export function AdminShipmentManagement() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { t } = useLanguage();
 
-  // Form State
   const [formData, setFormData] = useState({
     userId: '',
     origin: '',
@@ -31,23 +30,23 @@ export function AdminShipmentManagement() {
     vessel: '',
   });
 
-  // Fetch all shipments
   const shipmentsQuery = useMemoFirebase(() => {
-    if (!firestore || !isAdmin) return null;
+    // Only run if admin is confirmed
+    if (!firestore || isAdminCheckLoading || !isAdmin) return null;
     return query(
       collection(firestore, 'shipments'), 
       orderBy('lastUpdate', 'desc'),
       limit(100)
     );
-  }, [firestore, isAdmin]);
+  }, [firestore, isAdmin, isAdminCheckLoading]);
 
   const { data: shipments, isLoading: isShipmentsLoading } = useCollection(shipmentsQuery);
 
-  // Fetch all users for the dropdown
   const usersQuery = useMemoFirebase(() => {
-    if (!firestore || !isAdmin) return null;
+    // Only run if admin is confirmed
+    if (!firestore || isAdminCheckLoading || !isAdmin) return null;
     return query(collection(firestore, 'users'), limit(500));
-  }, [firestore, isAdmin]);
+  }, [firestore, isAdmin, isAdminCheckLoading]);
 
   const { data: users, isLoading: isUsersLoading } = useCollection(usersQuery);
 
@@ -57,22 +56,13 @@ export function AdminShipmentManagement() {
 
   const handleCreateShipment = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!firestore) return;
+    if (!firestore || !isAdmin) return;
 
     if (!formData.userId || formData.userId === 'loading' || formData.userId === 'none') {
       toast({ 
         variant: 'destructive', 
         title: 'Selection Error', 
-        description: 'Please select a valid registered client from the directory.' 
-      });
-      return;
-    }
-
-    if (!formData.origin || !formData.destination) {
-      toast({ 
-        variant: 'destructive', 
-        title: 'Missing Route', 
-        description: 'Origin and Destination are required.' 
+        description: 'Please select a valid registered client.' 
       });
       return;
     }
@@ -88,7 +78,7 @@ export function AdminShipmentManagement() {
 
     addDocumentNonBlocking(collection(firestore, 'shipments'), shipmentData)
       .then(() => {
-        toast({ title: 'Success!', description: `Shipment ${trackingNumber} has been initialized.` });
+        toast({ title: 'Success!', description: `Shipment ${trackingNumber} initialized.` });
         setFormData({
           userId: '',
           origin: '',
@@ -105,22 +95,19 @@ export function AdminShipmentManagement() {
   };
 
   const handleUpdateStatus = (shipmentId: string, newStatus: string) => {
-    if (!firestore) return;
+    if (!firestore || !isAdmin) return;
     const docRef = doc(firestore, 'shipments', shipmentId);
     updateDocumentNonBlocking(docRef, { 
       status: newStatus,
       lastUpdate: new Date().toISOString()
     });
-    toast({ 
-      title: 'Status Updated', 
-      description: `Shipment record updated to ${newStatus}.` 
-    });
+    toast({ title: 'Status Updated', description: `Set to ${newStatus}.` });
   };
 
   const handleDelete = (id: string) => {
-    if (!firestore) return;
+    if (!firestore || !isAdmin) return;
     deleteDocumentNonBlocking(doc(firestore, 'shipments', id));
-    toast({ title: 'Removed', description: 'Shipment record deleted from manifest.' });
+    toast({ title: 'Removed', description: 'Shipment record deleted.' });
   };
 
   if (isAdminCheckLoading) {
@@ -129,15 +116,6 @@ export function AdminShipmentManagement() {
         <RefreshCw className="animate-spin text-accent h-8 w-8" />
         <p className="text-muted-foreground font-medium">Authenticating Admin Session...</p>
       </div>
-    );
-  }
-
-  if (!isAdmin) {
-    return (
-      <Card className="p-8 text-center border-dashed border-2">
-        <CardTitle className="text-destructive">Access Restricted</CardTitle>
-        <CardDescription>You must be an administrator to manage the global cargo manifest.</CardDescription>
-      </Card>
     );
   }
 
@@ -170,11 +148,11 @@ export function AdminShipmentManagement() {
                   ) : users && users.length > 0 ? (
                     users.map(u => (
                       <SelectItem key={u.id} value={u.id}>
-                        {u.username || u.email} ({u.email})
+                        {u.username || u.email}
                       </SelectItem>
                     ))
                   ) : (
-                    <SelectItem value="none" disabled>No clients registered yet</SelectItem>
+                    <SelectItem value="none" disabled>No clients registered</SelectItem>
                   )}
                 </SelectContent>
               </Select>
@@ -201,7 +179,7 @@ export function AdminShipmentManagement() {
               <Label htmlFor="origin" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">{t.admin.origin}</Label>
               <Input 
                 id="origin"
-                placeholder="e.g. Damascus, Syria" 
+                placeholder="Origin" 
                 value={formData.origin}
                 className="h-12 border-primary/20"
                 onChange={(e) => setFormData(prev => ({ ...prev, origin: e.target.value }))}
@@ -211,28 +189,14 @@ export function AdminShipmentManagement() {
               <Label htmlFor="destination" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">{t.admin.destination}</Label>
               <Input 
                 id="destination"
-                placeholder="e.g. Hamburg, Germany" 
+                placeholder="Destination" 
                 value={formData.destination}
                 className="h-12 border-primary/20"
                 onChange={(e) => setFormData(prev => ({ ...prev, destination: e.target.value }))}
               />
             </div>
-            <div className="md:col-span-2 space-y-2">
-              <Label htmlFor="vessel" className="font-bold uppercase text-[10px] tracking-widest text-primary/60">{t.admin.vessel}</Label>
-              <Input 
-                id="vessel"
-                placeholder="e.g. MS Express Voyage #9921" 
-                value={formData.vessel}
-                className="h-12 border-primary/20"
-                onChange={(e) => setFormData(prev => ({ ...prev, vessel: e.target.value }))}
-              />
-            </div>
-            <Button type="submit" className="md:col-span-2 bg-primary hover:bg-primary/90 shadow-xl h-14 font-black uppercase tracking-widest" disabled={isSubmitting}>
-              {isSubmitting ? (
-                <RefreshCw className="animate-spin mr-2" />
-              ) : (
-                <Plus className="mr-2" />
-              )}
+            <Button type="submit" className="md:col-span-2 bg-primary hover:bg-primary/90 shadow-xl h-14 font-black uppercase tracking-widest" disabled={isSubmitting || !isAdmin}>
+              {isSubmitting ? <RefreshCw className="animate-spin mr-2" /> : <Plus className="mr-2" />}
               {t.admin.initiateBtn}
             </Button>
           </form>
@@ -259,7 +223,7 @@ export function AdminShipmentManagement() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isShipmentsLoading ? (
+              {(isShipmentsLoading || isAdminCheckLoading) ? (
                 <TableRow>
                   <TableCell colSpan={5} className="text-center py-20">
                     <RefreshCw className="animate-spin inline mr-3 h-8 w-8 text-accent" /> 
@@ -274,14 +238,14 @@ export function AdminShipmentManagement() {
                       {users?.find(u => u.id === s.userId)?.username || s.userId}
                     </TableCell>
                     <TableCell className="text-sm">
-                      <span className="font-bold">{s.origin}</span> <span className="text-muted-foreground mx-1">→</span> <span className="font-bold">{s.destination}</span>
+                      {s.origin} → {s.destination}
                     </TableCell>
                     <TableCell>
                        <Select 
                         defaultValue={s.status} 
                         onValueChange={(val) => handleUpdateStatus(s.id, val)}
                        >
-                         <SelectTrigger className="h-8 w-[160px] text-[10px] font-black uppercase tracking-widest border-accent/20 bg-accent/5 text-accent hover:bg-accent/10 transition-colors">
+                         <SelectTrigger className="h-8 w-[160px] text-[10px] font-black uppercase tracking-widest border-accent/20 bg-accent/5">
                            <SelectValue />
                          </SelectTrigger>
                          <SelectContent>
@@ -294,7 +258,7 @@ export function AdminShipmentManagement() {
                        </Select>
                     </TableCell>
                     <TableCell className="text-right">
-                      <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive transition-colors" onClick={() => handleDelete(s.id)}>
+                      <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive" onClick={() => handleDelete(s.id)}>
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </TableCell>
@@ -304,7 +268,7 @@ export function AdminShipmentManagement() {
                 <TableRow>
                   <TableCell colSpan={5} className="text-center py-24 text-muted-foreground">
                     <Package className="w-12 h-12 mx-auto mb-4 opacity-10" />
-                    <p className="font-bold text-lg">{t.admin.manifestDesc}</p>
+                    <p className="font-bold text-lg">No shipments found</p>
                   </TableCell>
                 </TableRow>
               )}

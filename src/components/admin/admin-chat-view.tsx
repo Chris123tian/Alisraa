@@ -14,14 +14,15 @@ import { useAdmin } from '@/hooks/useAdmin';
 export function AdminChatView() {
   const { user } = useUser();
   const firestore = useFirestore();
-  const { isAdmin } = useAdmin();
+  const { isAdmin, isLoading: isAdminLoading } = useAdmin();
   const [reply, setReply] = useState('');
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
   const messagesRef = useMemoFirebase(() => {
-    if (!firestore || !isAdmin) return null;
+    // Strict guard to prevent permission errors on component mount
+    if (!firestore || isAdminLoading || !isAdmin) return null;
     return collection(firestore, 'chat_messages');
-  }, [firestore, isAdmin]);
+  }, [firestore, isAdmin, isAdminLoading]);
   
   const messagesQuery = useMemoFirebase(() => {
     if (!messagesRef) return null;
@@ -42,19 +43,17 @@ export function AdminChatView() {
   }, [messages]);
 
   const handleDeleteMessage = (messageId: string) => {
-    if (!firestore) return;
+    if (!firestore || !isAdmin) return;
     const messageDocRef = doc(firestore, 'chat_messages', messageId);
     deleteDocumentNonBlocking(messageDocRef);
   };
 
   const handleSendReply = () => {
-    if (!reply.trim() || !firestore || !user || !messagesRef) return;
+    if (!reply.trim() || !firestore || !user || !messagesRef || !isAdmin) return;
 
-    // For simplicity, admins are replying globally. 
-    // In a production app, we would reply to a specific thread's clientId.
     const messageData = {
       senderId: user.uid,
-      clientId: 'SYSTEM_ADMIN_GENERAL', // Admins can use a broad ID or we can target individual threads
+      clientId: 'SYSTEM_ADMIN_GENERAL', 
       displayName: 'Support Agent (Admin)',
       message: reply,
       timestamp: serverTimestamp(),
@@ -90,13 +89,13 @@ export function AdminChatView() {
         <CardContent className="flex-grow flex flex-col p-0 bg-white">
           <ScrollArea className="flex-grow p-8" ref={scrollAreaRef}>
             <div className="space-y-6">
-              {isLoading && (
+              {(isLoading || isAdminLoading) && (
                 <div className="flex flex-col items-center justify-center py-20 gap-4">
                   <div className="w-12 h-12 border-4 border-accent border-t-transparent rounded-full animate-spin" />
                   <p className="text-muted-foreground font-bold uppercase tracking-widest text-xs">Syncing communication stream...</p>
                 </div>
               )}
-              {!isLoading && messages?.length === 0 && (
+              {!isLoading && !isAdminLoading && messages?.length === 0 && (
                 <div className="flex flex-col items-center justify-center py-20 opacity-20">
                   <ShieldAlert className="w-16 h-16 mb-4" />
                   <p className="text-center font-black uppercase tracking-widest">No active support threads.</p>
@@ -115,7 +114,7 @@ export function AdminChatView() {
                     <p className="text-sm md:text-base font-medium leading-relaxed whitespace-pre-wrap">{msg.message}</p>
                     <div className="flex items-center justify-between mt-3 gap-6">
                       <p className="text-[10px] opacity-40 font-mono">
-                        {msg.timestamp?.toDate() ? msg.timestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Syncing...'}
+                        {msg.timestamp?.toDate ? msg.timestamp.toDate().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Syncing...'}
                       </p>
                       <button 
                         onClick={() => handleDeleteMessage(msg.id)} 
@@ -142,7 +141,7 @@ export function AdminChatView() {
               <Button 
                 onClick={handleSendReply}
                 className="h-14 bg-accent hover:bg-accent/90 px-8 rounded-xl shadow-xl transition-transform hover:scale-105 shrink-0" 
-                disabled={!reply.trim()}
+                disabled={!reply.trim() || !isAdmin}
               >
                 <Send className="w-5 h-5 mr-2" />
                 <span className="font-bold uppercase tracking-widest text-xs">Send Reply</span>

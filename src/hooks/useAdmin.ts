@@ -47,8 +47,9 @@ export function useAdmin() {
       return;
     }
 
-    // Check for the explicit isAdmin field in the document data
-    const hasAdminRole = adminDoc && adminDoc.isAdmin === true;
+    // Check for the explicit isAdmin field in the document data or just existence
+    // The security rules check for existence, so we align with that but prefer the field check
+    const hasAdminRole = adminDoc && (adminDoc.isAdmin === true || adminDoc.id === user.uid);
     setIsAdmin(!!hasAdminRole);
     setIsLoading(false);
 

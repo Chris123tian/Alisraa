@@ -16,12 +16,13 @@ import { useAdmin } from '@/hooks/useAdmin';
 export default function AdminPage() {
   const { t } = useLanguage();
   const firestore = useFirestore();
-  const { isAdmin } = useAdmin();
+  const { isAdmin, isLoading: isAdminLoading } = useAdmin();
 
   const messagesQuery = useMemoFirebase(() => {
-    if (!firestore || !isAdmin) return null;
+    // Guard: Only create query if firestore is ready, admin check is done, and user IS an admin
+    if (!firestore || isAdminLoading || !isAdmin) return null;
     return collection(firestore, 'chat_messages');
-  }, [firestore, isAdmin]);
+  }, [firestore, isAdmin, isAdminLoading]);
 
   const { data: messages } = useCollection(messagesQuery);
   const messageCount = messages?.length || 0;
