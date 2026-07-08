@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -46,7 +47,7 @@ export function Header() {
             <div className="flex items-center gap-4 md:gap-8">
               <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">
                 <Mail size={14} className="text-accent" />
-                <span className="hidden xs:inline">Customer.alisraashipping@outlook.com</span>
+                <span className="hidden xs:inline">support@alisraainternationalers.com</span>
                 <span className="xs:hidden">Email Us</span>
               </div>
               <div className="flex items-center gap-2 hover:text-accent transition-colors cursor-default">

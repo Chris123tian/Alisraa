@@ -1,3 +1,4 @@
+
 "use client";
 
 import { PageHeader } from '@/components/page-header';
@@ -38,8 +39,8 @@ export default function ContactPage() {
                   </div>
                   <div className="space-y-1">
                     <h3 className="font-semibold text-lg">{t.contact.emailUs}</h3>
-                    <p className="text-muted-foreground font-medium">Customer.alisraashipping@outlook.com</p>
-                    <p className="text-muted-foreground text-sm">alisraainternationaler@gmail.com</p>
+                    <p className="text-muted-foreground font-medium">support@alisraainternationalers.com</p>
+                    <p className="text-muted-foreground text-sm">info@alisraainternationalers.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4 p-6 bg-muted/20 rounded-2xl border border-primary/5">

@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from 'next/link';
@@ -52,8 +53,8 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <Mail size={20} className="text-primary mt-1 shrink-0" />
                 <div className="flex flex-col gap-1">
-                  <span className="text-muted-foreground">alisraainternationaler@gmail.com</span>
-                  <span className="text-muted-foreground text-[10px] break-all">Customer.alisraashipping@outlook.com</span>
+                  <span className="text-muted-foreground">info@alisraainternationalers.com</span>
+                  <span className="text-muted-foreground text-[10px] break-all">support@alisraainternationalers.com</span>
                 </div>
               </li>
               <li className="flex items-start gap-3">

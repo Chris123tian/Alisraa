@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -28,7 +29,7 @@ export default function SignupPage() {
   const firestore = useFirestore();
   const router = useRouter();
 
-  const PRIMARY_ADMIN_EMAIL = 'alisraainternationaler@gmail.com';
+  const PRIMARY_ADMIN_EMAIL = 'admin@alisraainternationalers.com';
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

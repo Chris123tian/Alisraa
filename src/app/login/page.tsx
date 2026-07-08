@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useForm } from 'react-hook-form';
@@ -29,7 +30,7 @@ export default function LoginPage() {
   const router = useRouter();
   const { user, isUserLoading } = useUser();
 
-  const PRIMARY_ADMIN_EMAIL = 'alisraainternationaler@gmail.com';
+  const PRIMARY_ADMIN_EMAIL = 'admin@alisraainternationalers.com';
 
   useEffect(() => {
     if (!isUserLoading && user && !user.isAnonymous) {

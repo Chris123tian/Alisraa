@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useEffect } from 'react';
@@ -11,7 +12,7 @@ export function useAdmin() {
   const [isLoading, setIsLoading] = useState(true);
 
   // Check for hardcoded primary admin email
-  const PRIMARY_ADMIN_EMAIL = 'alisraainternationaler@gmail.com';
+  const PRIMARY_ADMIN_EMAIL = 'admin@alisraainternationalers.com';
 
   const adminDocRef = useMemoFirebase(() => {
     if (!firestore || !user) return null;
